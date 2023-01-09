@@ -1,0 +1,17 @@
+### Gradle ###
+.gradle
+/build/
+
+
+# # VS Code Specific Java Settings
+.classpath
+.project
+bin/
+.idea/
+
+### VisualStudioCode ###
+
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
