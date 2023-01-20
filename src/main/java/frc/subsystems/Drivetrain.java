@@ -6,6 +6,7 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 //import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -56,8 +57,8 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.BR_ABS_REVERSED);
 
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.driveKinematics,
-            new Rotation2d(0), getModulePositions());
+    private final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.driveKinematics,
+            new Rotation2d(0), getModulePositions(), new Pose2d());
     
     private final Field2d m_field = new Field2d();
 
@@ -90,11 +91,16 @@ public class Drivetrain extends SubsystemBase {
 
     // Position of the robot
     public Pose2d getPose() {
-        return odometer.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
     }
 
     public void resetOdometry(Pose2d pose) {
-        odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
+        poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
+    }
+
+    //Use with vision
+    public void updateOdometryLatency(Pose2d measuredPose, double timestamp) {
+        poseEstimator.addVisionMeasurement(measuredPose, timestamp);
     }
 
     public void setFieldPose(Pose2d pose) {
@@ -103,7 +109,7 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        odometer.update(getRotation2d(), getModulePositions());
+        poseEstimator.update(getRotation2d(), getModulePositions());
 
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
