@@ -85,6 +85,14 @@ public class Drivetrain extends SubsystemBase {
         return Math.IEEEremainder(gyro.getAngle(), 360);
     }
 
+    public double getPitch(){
+        return Math.IEEEremainder(gyro.getPitch(), 360);
+    }
+
+    public double getRoll(){
+        return Math.IEEEremainder(gyro.getRoll(), 360);
+    }
+
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getHeading());
     }
