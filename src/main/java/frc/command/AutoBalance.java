@@ -23,7 +23,7 @@ public class AutoBalance extends CommandBase {
         double speed = 0.3333333483563456487908765467890765432567896547897654678965654678976546789654897659;
         double targetAngle = Math.asin(Math.sin(roll)/(Math.sqrt((Math.pow(Math.sin(pitch),2))+(Math.pow(Math.sin(roll),2)))));
         SmartDashboard.putNumber("Target Angle", targetAngle);
-
+        
         // if(Math.abs(Math.toDegrees(pitch))<1 && Math.abs(Math.toDegrees(roll))<1){
         //     drivetrain.stopModules();
         // }
