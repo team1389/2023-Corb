@@ -2,6 +2,7 @@ package frc.robot;
 
 
 import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +21,7 @@ public class Robot extends TimedRobot {
     SwerveTelemetry backLeftTelemetry;
     SwerveTelemetry frontRightTelemetry;
     SwerveTelemetry backRightTelemetry;
+    PowerDistribution pdh;
 
 
     @Override
@@ -31,6 +33,8 @@ public class Robot extends TimedRobot {
         backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
         frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
         backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
+
+        pdh = new PowerDistribution();
     }
 
     /**
@@ -41,6 +45,19 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+
+        double voltage = pdh.getVoltage();
+        SmartDashboard.putNumber("Voltage", voltage);
+
+        SmartDashboard.putNumber("FR Drive Current", pdh.getCurrent(RobotMap.DriveConstants.FR_DRIVE_PORT));
+        SmartDashboard.putNumber("FL Drive Current", pdh.getCurrent(RobotMap.DriveConstants.FL_DRIVE_PORT));
+        SmartDashboard.putNumber("BR Drive Current", pdh.getCurrent(RobotMap.DriveConstants.BR_DRIVE_PORT));
+        SmartDashboard.putNumber("BL Drive Current", pdh.getCurrent(RobotMap.DriveConstants.BL_DRIVE_PORT));
+        SmartDashboard.putNumber("FR Turn Current", pdh.getCurrent(RobotMap.DriveConstants.FR_TURN_PORT));
+        SmartDashboard.putNumber("FL Turn Current", pdh.getCurrent(RobotMap.DriveConstants.FL_TURN_PORT));
+        SmartDashboard.putNumber("BL Turn Current", pdh.getCurrent(RobotMap.DriveConstants.BL_TURN_PORT));
+        SmartDashboard.putNumber("BR Turn Current", pdh.getCurrent(RobotMap.DriveConstants.BR_TURN_PORT));
+
     }
 
 
