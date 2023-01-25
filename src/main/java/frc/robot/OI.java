@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.command.AutoBalance;
 import frc.command.TeleOpDrive;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
@@ -30,14 +31,15 @@ public class OI {
         initControllers();
         
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
-        drivetrain.setDefaultCommand(new TeleOpDrive(
-            drivetrain,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX(),
-            () -> -driveController.getRightY(),
-            () -> !driveController.getLeftBumper()) // By default be in field oriented
-        );
+        // drivetrain.setDefaultCommand(new TeleOpDrive(
+        //     drivetrain,
+        //     () -> -driveController.getLeftY(),
+        //     () -> -driveController.getLeftX(),
+        //     () -> -driveController.getRightX(),
+        //     () -> -driveController.getRightY(),
+        //     () -> !driveController.getLeftBumper()) // By default be in field oriented
+        // );
+        drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
