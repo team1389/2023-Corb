@@ -31,15 +31,15 @@ public class OI {
         initControllers();
         
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
-        // drivetrain.setDefaultCommand(new TeleOpDrive(
-        //     drivetrain,
-        //     () -> -driveController.getLeftY(),
-        //     () -> -driveController.getLeftX(),
-        //     () -> -driveController.getRightX(),
-        //     () -> -driveController.getRightY(),
-        //     () -> !driveController.getLeftBumper()) // By default be in field oriented
-        // );
-        drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
+        drivetrain.setDefaultCommand(new TeleOpDrive(
+            drivetrain,
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX(),
+            () -> -driveController.getRightY(),
+            () -> !driveController.getLeftBumper()) // By default be in field oriented
+        );
+        //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));

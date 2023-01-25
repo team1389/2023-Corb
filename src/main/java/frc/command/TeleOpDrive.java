@@ -52,9 +52,9 @@ public class TeleOpDrive extends CommandBase {
         double turningSpeed = turningSpdFunction.get();
 
         // 2. Apply deadband
-        xSpeed = Math.abs(xSpeed) > 0.03 ? xSpeed : 0.0;
-        ySpeed = Math.abs(ySpeed) > 0.03 ? ySpeed : 0.0;
-        turningSpeed = Math.abs(turningSpeed) > 0.03 ? turningSpeed : 0.0;
+        xSpeed = Math.abs(xSpeed) > 0.07 ? xSpeed : 0.0;
+        ySpeed = Math.abs(ySpeed) > 0.07 ? ySpeed : 0.0;
+        turningSpeed = Math.abs(turningSpeed) > 0.07 ? turningSpeed : 0.0;
 
         // 3. Make the driving smoother using the slew limiter
         xSpeed = xLimiter.calculate(xSpeed * DriveConstants.MAX_METERS_PER_SEC);
