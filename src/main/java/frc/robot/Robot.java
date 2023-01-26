@@ -49,14 +49,15 @@ public class Robot extends TimedRobot {
         double voltage = pdh.getVoltage();
         SmartDashboard.putNumber("Voltage", voltage);
 
-        SmartDashboard.putNumber("FR Drive Current", pdh.getCurrent(RobotMap.DriveConstants.FR_DRIVE_PORT));
-        SmartDashboard.putNumber("FL Drive Current", pdh.getCurrent(RobotMap.DriveConstants.FL_DRIVE_PORT));
-        SmartDashboard.putNumber("BR Drive Current", pdh.getCurrent(RobotMap.DriveConstants.BR_DRIVE_PORT));
-        SmartDashboard.putNumber("BL Drive Current", pdh.getCurrent(RobotMap.DriveConstants.BL_DRIVE_PORT));
-        SmartDashboard.putNumber("FR Turn Current", pdh.getCurrent(RobotMap.DriveConstants.FR_TURN_PORT));
-        SmartDashboard.putNumber("FL Turn Current", pdh.getCurrent(RobotMap.DriveConstants.FL_TURN_PORT));
-        SmartDashboard.putNumber("BL Turn Current", pdh.getCurrent(RobotMap.DriveConstants.BL_TURN_PORT));
-        SmartDashboard.putNumber("BR Turn Current", pdh.getCurrent(RobotMap.DriveConstants.BR_TURN_PORT));
+        SmartDashboard.putNumber("FR Drive Current", pdh.getCurrent(17));
+        SmartDashboard.putNumber("FL Drive Current", pdh.getCurrent(10));
+        SmartDashboard.putNumber("BR Drive Current", pdh.getCurrent(1));
+        SmartDashboard.putNumber("BL Drive Current", pdh.getCurrent(9));
+        SmartDashboard.putNumber("FR Turn Current", pdh.getCurrent(18));
+        SmartDashboard.putNumber("FL Turn Current", pdh.getCurrent(11));
+        SmartDashboard.putNumber("BL Turn Current", pdh.getCurrent(8));
+        SmartDashboard.putNumber("BR Turn Current", pdh.getCurrent(0));
+        SmartDashboard.putNumber("Total Current", pdh.getTotalCurrent());
 
     }
 

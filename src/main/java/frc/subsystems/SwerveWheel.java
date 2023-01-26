@@ -35,6 +35,9 @@ public class SwerveWheel {
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
 
+        driveMotor.setSmartCurrentLimit(30);
+        turningMotor.setSmartCurrentLimit(25);
+
         driveMotor.setInverted(driveMotorReversed);
         turningMotor.setInverted(turningMotorReversed);
 
