@@ -26,6 +26,7 @@ public class OI {
 
     private XboxController driveController;
     private Trigger driveRightBumper;
+    private Trigger driveAButton;
 
     public OI() {
         initControllers();
@@ -44,6 +45,7 @@ public class OI {
         // Press right bumper -> zero gyro heading
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
+
         //vision.setDefaultCommand(new AprilTagPoseEstimisation(vision, drivetrain));
     }
 
@@ -53,18 +55,20 @@ public class OI {
     private void initControllers() {
         driveController = new XboxController(0);
         driveRightBumper = new JoystickButton(driveController, XboxController.Button.kRightBumper.value);
+        driveAButton = new JoystickButton(driveController, XboxController.Button.kA.value);
     }
 
     // Return autocommand
     public Command getAutoCommand() {
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS)
-        );
+        // PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
+        //     AutoConstants.AUTO_MAX_METERS_PER_SEC, 
+        //     AutoConstants.AUTO_MAX_MPSS)
+        // );
 
-        Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
+        // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
 
-        return trajCommand;
+        // return trajCommand;
+        return new AutoBalance(drivetrain);
     }
 
 }
