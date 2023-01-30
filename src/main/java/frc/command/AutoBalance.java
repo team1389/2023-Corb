@@ -22,7 +22,7 @@ public class AutoBalance extends CommandBase {
     public void execute() {
         double pitch = Math.toRadians(drivetrain.getPitch());
         double roll = Math.toRadians(drivetrain.getRoll());
-        double maxSpeed = 0.33;
+        double maxSpeed = 0.225;
         double tempSpeed;
 
         // Use formula to find angle robot should drive at
@@ -46,32 +46,21 @@ public class AutoBalance extends CommandBase {
             if(2.5>Math.abs(Math.toDegrees(slopeAngle))){
                 drivetrain.stopModules();
             }
-            else if(5>Math.abs(Math.toDegrees(slopeAngle))){
+            else if(10>Math.abs(Math.toDegrees(slopeAngle))){
 
                 if(queue.length() >= 20) {
                     maxSpeed += 0.001*queue.getSum();
                 }
-
-                tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
-                ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
-                SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
-                drivetrain.setModuleStates(moduleStates);
-            }
-            else{
-                tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
-                ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
-                SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
-                drivetrain.setModuleStates(moduleStates);
             }
         }
-        else{
+        if(2.5<Math.abs(Math.toDegrees(slopeAngle))){
             tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
             SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
             drivetrain.setModuleStates(moduleStates);
         }
-        
     }
+    
 
     @Override
     public void end(boolean interrupted) {
