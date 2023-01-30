@@ -6,11 +6,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap.DriveConstants;
 import frc.subsystems.Drivetrain;
+import frc.util.SizeLimitedQueue;
 
 public class AutoBalance extends CommandBase {
     private final Drivetrain drivetrain;
+    private final SizeLimitedQueue queue;
     public AutoBalance(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
+        queue = new SizeLimitedQueue(100);
 
         addRequirements(drivetrain);
     }
@@ -36,8 +39,30 @@ public class AutoBalance extends CommandBase {
         //if(Math.abs(Math.toDegrees(pitch))<1 && Math.abs(Math.toDegrees(roll))<1){
           //  drivetrain.stopModules();
         //}
-        if(15>Math.abs(Math.toDegrees(slopeAngle))){
-           drivetrain.stopModules();
+        if(16>Math.abs(Math.toDegrees(slopeAngle))){
+            queue.addElement(slopeAngle);
+
+            //maxSpeed = .2;
+            if(2.5>Math.abs(Math.toDegrees(slopeAngle))){
+                drivetrain.stopModules();
+            }
+            else if(5>Math.abs(Math.toDegrees(slopeAngle))){
+
+                if(queue.length() >= 20) {
+                    maxSpeed += 0.001*queue.getSum();
+                }
+
+                tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
+                ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
+                SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
+                drivetrain.setModuleStates(moduleStates);
+            }
+            else{
+                tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
+                ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
+                SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
+                drivetrain.setModuleStates(moduleStates);
+            }
         }
         else{
             tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
