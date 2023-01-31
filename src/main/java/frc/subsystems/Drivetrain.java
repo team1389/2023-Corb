@@ -111,8 +111,8 @@ public class Drivetrain extends SubsystemBase {
         poseEstimator.addVisionMeasurement(measuredPose, timestamp);
     }
 
-    public void setFieldPose(Pose2d pose) {
-        m_field.setRobotPose(pose);
+    public void updateFieldPose() {
+        m_field.setRobotPose(getPose());
     }
 
     @Override

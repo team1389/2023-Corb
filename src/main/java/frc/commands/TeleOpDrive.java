@@ -1,4 +1,4 @@
-package frc.command;
+package frc.commands;
 
 import java.util.function.Supplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;

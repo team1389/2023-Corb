@@ -10,19 +10,20 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.command.AutoBalance;
-import frc.command.TeleOpDrive;
+import frc.commands.AutoBalance;
+import frc.commands.TeleOpDrive;
+import frc.commands.UpdatePosition;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
 //import frc.autos.TestAuto;
-//import frc.commands.AprilTagPoseEstimisation;
+import frc.commands.UpdatePosition;
 import frc.subsystems.Drivetrain;
-//import frc.subsystems.Vision;
+import frc.subsystems.Vision;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    //public final Vision vision = new Vision();
+    public final Vision vision = new Vision();
 
     private XboxController driveController;
     private Trigger driveRightBumper;
@@ -46,7 +47,7 @@ public class OI {
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
 
-        //vision.setDefaultCommand(new AprilTagPoseEstimisation(vision, drivetrain));
+        vision.setDefaultCommand(new UpdatePosition(drivetrain, vision));
     }
 
     /**
