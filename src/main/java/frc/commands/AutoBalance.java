@@ -1,4 +1,4 @@
-package frc.command;
+package frc.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
