@@ -18,7 +18,6 @@ import frc.commands.UpdatePosition;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
 //import frc.autos.TestAuto;
-import frc.commands.UpdatePosition;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Vision;
