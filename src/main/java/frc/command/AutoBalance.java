@@ -22,7 +22,7 @@ public class AutoBalance extends CommandBase {
     public void execute() {
         double pitch = Math.toRadians(drivetrain.getPitch());
         double roll = Math.toRadians(drivetrain.getRoll());
-        double maxSpeed = 0.225;
+        double maxSpeed = 0.24;
         double tempSpeed;
 
         // Use formula to find angle robot should drive at
