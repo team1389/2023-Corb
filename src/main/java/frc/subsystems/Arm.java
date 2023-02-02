@@ -26,7 +26,9 @@ public class Arm extends SubsystemBase{
         High
     }
 
-     Map<Position, Double[]> hmmmmm = new HashMap<Position, Double[] >();
+    public Map<Position, Double[]> hmmmmm = new HashMap<Position, Double[] >();
+    
+    public Position targetPos = Position.Low;
 
     
     public Arm(){
@@ -41,8 +43,13 @@ public class Arm extends SubsystemBase{
     }
 
     public void setArm(Position pos){
-        shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(pos)[0]));
-        elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(pos)[1]));
+        targetPos = pos;
+    }
+
+    @Override
+    public void periodic() {
+        shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
+        elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
     }
 
     public double getShoulderDistance(){

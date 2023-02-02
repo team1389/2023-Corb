@@ -18,7 +18,12 @@ public class SetArm extends CommandBase{
     }
 
     @Override
-    public void execute(){
+    public void initialize(){
         arm.setArm(pos);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return true;
     }
 }
