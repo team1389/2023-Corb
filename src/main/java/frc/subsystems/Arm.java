@@ -32,8 +32,8 @@ public class Arm extends SubsystemBase{
 
     
     public Arm(){
-        shoulder = new CANSparkMax(DriveConstants.SHOULDER_MOTOR, MotorType.kBrushless);
-        elbow = new CANSparkMax(DriveConstants.ELBOW_MOTOR, MotorType.kBrushless);
+        // shoulder = new CANSparkMax(DriveConstants.SHOULDER_MOTOR, MotorType.kBrushless);
+        // elbow = new CANSparkMax(DriveConstants.ELBOW_MOTOR, MotorType.kBrushless);
         pidShoulder = new PIDController(sP, sI, sD);
         pidElbow = new PIDController(eP, eI, eD);
 

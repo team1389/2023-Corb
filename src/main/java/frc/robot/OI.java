@@ -82,18 +82,20 @@ public class OI {
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
+        manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
+        manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
     }
 
     // Return autocommand
     public Command getAutoCommand() {
-        // PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
-        //     AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-        //     AutoConstants.AUTO_MAX_MPSS)
-        // );
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
+            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
+            AutoConstants.AUTO_MAX_MPSS)
+        );
 
-        // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
-        // return trajCommand;
-        return new AutoBalance(drivetrain);
+        Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
+        return trajCommand;
+        //return new AutoBalance(drivetrain);
     }
 
 }
