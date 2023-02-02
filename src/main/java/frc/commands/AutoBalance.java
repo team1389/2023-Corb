@@ -36,9 +36,7 @@ public class AutoBalance extends CommandBase {
         SmartDashboard.putNumber("Pitch", drivetrain.getPitch());
         SmartDashboard.putNumber("Roll", drivetrain.getRoll());
         
-        //if(Math.abs(Math.toDegrees(pitch))<1 && Math.abs(Math.toDegrees(roll))<1){
-          //  drivetrain.stopModules();
-        //}
+
         if(16>Math.abs(Math.toDegrees(slopeAngle))){
             queue.addElement(slopeAngle);
 
@@ -53,7 +51,7 @@ public class AutoBalance extends CommandBase {
             }
         }
         if(2.5<Math.abs(Math.toDegrees(slopeAngle))){
-            tempSpeed = Math.min((Math.toDegrees(slopeAngle)/1)*maxSpeed, maxSpeed);
+            tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
             SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
             drivetrain.setModuleStates(moduleStates);

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.commands.AutoBalance;
+import frc.commands.AutoBalanceController;
 import frc.commands.TeleOpDrive;
 import frc.commands.UpdatePosition;
 //import frc.commands.Test;
@@ -47,7 +48,7 @@ public class OI {
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
 
-        vision.setDefaultCommand(new UpdatePosition(drivetrain, vision));
+        //vision.setDefaultCommand(new UpdatePosition(drivetrain, vision));
     }
 
     /**
@@ -69,7 +70,8 @@ public class OI {
         // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
 
         // return trajCommand;
-        return new AutoBalance(drivetrain);
+        //return new AutoBalance(drivetrain);
+        return new AutoBalanceController(drivetrain);
     }
 
 }
