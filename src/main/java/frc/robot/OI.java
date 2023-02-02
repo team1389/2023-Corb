@@ -14,6 +14,7 @@ import frc.commands.AutoBalance;
 import frc.commands.RunIntake;
 import frc.commands.RunOuttake;
 import frc.commands.SetArm;
+import frc.commands.AutoBalanceController;
 import frc.commands.TeleOpDrive;
 import frc.commands.UpdatePosition;
 //import frc.commands.Test;
