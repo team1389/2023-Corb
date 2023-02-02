@@ -28,10 +28,10 @@ public class RobotMap {
     public static final class DriveConstants {
 
         // Distance between right and left wheels (meters)
-        public static final double ROBOT_WIDTH = 0.562991;
+        public static final double ROBOT_WIDTH = 0.5588;
 
         // Distance between front and back wheels (meters)
-        public static final double ROBOT_LENGTH = 0.562991;
+        public static final double ROBOT_LENGTH = 0.5842;
 
         // Note positive x is forward
         // Wheel order: FR, FL, BR, BL

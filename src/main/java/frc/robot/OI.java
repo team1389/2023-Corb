@@ -10,27 +10,19 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.commands.AutoBalance;
-import frc.commands.RunIntake;
-import frc.commands.RunOuttake;
 import frc.commands.SetArm;
-import frc.commands.AutoBalanceController;
+import frc.commands.SpinArms;
 import frc.commands.TeleOpDrive;
-import frc.commands.UpdatePosition;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
-import frc.subsystems.Intake;
-import frc.subsystems.Vision;
 import frc.subsystems.Arm.Position;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    public final Vision vision = new Vision();
-    public final Intake intake = new Intake();
     public final Arm arm = new Arm();
 
     private XboxController driveController;
@@ -60,14 +52,7 @@ public class OI {
 
         // Press right bumper -> zero gyro heading
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
-
-        vision.setDefaultCommand(new UpdatePosition(drivetrain, vision));
-        
-        manipAButton.onTrue(new RunIntake(intake));
-        manipBButton.onTrue(new RunOuttake(intake));
-        manipXButton.onTrue(new SetArm(arm, Position.Low));
-        manipYButton.onTrue(new SetArm(arm, Position.Mid));
-        manipLeftBumper.onTrue(new SetArm(arm, Position.High));
+        manipXButton.onTrue(new SpinArms(arm));
         //possibly add a wrist joint
     }
 
@@ -96,7 +81,6 @@ public class OI {
 
         Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
         return trajCommand;
-        //return new AutoBalance(drivetrain);
     }
 
 }

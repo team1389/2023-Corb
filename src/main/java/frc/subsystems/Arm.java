@@ -46,10 +46,15 @@ public class Arm extends SubsystemBase{
         targetPos = pos;
     }
 
-    @Override
-    public void periodic() {
-        shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
-        elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
+    // @Override
+    // public void periodic() {
+    //     shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
+    //     elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
+    // }
+
+    public void spinMotors(double power) {
+        shoulder.set(power);
+        elbow.set(power);
     }
 
     public double getShoulderDistance(){
