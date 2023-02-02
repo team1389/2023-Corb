@@ -93,12 +93,12 @@ public class RobotMap {
 
     public static final class AutoConstants {
         // For now keep auto speeds half of teleop
-        public static final double AUTO_MAX_METERS_PER_SEC = 2.15;
+        public static final double AUTO_MAX_METERS_PER_SEC = 1.5;
         public static final double AUTO_MAX_RADIANS_PER_SEC = DriveConstants.MAX_RADIANS_PER_SEC / 2;
-        public static final double AUTO_MAX_MPSS = 1.1;
+        public static final double AUTO_MAX_MPSS = 0.7;
         public static final double AUTO_MAX_ANGULAR_ACCEL = 2.1;
-        public static final double P_AUTO_X = 1;
-        public static final double P_AUTO_Y = 1;
+        public static final double P_AUTO_X = 2.7;
+        public static final double P_AUTO_Y = 2.7;
         public static final double P_AUTO_THETA = 3;
 
         public static final TrapezoidProfile.Constraints THETA_CONTROL_PROFILE = 
