@@ -13,20 +13,24 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.commands.AutoBalance;
 import frc.commands.RunIntake;
 import frc.commands.RunOuttake;
+import frc.commands.SetArm;
 import frc.commands.TeleOpDrive;
 import frc.commands.UpdatePosition;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
+import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Vision;
+import frc.subsystems.Arm.Position;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
     public final Vision vision = new Vision();
     public final Intake intake = new Intake();
+    public final Arm arm = new Arm();
 
     private XboxController driveController;
     private Trigger driveRightBumper;
@@ -35,6 +39,9 @@ public class OI {
     private XboxController manipController;
     private Trigger manipAButton;
     private Trigger manipBButton;
+    private Trigger manipXButton;
+    private Trigger manipYButton;
+    private Trigger manipLeftBumper;
 
     public OI() {
         initControllers();
@@ -57,6 +64,10 @@ public class OI {
         
         manipAButton.onTrue(new RunIntake(intake));
         manipBButton.onTrue(new RunOuttake(intake));
+        manipXButton.onTrue(new SetArm(arm, Position.Low));
+        manipYButton.onTrue(new SetArm(arm, Position.Mid));
+        manipLeftBumper.onTrue(new SetArm(arm, Position.High));
+        //possibly add a wrist joint
     }
 
     /**
@@ -69,6 +80,7 @@ public class OI {
 
         manipController = new XboxController(1);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
+        manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
     }
 

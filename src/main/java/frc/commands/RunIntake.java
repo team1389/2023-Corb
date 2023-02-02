@@ -8,6 +8,7 @@ public class RunIntake extends CommandBase{
 
     public RunIntake(Intake intake){
         this.intake = intake;
+        addRequirements(intake);
     }
     @Override
     public void execute(){
