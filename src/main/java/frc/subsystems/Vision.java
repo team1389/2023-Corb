@@ -41,6 +41,7 @@ public class Vision extends SubsystemBase {
     private PhotonPoseEstimator photonPoseEstimator;
 
     public Vision() {
+        atList.add(tag01);
 
         try {
             aprilTagFieldLayout = new AprilTagFieldLayout("2023-chargedup.json");

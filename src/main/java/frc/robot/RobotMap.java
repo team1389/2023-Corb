@@ -52,6 +52,10 @@ public class RobotMap {
         public static final int FR_TURN_PORT = 6;
         public static final int BR_TURN_PORT = 10;
 
+        public static final int TOP_INTAKE_MOTOR = 0; //TODO: Get actual port
+        public static final int BOTTOM_INTAKE_MOTOR = 0; 
+        public static final int SWIVEL_MOTOR = 0; 
+
         // Sometimes encoders are mounted backwards based on robot design, this fixes
         // that although it's not a thing on stargazer
         public static final boolean FL_TURN_REVERSED = true;
@@ -81,6 +85,10 @@ public class RobotMap {
 
         public static final double MAX_LINEAR_ACCEL = 4.5; // m/s/s
         public static final double MAX_ANGULAR_ACCEL = 4; // rad/s/s
+
+        //TODO: get actual port
+        public static final int SHOULDER_MOTOR = 0;
+        public static final int ELBOW_MOTOR = 0;
     }
 
     public static final class AutoConstants {
