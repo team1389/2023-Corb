@@ -10,20 +10,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.commands.SetArm;
-import frc.commands.SpinArms;
 import frc.commands.TeleOpDrive;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
-import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
-import frc.subsystems.Arm.Position;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    public final Arm arm = new Arm();
 
     private XboxController driveController;
     private Trigger driveRightBumper;
@@ -52,7 +47,6 @@ public class OI {
 
         // Press right bumper -> zero gyro heading
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
-        manipXButton.onTrue(new SpinArms(arm));
         //possibly add a wrist joint
     }
 
