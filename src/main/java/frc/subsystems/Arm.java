@@ -17,9 +17,7 @@ public class Arm extends SubsystemBase{
     private double sP, sI, sD, eP, eI, eD;
     private PIDController pidShoulder;
     private PIDController pidElbow;
-    private ArrayList<Double> shoulderSet = new ArrayList<Double>(Arrays.asList(0.0, 0.0, 0.0));//low, mid, high
-    private ArrayList<Double> elbowSet = new ArrayList<Double>(Arrays.asList(0.0, 0.0, 0.0));//low, mid, high
-
+   
     public enum Position{
         Low,
         Mid,
