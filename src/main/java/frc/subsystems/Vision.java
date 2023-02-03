@@ -44,25 +44,25 @@ public class Vision extends SubsystemBase {
         atList.add(tag01);
 
         try {
-            aprilTagFieldLayout = new AprilTagFieldLayout("2023-chargedup.json");
+            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
             
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             aprilTagFieldLayout = new AprilTagFieldLayout(atList, FieldConstants.FIELD_LENGTH, FieldConstants.FIELD_WIDTH);
             e.printStackTrace();
-        
         }
 
-        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, robotToCamTransformation);
+        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCamTransformation);
     }
 
-    public void update(Drivetrain drivetrain) {
-        Optional<EstimatedRobotPose> pose = photonPoseEstimator.update();
+    public void updatePose(Drivetrain drivetrain) {
+        //Set reference pose of photonSwerveEstimator using swerve odometry, then update photonPoseEstimator
+        photonPoseEstimator.setReferencePose(drivetrain.poseEstimator.getEstimatedPosition());
+        Optional<EstimatedRobotPose> estimatedPose = photonPoseEstimator.update();
 
-        if(pose.isPresent()) {
-            Pose3d estimatedPose = pose.get().estimatedPose;
-            double timeStamp = pose.get().timestampSeconds;
-            drivetrain.updateOdometryLatency(estimatedPose.toPose2d(), timeStamp);
+        if(estimatedPose.isPresent()) {
+            Pose2d camPose = estimatedPose.get().estimatedPose.toPose2d();
+            double timeStamp = estimatedPose.get().timestampSeconds;
+            drivetrain.updateOdometryLatency(camPose, timeStamp);
         }
     }
 }
