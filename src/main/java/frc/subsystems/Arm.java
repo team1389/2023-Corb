@@ -5,20 +5,25 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.DriveConstants;
 
 public class Arm extends SubsystemBase{
-    private CANSparkMax shoulder, elbow;
-    private double sP, sI, sD, eP, eI, eD;
+    private CANSparkMax shoulder, elbow, wrist;
+    private double sP, sI, sD, eP, eI, eD, wP, wI, wD;
     private PIDController pidShoulder;
     private PIDController pidElbow;
-    private ArrayList<Double> shoulderSet = new ArrayList<Double>(Arrays.asList(0.0, 0.0, 0.0));//low, mid, high
-    private ArrayList<Double> elbowSet = new ArrayList<Double>(Arrays.asList(0.0, 0.0, 0.0));//low, mid, high
+    private PIDController pidWrist;
+    
+    private RelativeEncoder wristEncoder;
 
     public enum Position{
         Low,
@@ -36,10 +41,12 @@ public class Arm extends SubsystemBase{
         // elbow = new CANSparkMax(DriveConstants.ELBOW_MOTOR, MotorType.kBrushless);
         pidShoulder = new PIDController(sP, sI, sD);
         pidElbow = new PIDController(eP, eI, eD);
+        pidWrist = new PIDController(wP, wI, wD);
+        wristEncoder = wrist.getEncoder();
 
-        hmmmmm.put(Position.Low, new Double[]{0.0, 0.0});
-        hmmmmm.put(Position.Mid, new Double[]{0.0, 0.0});
-        hmmmmm.put(Position.High, new Double[]{0.0, 0.0});
+        hmmmmm.put(Position.Low, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(Position.Mid, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(Position.High, new Double[]{0.0, 0.0, 0.0});
     }
 
     public void setArm(Position pos){
@@ -50,6 +57,7 @@ public class Arm extends SubsystemBase{
     public void periodic() {
         shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
         elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
+        wrist.set(pidWrist.calculate(wristEncoder.getPosition()*360, hmmmmm.get(targetPos)[2]));
     }
 
     public double getShoulderDistance(){
@@ -58,6 +66,8 @@ public class Arm extends SubsystemBase{
     public double getElbowDistance(){
         return 0;
     }
+
+
 
 
 }
