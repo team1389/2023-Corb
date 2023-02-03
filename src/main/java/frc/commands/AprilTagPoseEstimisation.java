@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Vision;
 
-public class UpdatePosition extends CommandBase{
+public class AprilTagPoseEstimisation extends CommandBase{
     private final Drivetrain drivetrain;
     private final Vision vision;
     
-    public UpdatePosition(Drivetrain drivetrain, Vision vision) {
+    public AprilTagPoseEstimisation(Drivetrain drivetrain, Vision vision) {
         this.drivetrain = drivetrain;
         this.vision = vision;
 
@@ -17,7 +17,7 @@ public class UpdatePosition extends CommandBase{
 
     @Override
     public void execute() {
-        vision.update(drivetrain);
+        vision.updatePose(drivetrain);
         drivetrain.updateFieldPose();
     }
 
