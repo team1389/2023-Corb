@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.RobotMap.DriveConstants;
 import frc.robot.RobotMap.ModuleConstants;
 
@@ -20,9 +21,10 @@ public class SwerveModule {
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder turningEncoder;
 
+    private final DutyCycleEncoder absoluteEncoder;
+
     private final PIDController turningPidController;
 
-    private final CANCoder absoluteEncoder;
     private final boolean absoluteEncoderReversed;
 
     public double targetAngle, targetSpeed;
@@ -32,7 +34,6 @@ public class SwerveModule {
             int absoluteEncoderId, boolean absoluteEncoderReversed) {
 
         this.absoluteEncoderReversed = absoluteEncoderReversed;
-        absoluteEncoder = new CANCoder(absoluteEncoderId);
 
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
@@ -42,6 +43,8 @@ public class SwerveModule {
 
         driveEncoder = driveMotor.getEncoder();
         turningEncoder = turningMotor.getEncoder();
+
+        absoluteEncoder = new DutyCycleEncoder(absoluteEncoderId);
 
         driveEncoder.setPositionConversionFactor(ModuleConstants.DRIVE_ROTATIONS_TO_METERS);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.DRIVE_RPM_TO_METERS_PER_SEC);
@@ -76,16 +79,15 @@ public class SwerveModule {
         return turningEncoder.getVelocity();
     }
 
-    // Radians that the module is at, from 0 to 2pi
-    public double getAbsoluteEncoderRad() {
-        double angle = Math.toRadians(absoluteEncoder.getAbsolutePosition());
-        return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
+    public double getAbsolutePosition() {
+        return (absoluteEncoder.getAbsolutePosition()-absoluteEncoder.getPositionOffset());
     }
+
 
     // Set drive encoder to 0 and turning encoder to match absolute
     public void resetEncoders() {
         driveEncoder.setPosition(0);
-        turningEncoder.setPosition(getAbsoluteEncoderRad());
+        turningEncoder.setPosition(getAbsolutePosition() * 2 * Math.PI);
     }
 
     public SwerveModuleState getState() {

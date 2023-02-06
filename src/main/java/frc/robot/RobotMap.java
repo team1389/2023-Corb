@@ -15,8 +15,8 @@ public class RobotMap {
     public static final class ModuleConstants {
         // Note: these are for the drive and turning motors
         public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
-        public static final double DRIVE_GEAR_RATIO = 1 / 5.25;
-        public static final double TURN_GEAR_RATIO = 1 / (5.33 * 7);
+        public static final double DRIVE_GEAR_RATIO = 1 / 5.08;
+        public static final double TURN_GEAR_RATIO = 1 / (46.42);
         public static final double DRIVE_ROTATIONS_TO_METERS = DRIVE_GEAR_RATIO * Math.PI * WHEEL_DIAMETER_METERS;
         public static final double TURNING_ROTATIONS_TO_RAD = TURN_GEAR_RATIO * 2 * Math.PI;
         public static final double DRIVE_RPM_TO_METERS_PER_SEC = DRIVE_ROTATIONS_TO_METERS / 60;
@@ -28,10 +28,10 @@ public class RobotMap {
     public static final class DriveConstants {
 
         // Distance between right and left wheels (meters)
-        public static final double ROBOT_WIDTH = 0.562991;
+        public static final double ROBOT_WIDTH = 0.5588;
 
         // Distance between front and back wheels (meters)
-        public static final double ROBOT_LENGTH = 0.562991;
+        public static final double ROBOT_LENGTH = 0.5842;
 
         // Note positive x is forward
         // Wheel order: FR, FL, BR, BL
@@ -69,10 +69,10 @@ public class RobotMap {
         public static final boolean BR_DRIVE_REVERSED = false;
 
         // Absolute encoder ports
-        public static final int FL_ABS_PORT = 11;
-        public static final int BL_ABS_PORT = 13;
-        public static final int FR_ABS_PORT = 12;
-        public static final int BR_ABS_PORT = 14;
+        public static final int FL_ABS_PORT = 0;
+        public static final int BL_ABS_PORT = 3;
+        public static final int FR_ABS_PORT = 2;
+        public static final int BR_ABS_PORT = 1;
 
         public static final boolean FL_ABS_REVERSED = false;
         public static final boolean BL_ABS_REVERSED = false;
