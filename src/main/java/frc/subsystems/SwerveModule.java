@@ -1,16 +1,16 @@
 
 package frc.subsystems;
 
-import com.revrobotics.RelativeEncoder;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.math.controller.PIDController;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import com.revrobotics.SparkMaxPIDController;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import frc.robot.RobotMap.DriveConstants;
 import frc.robot.RobotMap.ModuleConstants;
 
 public class SwerveModule {
@@ -19,11 +19,11 @@ public class SwerveModule {
     private final CANSparkMax turningMotor;
 
     private final RelativeEncoder driveEncoder;
+
     private final RelativeEncoder turningEncoder;
 
-    private final DutyCycleEncoder absoluteEncoder;
-
-    private final PIDController turningPidController;
+    private final SparkMaxPIDController drivingPidController;
+    private final SparkMaxPIDController turningPidController;
 
     private final boolean absoluteEncoderReversed;
 
@@ -42,22 +42,29 @@ public class SwerveModule {
         turningMotor.setInverted(turningMotorReversed);
 
         driveEncoder = driveMotor.getEncoder();
+
         turningEncoder = turningMotor.getEncoder();
 
-        absoluteEncoder = new DutyCycleEncoder(absoluteEncoderId);
+        turningEncoder.setInverted(absoluteEncoderReversed);
 
         driveEncoder.setPositionConversionFactor(ModuleConstants.DRIVE_ROTATIONS_TO_METERS);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.DRIVE_RPM_TO_METERS_PER_SEC);
         turningEncoder.setPositionConversionFactor(ModuleConstants.TURNING_ROTATIONS_TO_RAD);
         turningEncoder.setVelocityConversionFactor(ModuleConstants.TURNING_RPM_TO_RAD_PER_SEC);
 
-        turningPidController = new PIDController(ModuleConstants.P_TURNING, 0, 0);
+        drivingPidController = driveMotor.getPIDController();
+        turningPidController = turningMotor.getPIDController();
 
-        // Let the controller know it's a circle and going past pi loops to -pi
-        turningPidController.enableContinuousInput(-Math.PI, Math.PI);
+        turningPidController.setP(ModuleConstants.P_TURNING);
+        drivingPidController.setP(ModuleConstants.P_DRIVE);
+
+        turningPidController.setPositionPIDWrappingEnabled(true);
+        turningPidController.setPositionPIDWrappingMinInput(-Math.PI);
+        turningPidController.setPositionPIDWrappingMaxInput(Math.PI);
 
         // Braking mode
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        turningMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
         // At boot reset relative encoders to absolute
         resetEncoders();
@@ -79,15 +86,12 @@ public class SwerveModule {
         return turningEncoder.getVelocity();
     }
 
-    public double getAbsolutePosition() {
-        return (absoluteEncoder.getAbsolutePosition()-absoluteEncoder.getPositionOffset());
-    }
 
 
     // Set drive encoder to 0 and turning encoder to match absolute
     public void resetEncoders() {
         driveEncoder.setPosition(0);
-        turningEncoder.setPosition(getAbsolutePosition() * 2 * Math.PI);
+        // turningEncoder.setPosition(getAbsolutePosition() * 2 * Math.PI);
     }
 
     public SwerveModuleState getState() {
@@ -110,10 +114,9 @@ public class SwerveModule {
 
         // Set motors, using the turning pid controller for that motor
         targetAngle = state.angle.getDegrees();
-        targetSpeed = state.speedMetersPerSecond;
 
-        driveMotor.set(targetSpeed / DriveConstants.MAX_METERS_PER_SEC);
-        turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
+        drivingPidController.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+        turningPidController.setReference(state.angle.getRadians(), CANSparkMax.ControlType.kPosition);
     }
 
     public void stop() {

@@ -22,6 +22,7 @@ public class SwerveTelemetry implements Sendable {
       builder.addDoubleProperty("Angle", () -> getAngle(), null);
       builder.addDoubleProperty("Target Angle", () -> getTargetAngle(), null);
       builder.addDoubleProperty("Target Speed", () -> getTargetSpeed(), null);
+      builder.addDoubleProperty("Target Speed", () -> getTargetSpeed(), null);
       builder.addBooleanProperty("Inverted", () -> getInverted(), null);
     }
 
