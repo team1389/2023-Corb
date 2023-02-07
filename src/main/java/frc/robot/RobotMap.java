@@ -16,14 +16,19 @@ public class RobotMap {
         // Note: these are for the drive and turning motors
         public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
         public static final double DRIVE_GEAR_RATIO = 1 / 5.08;
-        public static final double TURN_GEAR_RATIO = 1 / (1); // this should be 1 this is correct 46.42
+        public static final double TURN_GEAR_RATIO = 1 / (1); // this should be 1 this is correct 
         
+        public static final double FREE_MOTOR_SPEED_RPS = 5676/60; // RPM/60
+        public static final double DRIVE_FREE_MAX_SPEED_MPS =  (FREE_MOTOR_SPEED_RPS * WHEEL_DIAMETER_METERS * Math.PI)/DRIVE_GEAR_RATIO;
         public static final double DRIVE_ROTATIONS_TO_METERS = DRIVE_GEAR_RATIO * Math.PI * WHEEL_DIAMETER_METERS;
         public static final double TURNING_ROTATIONS_TO_RAD = TURN_GEAR_RATIO * 2 * Math.PI;
         public static final double DRIVE_RPM_TO_METERS_PER_SEC = DRIVE_ROTATIONS_TO_METERS / 60;
         public static final double TURNING_RPM_TO_RAD_PER_SEC = TURNING_ROTATIONS_TO_RAD / 60;
         public static final double P_TURNING = 0.4; // PID constant 
         public static final double P_DRIVE = 0.5; // PID constant 
+
+        public static final int DRIVE_CURRENT_LIMIT = 50; // amps
+        public static final int TURN_CURRENT_LIMIT = 35;
     }
 
     // All the overall constants for the drivetrain

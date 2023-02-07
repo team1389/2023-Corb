@@ -16,14 +16,14 @@ import frc.robot.RobotMap.ModuleConstants;
 public class SwerveModule {
 
     public final CANSparkMax driveMotor;
-    private final CANSparkMax turningMotor;
+    private final CANSparkMax turnMotor;
 
     private final RelativeEncoder driveEncoder;
 
-    private final AbsoluteEncoder turningEncoder;
+    private final AbsoluteEncoder turnEncoder;
 
-    private final SparkMaxPIDController drivingPidController;
-    private final SparkMaxPIDController turningPidController;
+    private final SparkMaxPIDController drivePidController;
+    private final SparkMaxPIDController turnPidController;
 
     private final boolean absoluteEncoderReversed;
 
@@ -36,38 +36,45 @@ public class SwerveModule {
         this.absoluteEncoderReversed = absoluteEncoderReversed;
 
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
-        turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
+        turnMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
 
         driveMotor.setInverted(driveMotorReversed);
-        turningMotor.setInverted(turningMotorReversed);
+        turnMotor.setInverted(turningMotorReversed);
 
         driveEncoder = driveMotor.getEncoder();
 
-        turningEncoder = turningMotor.getAbsoluteEncoder(Type.kDutyCycle);
+        turnEncoder = turnMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
-        turningEncoder.setInverted(absoluteEncoderReversed);
+        turnEncoder.setInverted(absoluteEncoderReversed);
 
         driveEncoder.setPositionConversionFactor(ModuleConstants.DRIVE_ROTATIONS_TO_METERS);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.DRIVE_RPM_TO_METERS_PER_SEC);
-        turningEncoder.setPositionConversionFactor(ModuleConstants.TURNING_ROTATIONS_TO_RAD);
-        turningEncoder.setVelocityConversionFactor(ModuleConstants.TURNING_RPM_TO_RAD_PER_SEC);
+        turnEncoder.setPositionConversionFactor(ModuleConstants.TURNING_ROTATIONS_TO_RAD);
+        turnEncoder.setVelocityConversionFactor(ModuleConstants.TURNING_RPM_TO_RAD_PER_SEC);
 
-        drivingPidController = driveMotor.getPIDController();
-        turningPidController = turningMotor.getPIDController();
+        drivePidController = driveMotor.getPIDController();
+        turnPidController = turnMotor.getPIDController();
 
-        drivingPidController.setFeedbackDevice(driveEncoder);
-        turningPidController.setFeedbackDevice(turningEncoder);
+        drivePidController.setFeedbackDevice(driveEncoder);
+        turnPidController.setFeedbackDevice(turnEncoder);
 
-        turningPidController.setP(ModuleConstants.P_TURNING);
-        drivingPidController.setP(ModuleConstants.P_DRIVE);
+        turnPidController.setP(ModuleConstants.P_TURNING);
+        drivePidController.setP(ModuleConstants.P_DRIVE);
+        drivePidController.setFF(1/ModuleConstants.DRIVE_FREE_MAX_SPEED_MPS);
 
-        turningPidController.setPositionPIDWrappingEnabled(true);
-        turningPidController.setPositionPIDWrappingMinInput(-Math.PI);
-        turningPidController.setPositionPIDWrappingMaxInput(Math.PI);
+        turnPidController.setOutputRange(-1, 1);
+        drivePidController.setOutputRange(-1, 1);
+
+        turnPidController.setPositionPIDWrappingEnabled(true);
+        turnPidController.setPositionPIDWrappingMinInput(0);
+        turnPidController.setPositionPIDWrappingMaxInput(2*Math.PI);
 
         // Braking mode
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        turningMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        turnMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
+        driveMotor.setSmartCurrentLimit(ModuleConstants.DRIVE_CURRENT_LIMIT);
+        turnMotor.setSmartCurrentLimit(ModuleConstants.TURN_CURRENT_LIMIT);
 
         // At boot reset relative encoders to absolute
         resetEncoders();
@@ -78,7 +85,7 @@ public class SwerveModule {
     }
 
     public double getTurningPosition() {
-        return turningEncoder.getPosition();
+        return turnEncoder.getPosition();
     }
 
     public double getDriveVelocity() {
@@ -86,7 +93,7 @@ public class SwerveModule {
     }
 
     public double getTurningVelocity() {
-        return turningEncoder.getVelocity();
+        return turnEncoder.getVelocity();
     }
 
 
@@ -115,15 +122,15 @@ public class SwerveModule {
         // Optimize to see if turning to opposite angle and running backwards is faster
         state = SwerveModuleState.optimize(state, getState().angle);
 
-        // Set motors, using the turning pid controller for that motor
+        // Set motors, using the pid controllers for each motor
         targetAngle = state.angle.getDegrees();
 
-        drivingPidController.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-        turningPidController.setReference(state.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+        drivePidController.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+        turnPidController.setReference(state.angle.getRadians(), CANSparkMax.ControlType.kPosition);
     }
 
     public void stop() {
         driveMotor.set(0);
-        turningMotor.set(0);
+        turnMotor.set(0);
     }
 }
