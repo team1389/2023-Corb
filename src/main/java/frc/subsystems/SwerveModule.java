@@ -20,7 +20,7 @@ public class SwerveModule {
 
     private final RelativeEncoder driveEncoder;
 
-    private final RelativeEncoder turningEncoder;
+    private final AbsoluteEncoder turningEncoder;
 
     private final SparkMaxPIDController drivingPidController;
     private final SparkMaxPIDController turningPidController;
@@ -43,7 +43,7 @@ public class SwerveModule {
 
         driveEncoder = driveMotor.getEncoder();
 
-        turningEncoder = turningMotor.getEncoder();
+        turningEncoder = turningMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
         turningEncoder.setInverted(absoluteEncoderReversed);
 
@@ -55,6 +55,9 @@ public class SwerveModule {
         drivingPidController = driveMotor.getPIDController();
         turningPidController = turningMotor.getPIDController();
 
+        drivingPidController.setFeedbackDevice(driveEncoder);
+        turningPidController.setFeedbackDevice(turningEncoder);
+
         turningPidController.setP(ModuleConstants.P_TURNING);
         drivingPidController.setP(ModuleConstants.P_DRIVE);
 
@@ -64,7 +67,7 @@ public class SwerveModule {
 
         // Braking mode
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        turningMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        turningMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
         // At boot reset relative encoders to absolute
         resetEncoders();

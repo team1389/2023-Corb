@@ -104,17 +104,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("FL angle", frontLeftTelemetry.getAngle());
-        SmartDashboard.putNumber("FL angle", frontLeftTelemetry.getSpeed());
+        SmartDashboard.putNumber("FL angle", Math.toDegrees(frontLeftTelemetry.getAngle()));
+        SmartDashboard.putNumber("FL speed", frontLeftTelemetry.getSpeed());
 
-        SmartDashboard.putNumber("BL angle", backLeftTelemetry.getAngle());
-        SmartDashboard.putNumber("BL angle", backLeftTelemetry.getSpeed());
 
-        SmartDashboard.putNumber("FR angle", frontRightTelemetry.getAngle());
-        SmartDashboard.putNumber("FR angle", frontRightTelemetry.getSpeed());
+        SmartDashboard.putNumber("BL angle", Math.toDegrees(backLeftTelemetry.getAngle()));
+        SmartDashboard.putNumber("BL speed", backLeftTelemetry.getSpeed());
 
-        SmartDashboard.putNumber("BR angle", backRightTelemetry.getAngle());
-        SmartDashboard.putNumber("BR angle", backRightTelemetry.getSpeed());
+        SmartDashboard.putNumber("FR angle", Math.toDegrees(frontRightTelemetry.getAngle()));
+        SmartDashboard.putNumber("FR speed", frontRightTelemetry.getSpeed());
+
+        SmartDashboard.putNumber("BR angle", Math.toDegrees(backRightTelemetry.getAngle()));
+        SmartDashboard.putNumber("BR speed", backRightTelemetry.getSpeed());
 
     }
 

@@ -31,7 +31,7 @@ public class SwerveTelemetry implements Sendable {
         return swerveWheel.getState().speedMetersPerSecond;
     }
     public double getAngle() {
-        return swerveWheel.getState().angle.getDegrees();
+        return swerveWheel.getState().angle.getRadians();
     }
     public double getTargetAngle() {
         return swerveWheel.targetAngle;
