@@ -28,7 +28,7 @@ public class RobotMap {
         public static final double P_DRIVE = 0.5; // PID constant 
 
         public static final int DRIVE_CURRENT_LIMIT = 50; // amps
-        public static final int TURN_CURRENT_LIMIT = 35;
+        public static final int TURN_CURRENT_LIMIT = 20;
     }
 
     // All the overall constants for the drivetrain
@@ -72,8 +72,8 @@ public class RobotMap {
 
         public static final boolean FL_DRIVE_REVERSED = false;
         public static final boolean BL_DRIVE_REVERSED = false;
-        public static final boolean FR_DRIVE_REVERSED = false;
-        public static final boolean BR_DRIVE_REVERSED = false;
+        public static final boolean FR_DRIVE_REVERSED = true;
+        public static final boolean BR_DRIVE_REVERSED = true;
 
         // Absolute encoder ports
         public static final int FL_ABS_PORT = 0;

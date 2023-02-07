@@ -62,7 +62,8 @@ public class SwerveModule {
         drivePidController.setP(ModuleConstants.P_DRIVE);
         drivePidController.setFF(1/ModuleConstants.DRIVE_FREE_MAX_SPEED_MPS);
 
-        turnPidController.setOutputRange(-1, 1);
+
+        turnPidController.setOutputRange(-0.75, 0.75);
         drivePidController.setOutputRange(-1, 1);
 
         turnPidController.setPositionPIDWrappingEnabled(true);
