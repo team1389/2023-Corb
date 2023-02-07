@@ -29,10 +29,13 @@ public class SwerveModule {
 
     public double targetAngle, targetSpeed;
 
+    public double angularOffset;
+
     // Instatiate new module with given ports and inversions
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
-            int absoluteEncoderId, boolean absoluteEncoderReversed) {
+            int absoluteEncoderId, boolean absoluteEncoderReversed, double anglularOffset) {
 
+        this.angularOffset = anglularOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
 
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
@@ -46,6 +49,8 @@ public class SwerveModule {
         turnEncoder = turnMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
         turnEncoder.setInverted(absoluteEncoderReversed);
+
+        // turnEncoder.setZeroOffset(angleOffset * ModuleConstants.DRIVE_ROTATIONS_TO_METERS);
 
         driveEncoder.setPositionConversionFactor(ModuleConstants.DRIVE_ROTATIONS_TO_METERS);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.DRIVE_RPM_TO_METERS_PER_SEC);
@@ -106,11 +111,11 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
+        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition() - angularOffset));
     }
 
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
+        return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition() - angularOffset));
     }
 
     public void setDesiredState(SwerveModuleState state) {
