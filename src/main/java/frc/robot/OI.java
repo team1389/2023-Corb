@@ -29,9 +29,9 @@ import frc.subsystems.Arm.Position;
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    public final Vision vision = new Vision();
-    public final Intake intake = new Intake();
-    public final Arm arm = new Arm();
+    // public final Vision vision = new Vision();
+    // public final Intake intake = new Intake();
+    // public final Arm arm = new Arm();
 
     private XboxController driveController;
     private Trigger driveRightBumper;
@@ -61,13 +61,13 @@ public class OI {
         // Press right bumper -> zero gyro heading
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
-        vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
+        // vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
         
-        manipAButton.onTrue(new RunIntake(intake));
-        manipBButton.onTrue(new RunOuttake(intake));
-        manipXButton.onTrue(new SetArm(arm, Position.Low));
-        manipYButton.onTrue(new SetArm(arm, Position.Mid));
-        manipLeftBumper.onTrue(new SetArm(arm, Position.High));
+        // manipAButton.onTrue(new RunIntake(intake));
+        // manipBButton.onTrue(new RunOuttake(intake));
+        // manipXButton.onTrue(new SetArm(arm, Position.Low));
+        // manipYButton.onTrue(new SetArm(arm, Position.Mid));
+        // manipLeftBumper.onTrue(new SetArm(arm, Position.High));
         //possibly add a wrist joint
     }
 
