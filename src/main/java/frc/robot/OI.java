@@ -51,7 +51,7 @@ public class OI {
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
-        driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
+        driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
         
         //possibly add a wrist joint
