@@ -11,9 +11,11 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.ModuleConstants;
 
-public class SwerveModule {
+public class SwerveModule extends SubsystemBase{
 
     public final CANSparkMax driveMotor;
     private final CANSparkMax turnMotor;
@@ -64,6 +66,14 @@ public class SwerveModule {
         turnPidController.setFeedbackDevice(turnEncoder);
 
         turnPidController.setP(ModuleConstants.P_TURNING);
+        turnPidController.setI(ModuleConstants.I_TURNING);
+        turnPidController.setD(ModuleConstants.D_TURNING);
+
+        SmartDashboard.putNumber("Turning P", ModuleConstants.P_TURNING);
+        SmartDashboard.putNumber("Turning I", ModuleConstants.I_TURNING);
+        SmartDashboard.putNumber("Turning D", ModuleConstants.D_TURNING);
+
+
         drivePidController.setP(ModuleConstants.P_DRIVE);
         drivePidController.setFF(1/ModuleConstants.DRIVE_FREE_MAX_SPEED_MPS);
 
@@ -126,17 +136,33 @@ public class SwerveModule {
         }
 
         // Optimize to see if turning to opposite angle and running backwards is faster
-        state = SwerveModuleState.optimize(state, getState().angle);
+        // state = SwerveModuleState.optimize(state, getState().angle);
 
-        // Set motors, using the pid controllers for each motor
-        targetAngle = state.angle.getDegrees();
+        // // Set motors, using the pid controllers for each motor
+        // targetAngle = state.angle.getDegrees();
+        SwerveModuleState correctedDesiredState = new SwerveModuleState();
+        correctedDesiredState.speedMetersPerSecond = state.speedMetersPerSecond;
+        correctedDesiredState.angle = state.angle.plus(Rotation2d.fromRadians(angularOffset));
+    
+        // Optimize the reference state to avoid spinning further than 90 degrees.
+        SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
+            new Rotation2d(turnEncoder.getPosition()));
 
-        drivePidController.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-        turnPidController.setReference(state.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+
+        drivePidController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+        turnPidController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
     }
 
     public void stop() {
         driveMotor.set(0);
         turnMotor.set(0);
+    }
+
+    @Override
+    public void periodic() {
+        turnPidController.setP(SmartDashboard.getNumber("Turning P", 0.01));
+        turnPidController.setI(SmartDashboard.getNumber("Turning I", 0.00001));
+        turnPidController.setD(SmartDashboard.getNumber("Turning D", 0.0005));
+
     }
 }

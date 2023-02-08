@@ -25,15 +25,17 @@ public class RobotMap {
         public static final double DRIVE_RPM_TO_METERS_PER_SEC = DRIVE_ROTATIONS_TO_METERS / 60;
         public static final double TURNING_RPM_TO_RAD_PER_SEC = TURNING_ROTATIONS_TO_RAD / 60;
         public static final double P_TURNING = 0.4; // PID constant 
+        public static final double I_TURNING = 0.00001; // PID Constant
+        public static final double D_TURNING = 0.0005; // PID constant
         public static final double P_DRIVE = 0.5; // PID constant 
 
         public static final int DRIVE_CURRENT_LIMIT = 50; // amps
         public static final int TURN_CURRENT_LIMIT = 20;
 
-        public static final double FL_ANGLE_OFFSET = -Math.PI / 2; 
-        public static final double FR_ANGLE_OFFSET = 0; 
-        public static final double BL_ANGLE_OFFSET = Math.PI; 
-        public static final double BR_ANGLE_OFFSET = Math.PI/2; 
+        public static final double FL_ANGLE_OFFSET = Math.PI / 2; //CORRECT
+        public static final double FR_ANGLE_OFFSET = Math.PI; 
+        public static final double BL_ANGLE_OFFSET = 0;
+        public static final double BR_ANGLE_OFFSET = -Math.PI / 2; //CORRECT
 
     }
 
@@ -77,9 +79,9 @@ public class RobotMap {
         public static final boolean BR_TURN_REVERSED = true;
 
         public static final boolean FL_DRIVE_REVERSED = false;
-        public static final boolean BL_DRIVE_REVERSED = false;
+        public static final boolean BL_DRIVE_REVERSED = true;
         public static final boolean FR_DRIVE_REVERSED = true;
-        public static final boolean BR_DRIVE_REVERSED = true;
+        public static final boolean BR_DRIVE_REVERSED = false;
 
         // Absolute encoder ports
         public static final int FL_ABS_PORT = 0;

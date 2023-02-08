@@ -79,8 +79,8 @@ public class TeleOpDrive extends CommandBase {
         SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
         SmartDashboard.putNumber("FR target", moduleStates[0].angle.getDegrees());
         SmartDashboard.putNumber("FL target", moduleStates[1].angle.getDegrees());
-        SmartDashboard.putNumber("FR target", moduleStates[2].angle.getDegrees());
-        SmartDashboard.putNumber("FL target", moduleStates[3].angle.getDegrees());
+        SmartDashboard.putNumber("BR target", moduleStates[2].angle.getDegrees());
+        SmartDashboard.putNumber("BL target", moduleStates[3].angle.getDegrees());
 
         // 6. Output all module states to wheels
         drivetrain.setModuleStates(moduleStates);
