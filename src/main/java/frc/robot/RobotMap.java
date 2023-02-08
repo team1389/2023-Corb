@@ -80,11 +80,11 @@ public class RobotMap {
         public static final boolean BR_ABS_REVERSED = false;
 
         // The physical max if motors go full speed
-        public static final double MAX_METERS_PER_SEC = 2.53874834758734; // m/s
-        public static final double MAX_RADIANS_PER_SEC = 2.5; // rad/s
+        public static final double MAX_METERS_PER_SEC = 5.0; // m/s
+        public static final double MAX_RADIANS_PER_SEC = 7; // rad/s
 
-        public static final double MAX_LINEAR_ACCEL = 4.5; // m/s/s
-        public static final double MAX_ANGULAR_ACCEL = 4; // rad/s/s
+        public static final double MAX_LINEAR_ACCEL = 9; // m/s/s
+        public static final double MAX_ANGULAR_ACCEL = 8; // rad/s/s
 
         //TODO: get actual port
         public static final int SHOULDER_MOTOR = 0;
