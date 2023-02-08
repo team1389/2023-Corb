@@ -23,7 +23,7 @@ public class OI {
     public final Drivetrain drivetrain = new Drivetrain();
 
     private XboxController driveController;
-    private Trigger driveRightBumper;
+    private Trigger driveRightBumper, driveLeftBumper;
     private Trigger driveAButton;
 
     private XboxController manipController;
@@ -32,6 +32,8 @@ public class OI {
     private Trigger manipXButton;
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
+
+    
 
     public OI() {
         initControllers();
@@ -43,7 +45,8 @@ public class OI {
             () -> -driveController.getLeftX(),
             () -> -driveController.getRightX(),
             () -> -driveController.getRightY(),
-            () -> !driveController.getLeftBumper()) // By default be in field oriented
+            () -> !driveController.getLeftBumper(),
+            () -> driveController.getRightBumper()) // By default be in field oriented
         );
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 

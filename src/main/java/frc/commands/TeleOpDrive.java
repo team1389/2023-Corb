@@ -13,18 +13,19 @@ public class TeleOpDrive extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
-    private final Supplier<Boolean> fieldOrientedFunction;
+    private final Supplier<Boolean> fieldOrientedFunction, slowFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private double desiredAngle; // gyro value from getHeading() the robot wants to point at
 
     public TeleOpDrive(Drivetrain drivetrain,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction, Supplier<Double> rightY,
-            Supplier<Boolean> fieldOrientedFunction) {
+            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction) {
         this.drivetrain = drivetrain;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
         this.turningSpdFunction = turningSpdFunction;
         this.fieldOrientedFunction = fieldOrientedFunction;
+        this.slowFunction = slowFunction;
 
         // A slew rate limiter caps the rate of change of the inputs, to make the robot drive much smoother
         this.xLimiter = new SlewRateLimiter(DriveConstants.MAX_LINEAR_ACCEL);
@@ -60,11 +61,15 @@ public class TeleOpDrive extends CommandBase {
         xSpeed = xLimiter.calculate(xSpeed * DriveConstants.MAX_METERS_PER_SEC);
         ySpeed = yLimiter.calculate(ySpeed * DriveConstants.MAX_METERS_PER_SEC);
         turningSpeed = turningLimiter.calculate(turningSpeed * DriveConstants.MAX_RADIANS_PER_SEC);
-        // xSpeed = xSpeed * DriveConstants.MAX_METERS_PER_SEC;
-        // ySpeed = ySpeed * DriveConstants.MAX_METERS_PER_SEC;
-        // turningSpeed = turningSpeed * DriveConstants.MAX_RADIANS_PER_SEC;
+       
+        // 4. Check right bumper for slow mode
+        if(slowFunction.get()) {
+            xSpeed *= 0.5;
+            ySpeed *= 0.5;
+            turningSpeed *= 0.5;
+        }
 
-        // 4. Construct desired chassis speeds
+        // 5. Construct desired chassis speeds
         ChassisSpeeds chassisSpeeds;
         if (fieldOrientedFunction.get()) {
             // Relative to field
@@ -75,14 +80,14 @@ public class TeleOpDrive extends CommandBase {
             chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
         }
 
-        // 5. Convert chassis speeds to individual module states
+        // 6. Convert chassis speeds to individual module states
         SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
         SmartDashboard.putNumber("FR target", moduleStates[0].angle.getDegrees());
         SmartDashboard.putNumber("FL target", moduleStates[1].angle.getDegrees());
         SmartDashboard.putNumber("BR target", moduleStates[2].angle.getDegrees());
         SmartDashboard.putNumber("BL target", moduleStates[3].angle.getDegrees());
 
-        // 6. Output all module states to wheels
+        // 7. Output all module states to wheels
         drivetrain.setModuleStates(moduleStates);
     }
 

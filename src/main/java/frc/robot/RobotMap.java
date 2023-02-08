@@ -24,7 +24,7 @@ public class RobotMap {
         public static final double TURNING_ROTATIONS_TO_RAD = TURN_GEAR_RATIO * 2 * Math.PI;
         public static final double DRIVE_RPM_TO_METERS_PER_SEC = DRIVE_ROTATIONS_TO_METERS / 60;
         public static final double TURNING_RPM_TO_RAD_PER_SEC = TURNING_ROTATIONS_TO_RAD / 60;
-        public static final double P_TURNING = 0.4; // PID constant 
+        public static final double P_TURNING = 0.2; // PID constant 
         public static final double I_TURNING = 0.00001; // PID Constant
         public static final double D_TURNING = 0.0005; // PID constant
         public static final double P_DRIVE = 0.5; // PID constant 
@@ -33,9 +33,9 @@ public class RobotMap {
         public static final int TURN_CURRENT_LIMIT = 20;
 
         public static final double FL_ANGLE_OFFSET = Math.PI / 2; //CORRECT
-        public static final double FR_ANGLE_OFFSET = Math.PI; 
+        public static final double FR_ANGLE_OFFSET = Math.PI; //CORRECt
         public static final double BL_ANGLE_OFFSET = 0;
-        public static final double BR_ANGLE_OFFSET = -Math.PI / 2; //CORRECT
+        public static final double BR_ANGLE_OFFSET = -Math.PI / 2; 
 
     }
 
@@ -73,15 +73,15 @@ public class RobotMap {
 
         // Sometimes encoders are mounted backwards based on robot design, this fixes
         // that although it's not a thing on stargazer
-        public static final boolean FL_TURN_REVERSED = true;
-        public static final boolean BL_TURN_REVERSED = true;
-        public static final boolean FR_TURN_REVERSED = true;
-        public static final boolean BR_TURN_REVERSED = true;
+        public static final boolean FL_TURN_REVERSED = false;
+        public static final boolean BL_TURN_REVERSED = false;
+        public static final boolean FR_TURN_REVERSED = false;
+        public static final boolean BR_TURN_REVERSED = false;
 
-        public static final boolean FL_DRIVE_REVERSED = false;
+        public static final boolean FL_DRIVE_REVERSED = true;
         public static final boolean BL_DRIVE_REVERSED = true;
         public static final boolean FR_DRIVE_REVERSED = true;
-        public static final boolean BR_DRIVE_REVERSED = false;
+        public static final boolean BR_DRIVE_REVERSED = true;
 
         // Absolute encoder ports
         public static final int FL_ABS_PORT = 0;
@@ -89,17 +89,17 @@ public class RobotMap {
         public static final int FR_ABS_PORT = 2;
         public static final int BR_ABS_PORT = 1;
 
-        public static final boolean FL_ABS_REVERSED = false;
-        public static final boolean BL_ABS_REVERSED = false;
-        public static final boolean FR_ABS_REVERSED = false;
-        public static final boolean BR_ABS_REVERSED = false;
+        public static final boolean FL_ABS_REVERSED = true;
+        public static final boolean BL_ABS_REVERSED = true;
+        public static final boolean FR_ABS_REVERSED = true;
+        public static final boolean BR_ABS_REVERSED = true;
 
         // The physical max if motors go full speed
-        public static final double MAX_METERS_PER_SEC = 2.53874834758734; // m/s
-        public static final double MAX_RADIANS_PER_SEC = 2.5; // rad/s
+        public static final double MAX_METERS_PER_SEC = 5; // m/s
+        public static final double MAX_RADIANS_PER_SEC = 7; // rad/s
 
-        public static final double MAX_LINEAR_ACCEL = 4.5; // m/s/s
-        public static final double MAX_ANGULAR_ACCEL = 4; // rad/s/s
+        public static final double MAX_LINEAR_ACCEL = 5.5; // m/s/s
+        public static final double MAX_ANGULAR_ACCEL = 10; // rad/s/s
 
         //TODO: get actual port
         public static final int SHOULDER_MOTOR = 0;
