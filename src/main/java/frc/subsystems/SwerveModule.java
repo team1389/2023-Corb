@@ -1,60 +1,97 @@
 
 package frc.subsystems;
 
-import com.revrobotics.RelativeEncoder;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.math.controller.PIDController;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import com.revrobotics.SparkMaxPIDController;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.RobotMap.DriveConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.ModuleConstants;
 
-public class SwerveModule {
+public class SwerveModule extends SubsystemBase{
 
     public final CANSparkMax driveMotor;
-    private final CANSparkMax turningMotor;
+    private final CANSparkMax turnMotor;
 
     private final RelativeEncoder driveEncoder;
-    private final RelativeEncoder turningEncoder;
 
-    private final PIDController turningPidController;
+    private final AbsoluteEncoder turnEncoder;
 
-    private final CANCoder absoluteEncoder;
+    private final SparkMaxPIDController drivePidController;
+    private final SparkMaxPIDController turnPidController;
+
     private final boolean absoluteEncoderReversed;
 
     public double targetAngle, targetSpeed;
 
+    public double angularOffset;
+
     // Instatiate new module with given ports and inversions
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
-            int absoluteEncoderId, boolean absoluteEncoderReversed) {
+            int absoluteEncoderId, boolean absoluteEncoderReversed, double anglularOffset) {
 
+        this.angularOffset = anglularOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
-        absoluteEncoder = new CANCoder(absoluteEncoderId);
 
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
-        turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
+        turnMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
 
         driveMotor.setInverted(driveMotorReversed);
-        turningMotor.setInverted(turningMotorReversed);
+        turnMotor.setInverted(turningMotorReversed);
+
 
         driveEncoder = driveMotor.getEncoder();
-        turningEncoder = turningMotor.getEncoder();
+
+        turnEncoder = turnMotor.getAbsoluteEncoder(Type.kDutyCycle);
+
+        turnEncoder.setInverted(absoluteEncoderReversed);
+
+        // turnEncoder.setZeroOffset(angleOffset * ModuleConstants.DRIVE_ROTATIONS_TO_METERS);
 
         driveEncoder.setPositionConversionFactor(ModuleConstants.DRIVE_ROTATIONS_TO_METERS);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.DRIVE_RPM_TO_METERS_PER_SEC);
-        turningEncoder.setPositionConversionFactor(ModuleConstants.TURNING_ROTATIONS_TO_RAD);
-        turningEncoder.setVelocityConversionFactor(ModuleConstants.TURNING_RPM_TO_RAD_PER_SEC);
+        turnEncoder.setPositionConversionFactor(ModuleConstants.TURNING_ROTATIONS_TO_RAD);
+        turnEncoder.setVelocityConversionFactor(ModuleConstants.TURNING_RPM_TO_RAD_PER_SEC);
 
-        turningPidController = new PIDController(ModuleConstants.P_TURNING, 0, 0);
+        drivePidController = driveMotor.getPIDController();
+        turnPidController = turnMotor.getPIDController();
 
-        // Let the controller know it's a circle and going past pi loops to -pi
-        turningPidController.enableContinuousInput(-Math.PI, Math.PI);
+        drivePidController.setFeedbackDevice(driveEncoder);
+        turnPidController.setFeedbackDevice(turnEncoder);
+
+        turnPidController.setP(ModuleConstants.P_TURNING);
+        // turnPidController.setI(ModuleConstants.I_TURNING);
+        turnPidController.setD(ModuleConstants.D_TURNING);
+
+        SmartDashboard.putNumber("Turning P", ModuleConstants.P_TURNING);
+        SmartDashboard.putNumber("Turning I", ModuleConstants.I_TURNING);
+        SmartDashboard.putNumber("Turning D", ModuleConstants.D_TURNING);
+
+
+        drivePidController.setP(ModuleConstants.P_DRIVE);
+        drivePidController.setFF(1/ModuleConstants.DRIVE_FREE_MAX_SPEED_MPS);
+
+
+        turnPidController.setOutputRange(-0.75, 0.75);
+        drivePidController.setOutputRange(-1, 1);
+
+        turnPidController.setPositionPIDWrappingEnabled(true);
+        turnPidController.setPositionPIDWrappingMinInput(0);
+        turnPidController.setPositionPIDWrappingMaxInput(2*Math.PI);
 
         // Braking mode
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        turnMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
+        driveMotor.setSmartCurrentLimit(ModuleConstants.DRIVE_CURRENT_LIMIT);
+        turnMotor.setSmartCurrentLimit(ModuleConstants.TURN_CURRENT_LIMIT);
 
         // At boot reset relative encoders to absolute
         resetEncoders();
@@ -65,7 +102,7 @@ public class SwerveModule {
     }
 
     public double getTurningPosition() {
-        return turningEncoder.getPosition();
+        return turnEncoder.getPosition();
     }
 
     public double getDriveVelocity() {
@@ -73,27 +110,23 @@ public class SwerveModule {
     }
 
     public double getTurningVelocity() {
-        return turningEncoder.getVelocity();
+        return turnEncoder.getVelocity();
     }
 
-    // Radians that the module is at, from 0 to 2pi
-    public double getAbsoluteEncoderRad() {
-        double angle = Math.toRadians(absoluteEncoder.getAbsolutePosition());
-        return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
-    }
+
 
     // Set drive encoder to 0 and turning encoder to match absolute
     public void resetEncoders() {
         driveEncoder.setPosition(0);
-        turningEncoder.setPosition(getAbsoluteEncoderRad());
+        // turningEncoder.setPosition(getAbsolutePosition() * 2 * Math.PI);
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
+        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition() - angularOffset));
     }
 
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
+        return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition() - angularOffset));
     }
 
     public void setDesiredState(SwerveModuleState state) {
@@ -103,19 +136,29 @@ public class SwerveModule {
             return;
         }
 
-        // Optimize to see if turning to opposite angle and running backwards is faster
-        state = SwerveModuleState.optimize(state, getState().angle);
-
-        // Set motors, using the turning pid controller for that motor
-        targetAngle = state.angle.getDegrees();
-        targetSpeed = state.speedMetersPerSecond;
-
-        driveMotor.set(targetSpeed / DriveConstants.MAX_METERS_PER_SEC);
-        turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
+        SwerveModuleState correctedDesiredState = new SwerveModuleState();
+        correctedDesiredState.speedMetersPerSecond = state.speedMetersPerSecond;
+        correctedDesiredState.angle = state.angle.plus(Rotation2d.fromRadians(angularOffset));
+        
+    
+        // Optimize the reference state to avoid spinning further than 90 degrees.
+        SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
+            new Rotation2d(turnEncoder.getPosition()));
+        
+        drivePidController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+        turnPidController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
     }
 
     public void stop() {
         driveMotor.set(0);
-        turningMotor.set(0);
+        turnMotor.set(0);
+    }
+
+    @Override
+    public void periodic() {
+        turnPidController.setP(SmartDashboard.getNumber("Turning P", 0.01));
+        turnPidController.setI(SmartDashboard.getNumber("Turning I", 0.00001));
+        turnPidController.setD(SmartDashboard.getNumber("Turning D", 0.0005));
+
     }
 }

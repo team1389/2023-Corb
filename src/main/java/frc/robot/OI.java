@@ -12,19 +12,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.commands.AprilTagPoseEstimisation;
 import frc.commands.AutoBalance;
-import frc.commands.RunIntake;
-import frc.commands.RunOuttake;
-import frc.commands.SetArm;
 import frc.commands.AutoBalanceController;
 import frc.commands.TeleOpDrive;
+import frc.commands.UpdatePosition;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
-import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
-import frc.subsystems.Intake;
-import frc.subsystems.Vision;
-import frc.subsystems.Arm.Position;
 
 public class OI {
 
@@ -34,7 +28,7 @@ public class OI {
     // public final Arm arm = new Arm();
 
     private XboxController driveController;
-    private Trigger driveRightBumper;
+    private Trigger driveRightBumper, driveLeftBumper;
     private Trigger driveAButton;
 
     private XboxController manipController;
@@ -43,6 +37,8 @@ public class OI {
     private Trigger manipXButton;
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
+
+    
 
     public OI() {
         initControllers();
@@ -55,11 +51,12 @@ public class OI {
             () -> -driveController.getRightX(),
             () -> -driveController.getRightY(),
             () -> !driveController.getLeftBumper(),
-            () -> !driveController.getRightBumper()) // By default be in field oriented
+            () -> driveController.getRightBumper()) // By default be in field oriented
         );
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
+        driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
         // driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
         // vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
@@ -97,7 +94,7 @@ public class OI {
 
         Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
         return trajCommand;
-        //return new AutoBalance(drivetrain);
+        //return new AutoBalanceController(drivetrain);
     }
 
 }
