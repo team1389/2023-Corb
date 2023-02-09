@@ -54,7 +54,7 @@ public class RobotMap {
 
         public static final int TOP_INTAKE_MOTOR = 0; //TODO: Get actual port
         public static final int BOTTOM_INTAKE_MOTOR = 0; 
-        public static final int SWIVEL_MOTOR = 0; 
+        public static final int WRIST_MOTOR = 0; 
 
         // Sometimes encoders are mounted backwards based on robot design, this fixes
         // that although it's not a thing on stargazer
@@ -105,6 +105,10 @@ public class RobotMap {
             new TrapezoidProfile.Constraints(
                     AUTO_MAX_RADIANS_PER_SEC,
                     AUTO_MAX_ANGULAR_ACCEL);
+    }
+
+    public static final class ArmConstants {
+        public static final double WRIST_CONVERSION_FACTOR = 360; // rotations to degrees
     }
 
     public static final class FieldConstants {

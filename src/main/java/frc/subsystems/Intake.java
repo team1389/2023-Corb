@@ -11,13 +11,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Intake extends SubsystemBase{
     private CANSparkMax bottomRoller; 
     private CANSparkMax topRoller;
-    private CANSparkMax swivelMotor;
     private final double speed = 0.5;
     
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
         topRoller = new CANSparkMax(DriveConstants.TOP_INTAKE_MOTOR, MotorType.kBrushless);
-        swivelMotor = new CANSparkMax(DriveConstants.SWIVEL_MOTOR, MotorType.kBrushless);
     }
 
     public void runIntake(){
@@ -35,11 +33,4 @@ public class Intake extends SubsystemBase{
         bottomRoller.set(0);
         topRoller.set(0);
     }
-//TODO: Add swivel control thing
-public void swivelUp(){
-
-}
-public void swivelDown(){
-    
-}
 }
