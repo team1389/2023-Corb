@@ -4,16 +4,15 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 //import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -161,8 +160,8 @@ public class Drivetrain extends SubsystemBase {
     // Return a command to follow given pathplannertrajectory
     public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
          // Define PID controllers for tracking trajectory
-         PIDController xController = new PIDController(AutoConstants.P_AUTO_X, 0, 0);
-         PIDController yController = new PIDController(AutoConstants.P_AUTO_Y, 0, 0);
+         PIDController xController = new PIDController(AutoConstants.P_AUTO_X, AutoConstants.I_AUTO_X, 0);
+         PIDController yController = new PIDController(AutoConstants.P_AUTO_Y, AutoConstants.I_AUTO_Y, 0);
          PIDController thetaController = new PIDController(AutoConstants.P_AUTO_THETA, 0, 0);
          thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
