@@ -24,7 +24,7 @@ public class RobotMap {
         public static final double TURNING_ROTATIONS_TO_RAD = TURN_GEAR_RATIO * 2 * Math.PI;
         public static final double DRIVE_RPM_TO_METERS_PER_SEC = DRIVE_ROTATIONS_TO_METERS / 60;
         public static final double TURNING_RPM_TO_RAD_PER_SEC = TURNING_ROTATIONS_TO_RAD / 60;
-        public static final double P_TURNING = 0.2; // PID constant 
+        public static final double P_TURNING = 0.291200000; // PID constant 
         public static final double I_TURNING = 0.00001; // PID Constant
         public static final double D_TURNING = 0.0005; // PID constant
         public static final double P_DRIVE = 0.5; // PID constant 
@@ -107,14 +107,16 @@ public class RobotMap {
     }
 
     public static final class AutoConstants {
-        // For now keep auto speeds half of teleop
-        public static final double AUTO_MAX_METERS_PER_SEC = 1.5;
+        // For now keep auto speeds 1/3 of teleop
+        public static final double AUTO_MAX_METERS_PER_SEC = DriveConstants.MAX_METERS_PER_SEC / 2;
         public static final double AUTO_MAX_RADIANS_PER_SEC = DriveConstants.MAX_RADIANS_PER_SEC / 2;
-        public static final double AUTO_MAX_MPSS = 0.7;
-        public static final double AUTO_MAX_ANGULAR_ACCEL = 2.1;
-        public static final double P_AUTO_X = 2.7;
-        public static final double P_AUTO_Y = 2.7;
-        public static final double P_AUTO_THETA = 3;
+        public static final double AUTO_MAX_MPSS = 1.5;
+        public static final double AUTO_MAX_ANGULAR_ACCEL = 5;
+        public static final double P_AUTO_X = 3.9;
+        public static final double P_AUTO_Y = 3.9;
+        public static final double I_AUTO_X = 0.05;
+        public static final double I_AUTO_Y = 0.05;
+        public static final double P_AUTO_THETA = 3.675764653;
 
         public static final TrapezoidProfile.Constraints THETA_CONTROL_PROFILE = 
             new TrapezoidProfile.Constraints(
