@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.commands.AprilTagPoseEstimisation;
 import frc.commands.AutoBalance;
 import frc.commands.AutoBalanceController;
 import frc.commands.TeleOpDrive;
@@ -21,6 +22,9 @@ import frc.subsystems.Drivetrain;
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
+    // public final Vision vision = new Vision();
+    // public final Intake intake = new Intake();
+    // public final Arm arm = new Arm();
 
     private XboxController driveController;
     private Trigger driveRightBumper, driveLeftBumper;
@@ -52,8 +56,15 @@ public class OI {
 
         // Press right bumper -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
+        // driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
+        // vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
         
+        // manipAButton.onTrue(new RunIntake(intake));
+        // manipBButton.onTrue(new RunOuttake(intake));
+        // manipXButton.onTrue(new SetArm(arm, Position.Low));
+        // manipYButton.onTrue(new SetArm(arm, Position.Mid));
+        // manipLeftBumper.onTrue(new SetArm(arm, Position.High));
         //possibly add a wrist joint
     }
 
@@ -69,6 +80,8 @@ public class OI {
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
+        manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
+        manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
     }
 
     // Return autocommand
