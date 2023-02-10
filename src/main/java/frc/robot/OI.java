@@ -5,6 +5,8 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -33,6 +35,9 @@ public class OI {
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
 
+    private final SendableChooser<Command> chooser = new SendableChooser<>();
+    // All commands:
+
     
 
     public OI() {
@@ -55,7 +60,11 @@ public class OI {
 
         
         //possibly add a wrist joint
-    }
+
+        // chooser.setDefaultOption("Auto 1", kDefaultAuto);
+        // chooser.addOption("Auto 2", kCustomAuto);
+        SmartDashboard.putData("Auto choices", chooser);
+        }
 
     /**
      * Initialize JoystickButtons and Controllers
@@ -81,6 +90,10 @@ public class OI {
         Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
         return trajCommand;
         //return new AutoBalanceController(drivetrain);
+
+        //return chooser.getSelected();
     }
+
+    
 
 }
