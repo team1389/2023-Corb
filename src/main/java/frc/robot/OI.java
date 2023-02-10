@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.autos.Test;
 import frc.commands.AutoBalance;
 import frc.commands.AutoBalanceController;
 import frc.commands.TeleOpDrive;
@@ -73,14 +74,15 @@ public class OI {
 
     // Return autocommand
     public Command getAutoCommand() {
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS)
-        );
+        // PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
+        //     AutoConstants.AUTO_MAX_METERS_PER_SEC, 
+        //     AutoConstants.AUTO_MAX_MPSS)
+        // );
 
-        Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
-        return trajCommand;
+        // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
+        // return trajCommand;
         //return new AutoBalanceController(drivetrain);
+        return new Test(drivetrain);
     }
 
 }
