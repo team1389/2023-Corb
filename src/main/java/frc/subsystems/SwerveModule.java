@@ -21,6 +21,7 @@ public class SwerveModule {
     private final RelativeEncoder turningEncoder;
 
     private final PIDController turningPidController;
+    private final PIDController drivePidController;
 
     private final CANCoder absoluteEncoder;
     private final boolean absoluteEncoderReversed;
@@ -49,6 +50,7 @@ public class SwerveModule {
         turningEncoder.setVelocityConversionFactor(ModuleConstants.TURNING_RPM_TO_RAD_PER_SEC);
 
         turningPidController = new PIDController(ModuleConstants.P_TURNING, 0, 0);
+        drivePidController = new PIDController(ModuleConstants.P_DRIVE, 0, 0);
 
         // Let the controller know it's a circle and going past pi loops to -pi
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
@@ -110,7 +112,7 @@ public class SwerveModule {
         targetAngle = state.angle.getDegrees();
         targetSpeed = state.speedMetersPerSecond;
 
-        driveMotor.set(targetSpeed / DriveConstants.MAX_METERS_PER_SEC);
+        driveMotor.set(drivePidController.calculate(getDriveVelocity(), targetSpeed) + (targetSpeed/4.3));
         turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
     }
 

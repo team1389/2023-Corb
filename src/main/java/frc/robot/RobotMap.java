@@ -22,6 +22,7 @@ public class RobotMap {
         public static final double DRIVE_RPM_TO_METERS_PER_SEC = DRIVE_ROTATIONS_TO_METERS / 60;
         public static final double TURNING_RPM_TO_RAD_PER_SEC = TURNING_ROTATIONS_TO_RAD / 60;
         public static final double P_TURNING = 0.5; // PID constant 
+        public static final double P_DRIVE = 0.25;
     }
 
     // All the overall constants for the drivetrain
@@ -81,10 +82,10 @@ public class RobotMap {
 
         // The physical max if motors go full speed
         public static final double MAX_METERS_PER_SEC = 2.53874834758734; // m/s
-        public static final double MAX_RADIANS_PER_SEC = 2.5; // rad/s
+        public static final double MAX_RADIANS_PER_SEC = 4; // rad/s
 
         public static final double MAX_LINEAR_ACCEL = 4.5; // m/s/s
-        public static final double MAX_ANGULAR_ACCEL = 4; // rad/s/s
+        public static final double MAX_ANGULAR_ACCEL = 5; // rad/s/s
 
         //TODO: get actual port
         public static final int SHOULDER_MOTOR = 0;

@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap.DriveConstants;
@@ -12,12 +13,14 @@ import frc.subsystems.Drivetrain;
 public class AutoBalanceController extends CommandBase{
     private final Drivetrain drivetrain;
     private final int targetAngle = 0;
-    double kp = 0.01625, ki = 0, kd = 0;
+    double kp = 0.0146, ki = 0, kd = 0;
     PIDController pidController = new PIDController(kp, ki, kd);
-
+//lowest sucessful value with old robot: .0147
+//lowest succesful value with new robot: 
     public AutoBalanceController(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
+        
     }
 
     @Override
@@ -28,9 +31,9 @@ public class AutoBalanceController extends CommandBase{
         double tempSpeed;
         // Read the current angle from a sensor
         double currentAngle = getCurrentAngle(pitch,roll);
-
+        
         //very very very important code. DO NOT DELETE OR IT WILL DRIVE ONE DIRECTION
-        driveAngle = (pitch < 0) ? Math.PI-targetAngle : targetAngle;
+        driveAngle = (pitch < 0) ? Math.PI-driveAngle : driveAngle;
 
 
         SmartDashboard.putNumber("Angle Angle", Math.toDegrees(currentAngle));
