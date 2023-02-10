@@ -28,15 +28,15 @@ public class Arm extends SubsystemBase{
     
     private RelativeEncoder wristEncoder;
 
-    public enum Position{
+    public enum ArmPosition{
         Low,
         Mid,
         High
     }
 
-    public Map<Position, Double[]> hmmmmm = new HashMap<Position, Double[] >();
+    public Map<ArmPosition, Double[]> hmmmmm = new HashMap<ArmPosition, Double[] >();
     
-    public Position targetPos = Position.Low;
+    public ArmPosition targetPos = ArmPosition.Low;
 
     
     public Arm(){
@@ -51,20 +51,20 @@ public class Arm extends SubsystemBase{
         wristEncoder.setPositionConversionFactor(ArmConstants.WRIST_CONVERSION_FACTOR);
 
         // Shoulder, elbow, wrist
-        hmmmmm.put(Position.Low, new Double[]{0.0, 0.0, 0.0});
-        hmmmmm.put(Position.Mid, new Double[]{0.0, 0.0, 0.0});
-        hmmmmm.put(Position.High, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.Low, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.Mid, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.High, new Double[]{0.0, 0.0, 0.0});
     }
 
-    public void setArm(Position pos){
+    public void setArm(ArmPosition pos){
         targetPos = pos;
     }
 
     @Override
     public void periodic() {
-        shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
-        elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
-        wrist.set(pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2]));
+        // shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
+        // elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
+        // wrist.set(pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2]));
 
         SmartDashboard.putNumber("Shoulder position", getShoulderDistance());
         SmartDashboard.putNumber("Elbow position", getElbowDistance());
