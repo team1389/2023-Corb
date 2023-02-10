@@ -12,7 +12,7 @@ public class OneTopConeInitial extends SequentialCommandGroup{
     public OneTopConeInitial(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
         
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 Top Cone Iniitial", new PathConstraints(
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 Top Cone Initial", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
             AutoConstants.AUTO_MAX_MPSS)
         );
