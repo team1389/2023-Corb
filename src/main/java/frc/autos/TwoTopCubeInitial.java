@@ -16,7 +16,7 @@ public class TwoTopCubeInitial extends SequentialCommandGroup{
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
         
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Quick Balance", new PathConstraints(
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("2 Top Cube Initial", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
             AutoConstants.AUTO_MAX_MPSS));
 
