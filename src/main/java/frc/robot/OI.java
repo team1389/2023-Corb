@@ -10,21 +10,22 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.commands.AprilTagPoseEstimisation;
 import frc.commands.AutoBalance;
 import frc.commands.AutoBalanceController;
+import frc.commands.ManualArm;
 import frc.commands.TeleOpDrive;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
+import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
+    public final Arm arm = new Arm();
     // public final Vision vision = new Vision();
     // public final Intake intake = new Intake();
-    // public final Arm arm = new Arm();
 
     private XboxController driveController;
     private Trigger driveRightBumper, driveLeftBumper;
@@ -52,6 +53,13 @@ public class OI {
             () -> !driveController.getLeftBumper(),
             () -> driveController.getRightBumper()) // By default be in field oriented
         );
+
+        arm.setDefaultCommand(new ManualArm(
+            arm, 
+            () -> manipController.getLeftX(), 
+            () -> manipController.getRightX())
+        );
+
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
@@ -62,9 +70,9 @@ public class OI {
         
         // manipAButton.onTrue(new RunIntake(intake));
         // manipBButton.onTrue(new RunOuttake(intake));
-        // manipXButton.onTrue(new SetArm(arm, Position.Low));
-        // manipYButton.onTrue(new SetArm(arm, Position.Mid));
-        // manipLeftBumper.onTrue(new SetArm(arm, Position.High));
+        // manipXButton.onTrue(new SetArm(arm, ArmPosition.Low));
+        // manipYButton.onTrue(new SetArm(arm, ArmPosition.Mid));
+        // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         //possibly add a wrist joint
     }
 
