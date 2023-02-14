@@ -1,6 +1,5 @@
 package frc.autos;
 import java.util.HashMap;
-import java.util.List;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -30,9 +29,9 @@ public class OneBottomCone extends SequentialCommandGroup{
 
         //score initial cone, pick up game piece, balance
         addCommands(
-            new SetArmPosition(arm, ArmPosition.High),
+            new SetArmPosition(arm, ArmPosition.HighCone, false),
             new RunOuttake(intake),
-            new SetArmPosition(arm, ArmPosition.Low),
+            new SetArmPosition(arm, ArmPosition.Low, true),
             new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
             new AutoBalance(drivetrain)
         );

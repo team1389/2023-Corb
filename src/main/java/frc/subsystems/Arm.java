@@ -29,14 +29,18 @@ public class Arm extends SubsystemBase{
     private RelativeEncoder wristEncoder;
 
     public enum ArmPosition{
+        Intake,
         Low,
-        Mid,
-        High
+        MidCone,
+        HighCone,
+        MidCube,
+        HighCube,
+        StartingConfig
     }
 
     public Map<ArmPosition, Double[]> hmmmmm = new HashMap<ArmPosition, Double[] >();
     
-    public ArmPosition targetPos = ArmPosition.Low;
+    public ArmPosition targetPos = ArmPosition.StartingConfig;
 
     
     public Arm(){
@@ -52,8 +56,11 @@ public class Arm extends SubsystemBase{
 
         // Shoulder, elbow, wrist
         hmmmmm.put(ArmPosition.Low, new Double[]{0.0, 0.0, 0.0});
-        hmmmmm.put(ArmPosition.Mid, new Double[]{0.0, 0.0, 0.0});
-        hmmmmm.put(ArmPosition.High, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.Intake, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.MidCone, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.HighCone, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.MidCube, new Double[]{0.0, 0.0, 0.0});
+        hmmmmm.put(ArmPosition.HighCube, new Double[]{0.0, 0.0, 0.0});
     }
 
     public void setArm(ArmPosition pos){
@@ -62,9 +69,9 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic() {
-        // shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
-        // elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
-        // wrist.set(pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2]));
+        shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
+        elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
+        wrist.set(pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2]));
 
         SmartDashboard.putNumber("Shoulder position", getShoulderDistance());
         SmartDashboard.putNumber("Elbow position", getElbowDistance());
@@ -85,5 +92,16 @@ public class Arm extends SubsystemBase{
 
     public void moveElbow(double power) {
         elbow.set(power);
+    }
+
+    public boolean getAtPosition() {
+        Double[] targetLengths = hmmmmm.get(targetPos);
+        
+        boolean atPosition = 
+            Math.abs(getShoulderDistance()-targetLengths[0]) < ArmConstants.SHOULDER_DEADZONE &&
+            Math.abs(getElbowDistance()-targetLengths[1]) < ArmConstants.ELBOW_DEADZONE &&
+            Math.abs(wristEncoder.getPosition()-targetLengths[2]) < ArmConstants.WRIST_DEADZONE;
+
+        return atPosition;
     }
 }

@@ -1,9 +1,14 @@
 package frc.autos;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
 import frc.commands.RunOuttake;
@@ -16,33 +21,24 @@ import frc.subsystems.Arm.ArmPosition;
 
 public class TwoTopCubeInitial extends SequentialCommandGroup{
 
-    public TwoTopCubeInitial(Drivetrain drivetrain, Arm arm, Intake intake){
-        addRequirements(drivetrain);
+    public TwoTopCubeInitial(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
         
-        PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("2 Top Cube Initial", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS)
-        );
-        PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("2 Top Cube 2nd Score", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS)
-        );
-        PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("2 Top Cube Balance", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("2 Top Cube", new PathConstraints(
+            AutoConstants.AUTO_MAX_METERS_PER_SEC,
             AutoConstants.AUTO_MAX_MPSS)
         );
 
+        Command path1 = drivetrain.followTrajectoryCommand(pathGroup.get(0), true);
+        Command path2 = drivetrain.followTrajectoryCommand(pathGroup.get(1), false);
 
+        // do stuff
         addCommands(
-            new SetArmPosition(arm, ArmPosition.High),
+            new SetArmPosition(arm, ArmPosition.HighCube, false),
             new RunOuttake(intake),
-            new SetArmPosition(arm, ArmPosition.Low),
-            drivetrain.followTrajectoryCommand(trajectory1, true),
-            //pick up
-            drivetrain.followTrajectoryCommand(trajectory2, false),
-            new SetArmPosition(arm, ArmPosition.High),
+            new SetArmPosition(arm, ArmPosition.Low, true),
+            new FollowPathWithEvents(path1, pathGroup.get(0).getMarkers(), hmm),
             new RunOuttake(intake),
-            drivetrain.followTrajectoryCommand(trajectory3, false),
+            new FollowPathWithEvents(path2, pathGroup.get(1).getMarkers(), hmm),
             new AutoBalance(drivetrain)
         );
 

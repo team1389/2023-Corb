@@ -21,6 +21,7 @@ import frc.autos.OneTopCube;
 import frc.autos.QuickBalance;
 import frc.autos.TwoTopCubeInitial;
 import frc.commands.ManualArm;
+import frc.commands.SetArmPosition;
 import frc.commands.TeleOpDrive;
 //import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
@@ -28,6 +29,7 @@ import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
+import frc.subsystems.Arm.ArmPosition;
 
 public class OI {
 
@@ -53,6 +55,10 @@ public class OI {
     public OI() {
         hmmmmmmmmmmmmmm.put("start intake", new InstantCommand(() -> intake.runIntake()));
         hmmmmmmmmmmmmmm.put("stop intake", new InstantCommand(() -> intake.stop()));
+        hmmmmmmmmmmmmmm.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
+        hmmmmmmmmmmmmmm.put("arm low", new SetArmPosition(arm, ArmPosition.Low, true));
+        hmmmmmmmmmmmmmm.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
+
 
         initControllers();
         

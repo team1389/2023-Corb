@@ -29,9 +29,9 @@ public class OneBottomCube extends SequentialCommandGroup{
 
         //score initial cube, pick up game piece, balance
         addCommands(
-            new SetArmPosition(arm, ArmPosition.High),
+            new SetArmPosition(arm, ArmPosition.HighCube, false),
             new RunOuttake(intake),
-            new SetArmPosition(arm, ArmPosition.Low),
+            new SetArmPosition(arm, ArmPosition.Low, true),
             new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
             new AutoBalance(drivetrain)
         );

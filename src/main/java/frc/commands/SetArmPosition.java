@@ -5,11 +5,13 @@ import frc.subsystems.Arm;
 import frc.subsystems.Arm.ArmPosition;
 
 public class SetArmPosition extends CommandBase {
-    Arm arm;
-    ArmPosition target;
+    private Arm arm;
+    private ArmPosition target;
+    private boolean runInstantly;
 
-    public SetArmPosition(Arm arm, ArmPosition targetPosition) {
+    public SetArmPosition(Arm arm, ArmPosition targetPosition, boolean runInstantly) {
         this.arm = arm;
+        this.runInstantly = runInstantly;
         target = targetPosition;
 
         addRequirements(arm);
@@ -22,6 +24,6 @@ public class SetArmPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return runInstantly || arm.getAtPosition();
     }
 }
