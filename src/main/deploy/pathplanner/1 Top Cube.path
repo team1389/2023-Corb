@@ -28,8 +28,33 @@
         "y": 4.592646685293372
       },
       "prevControl": {
-        "x": 7.435229870459741,
-        "y": 4.592646685293372
+        "x": 7.0346128791237446,
+        "y": 5.195636369643081
+      },
+      "nextControl": {
+        "x": 6.42547164097887,
+        "y": 3.746625002146802
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.162281918869889,
+        "y": 2.862269354431948
+      },
+      "prevControl": {
+        "x": 5.303385980437442,
+        "y": 2.862269354431948
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -45,5 +70,18 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.7636363636363677,
+      "names": [
+        "start intake"
+      ]
+    },
+    {
+      "position": 1.2727272727272603,
+      "names": [
+        "stop intake"
+      ]
+    }
+  ]
 }

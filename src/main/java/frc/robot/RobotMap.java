@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -120,8 +122,8 @@ public class RobotMap {
 
         public static final TrapezoidProfile.Constraints THETA_CONTROL_PROFILE = 
             new TrapezoidProfile.Constraints(
-                    AUTO_MAX_RADIANS_PER_SEC,
-                    AUTO_MAX_ANGULAR_ACCEL);
+                AUTO_MAX_RADIANS_PER_SEC,
+                AUTO_MAX_ANGULAR_ACCEL);
     }
 
     public static final class ArmConstants {

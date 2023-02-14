@@ -1,8 +1,13 @@
 package frc.autos;
+import java.util.HashMap;
+import java.util.List;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
 import frc.commands.RunOuttake;
@@ -14,29 +19,22 @@ import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 public class OneBottomCone extends SequentialCommandGroup{
     
-    public OneBottomCone(Drivetrain drivetrain, Arm arm, Intake intake){
-        
-        PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("1 Bottom Cone Balance", new PathConstraints(
+    public OneBottomCone(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
+
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 Bottom Cone", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
             AutoConstants.AUTO_MAX_MPSS)
         );
-        PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("1 Bottom Cone Initial", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS)
-        );
-        //TODO: Add command to start and stop intake
-        //TODO: add auto for auto balancing
-        //scores initial cone, pick up cone, balance
         
+        Command drivePath = drivetrain.followTrajectoryCommand(trajectory, true);
+
+        //score initial cone, pick up game piece, balance
         addCommands(
             new SetArmPosition(arm, ArmPosition.High),
             new RunOuttake(intake),
             new SetArmPosition(arm, ArmPosition.Low),
-            drivetrain.followTrajectoryCommand(trajectory1, true),
-            //pick up
-            drivetrain.followTrajectoryCommand(trajectory2, false),
+            new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
             new AutoBalance(drivetrain)
         );
-        addRequirements(drivetrain, arm, intake);
     }
 }

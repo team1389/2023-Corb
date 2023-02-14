@@ -24,11 +24,12 @@ public class QuickBalance extends SequentialCommandGroup{
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
             AutoConstants.AUTO_MAX_MPSS));
 
-        Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
+        Command drivePath = drivetrain.followTrajectoryCommand(trajectory, true);
+
         addCommands(
             new SetArmPosition(arm, ArmPosition.High),
             new RunOuttake(intake),
-            trajCommand, 
+            drivePath, 
             new AutoBalance(drivetrain)
         );
         

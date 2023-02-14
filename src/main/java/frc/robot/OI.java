@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.HashMap;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -19,13 +21,14 @@ import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
+import frc.subsystems.Intake;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
     public final Arm arm = new Arm();
     // public final Vision vision = new Vision();
-    // public final Intake intake = new Intake();
+    public final Intake intake = new Intake();
 
     private XboxController driveController;
     private Trigger driveRightBumper, driveLeftBumper;
@@ -38,9 +41,13 @@ public class OI {
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
 
-    
+
+    private HashMap<String, Command> hmmmmmmmmmmmmmm; 
 
     public OI() {
+        hmmmmmmmmmmmmmm.put("start intake", new InstantCommand(() -> intake.runIntake()));
+        hmmmmmmmmmmmmmm.put("stop intake", new InstantCommand(() -> intake.stop()));
+
         initControllers();
         
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
