@@ -16,14 +16,8 @@ import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 
 public class QuickBalance extends SequentialCommandGroup{
-    private final Drivetrain drivetrain;
-    private final Arm arm;
-    private final Intake intake;
-
+   
     public QuickBalance(Drivetrain drivetrain, Arm arm, Intake intake){
-        this.drivetrain = drivetrain;
-        this.arm = arm;
-        this.intake = intake;
         addRequirements(drivetrain, arm, intake);
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("Quick Balance", new PathConstraints(
@@ -38,6 +32,5 @@ public class QuickBalance extends SequentialCommandGroup{
             new AutoBalance(drivetrain)
         );
         
-        addRequirements(drivetrain);
     }
 }
