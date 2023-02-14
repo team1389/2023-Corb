@@ -7,13 +7,19 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.commands.AutoBalance;
-import frc.commands.AutoBalanceController;
+import frc.autos.OneBottomCone;
+import frc.autos.OneBottomCube;
+import frc.autos.OneTopCone;
+import frc.autos.OneTopCube;
+import frc.autos.QuickBalance;
+import frc.autos.TwoTopCubeInitial;
 import frc.commands.ManualArm;
 import frc.commands.TeleOpDrive;
 //import frc.commands.Test;
@@ -40,7 +46,7 @@ public class OI {
     private Trigger manipXButton;
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
-
+    SendableChooser<Command> chooser = new SendableChooser<>();
 
     private HashMap<String, Command> hmmmmmmmmmmmmmm; 
 
@@ -81,7 +87,25 @@ public class OI {
         // manipYButton.onTrue(new SetArm(arm, ArmPosition.Mid));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         //possibly add a wrist joint
+
+        final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
+        final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
+        final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
+        final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
+        final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
+        final Command twoTopCube = new TwoTopCubeInitial(drivetrain, arm, intake);
+
+  // A chooser for autonomous commands
+        
+        chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
+        chooser.addOption("One Bottom Cube", oneBottomCube);
+        chooser.addOption("One Top Cone", oneTopCone);
+        chooser.addOption("One Top Cube", oneTopCube);
+        chooser.addOption("Quick Balance", quickBalance);
+        chooser.addOption("Two Top Cube", twoTopCube);
+        SmartDashboard.putData("Auto choices", chooser);
     }
+    
 
     /**
      * Initialize JoystickButtons and Controllers
@@ -101,14 +125,15 @@ public class OI {
 
     // Return autocommand
     public Command getAutoCommand() {
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS)
-        );
+        // PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
+        //     AutoConstants.AUTO_MAX_METERS_PER_SEC, 
+        //     AutoConstants.AUTO_MAX_MPSS)
+        // );
 
-        Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
-        return trajCommand;
+        // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
+        // return trajCommand;
         //return new AutoBalanceController(drivetrain);
+        return chooser.getSelected();
     }
 
 }

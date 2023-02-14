@@ -44,7 +44,6 @@ public class TwoTopCubeInitial extends SequentialCommandGroup{
             new RunOuttake(intake),
             drivetrain.followTrajectoryCommand(trajectory3, false),
             new AutoBalance(drivetrain)
-
         );
 
     }

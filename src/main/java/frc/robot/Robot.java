@@ -22,8 +22,6 @@ public class Robot extends TimedRobot {
     SwerveTelemetry frontRightTelemetry;
     SwerveTelemetry backRightTelemetry;
     PowerDistribution pdh;
-
-
     @Override
     public void robotInit() {
         
@@ -66,13 +64,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        // Setting auto
         autoCommand = oi.getAutoCommand();
 
-        if(autoCommand != null) {
-            autoCommand.schedule();
-        }
+    // schedule the autonomous command (example)
+    if (autoCommand != null) {
+      autoCommand.schedule();
     }
+    }
+
 
     /**
      * This function is called periodically during autonomous.
@@ -100,6 +99,14 @@ public class Robot extends TimedRobot {
         oi.drivetrain.backLeft.resetEncoders();
         oi.drivetrain.frontRight.resetEncoders();
         oi.drivetrain.backRight.resetEncoders();
+
+        // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (autoCommand != null) {
+        autoCommand.cancel();
+      }
     }
 
     @Override
