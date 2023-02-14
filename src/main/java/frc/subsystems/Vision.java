@@ -25,7 +25,7 @@ import frc.robot.RobotMap.FieldConstants;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class Vision extends SubsystemBase {
-    public PhotonCamera camera = new PhotonCamera("OV5647");
+    public PhotonCamera camera = new PhotonCamera("Arducam_OV9281_USB_Camera");
     public double fieldLength = 10; // in meters
     public double fieldWidth = 10;
     public AprilTagFieldLayout aprilTagFieldLayout;
@@ -37,7 +37,7 @@ public class Vision extends SubsystemBase {
     // Cam mounted facing left, 0.197 meters behind center, 0.368 meters left of
     // center, 0.235 meters above center
     public final Transform3d robotToCamTransformation = new Transform3d(new Translation3d(-0.197, -0.368, 0.235),
-            new Rotation3d(0, 0, 90));
+            new Rotation3d(0, 0, Math.toRadians(90)));
     private PhotonPoseEstimator photonPoseEstimator;
 
     public Vision() {
@@ -51,7 +51,7 @@ public class Vision extends SubsystemBase {
             e.printStackTrace();
         }
 
-        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCamTransformation);
+        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, camera, robotToCamTransformation);
     }
 
     public void updatePose(Drivetrain drivetrain) {

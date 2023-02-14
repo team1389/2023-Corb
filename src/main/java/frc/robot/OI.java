@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.commands.AprilTagPoseEstimisation;
 import frc.commands.AutoBalance;
-import frc.commands.RunIntake;
-import frc.commands.RunOuttake;
+// import frc.commands.RunIntake;
+// import frc.commands.RunOuttake;
 import frc.commands.SetArm;
 import frc.commands.AutoBalanceController;
 import frc.commands.TeleOpDrive;
@@ -22,14 +22,14 @@ import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
 //import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
-import frc.subsystems.Intake;
+// import frc.subsystems.Intake;
 import frc.subsystems.Vision;
 import frc.subsystems.Arm.Position;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    // public final Vision vision = new Vision();
+    public final Vision vision = new Vision();
     // public final Intake intake = new Intake();
     // public final Arm arm = new Arm();
 
@@ -50,18 +50,18 @@ public class OI {
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
         drivetrain.setDefaultCommand(new TeleOpDrive(
             drivetrain,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX(),
-            () -> -driveController.getRightY(),
-            () -> !driveController.getLeftBumper()) // By default be in field oriented
+            () -> -driveController.getRawAxis(0),
+            () -> -driveController.getRawAxis(1),
+            () -> -driveController.getRawAxis(3),
+            () -> -driveController.getRawAxis(4),
+            () -> !driveController.getRawButton(5)) // By default be in field oriented
         );
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
         driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
-        // vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
+        vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
         
         // manipAButton.onTrue(new RunIntake(intake));
         // manipBButton.onTrue(new RunOuttake(intake));

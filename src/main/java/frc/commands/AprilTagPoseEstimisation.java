@@ -12,7 +12,7 @@ public class AprilTagPoseEstimisation extends CommandBase{
         this.drivetrain = drivetrain;
         this.vision = vision;
 
-        addRequirements(drivetrain, vision);
+        addRequirements(vision);
     }
 
     @Override
