@@ -12,24 +12,33 @@ public class Intake extends SubsystemBase{
     private CANSparkMax bottomRoller; 
     private CANSparkMax topRoller;
     private final double intakeSpeed = 0.5;
-    private final double outtakeSpeed = 0.5;
+    private final double outtakeSpeed = 1;
     
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
         topRoller = new CANSparkMax(DriveConstants.TOP_INTAKE_MOTOR, MotorType.kBrushless);
     }
 
-    public void runIntake(){
-        //TODO: Make one of these inverted or negative
+    public void runIntakeCone(){
+        bottomRoller.set(-intakeSpeed);
+        topRoller.set(-intakeSpeed);
+    }
+
+    public void runIntakeCube(){
         bottomRoller.set(intakeSpeed);
         topRoller.set(intakeSpeed);
     }
 
-    public void runOuttake(){
-        //TODO: Make one of these inverted or negative
+    public void runOuttakeCube(){
         bottomRoller.set(-outtakeSpeed);
         topRoller.set(-outtakeSpeed);
     }
+
+    public void runOuttakeCone(){
+        bottomRoller.set(outtakeSpeed);
+        topRoller.set(outtakeSpeed);
+    }
+
     public void stop(){
         bottomRoller.set(0);
         topRoller.set(0);

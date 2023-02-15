@@ -11,7 +11,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
-import frc.commands.RunOuttake;
+import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
@@ -34,10 +34,10 @@ public class TwoTopCube extends SequentialCommandGroup{
         // do stuff
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCube, false),
-            new RunOuttake(intake),
+            new RunOuttakeCube(intake),
             new SetArmPosition(arm, ArmPosition.Low, true),
             new FollowPathWithEvents(path1, pathGroup.get(0).getMarkers(), hmm),
-            new RunOuttake(intake),
+            new RunOuttakeCube(intake),
             new FollowPathWithEvents(path2, pathGroup.get(1).getMarkers(), hmm),
             new AutoBalance(drivetrain)
         );

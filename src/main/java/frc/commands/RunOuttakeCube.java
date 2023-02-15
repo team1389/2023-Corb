@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.subsystems.Intake;
 
-public class RunOuttake extends CommandBase{
+public class RunOuttakeCube extends CommandBase{
     Intake intake;
     double timeout = -1;
     Timer timer = new Timer();
 
-    public RunOuttake(Intake intake){
+    public RunOuttakeCube(Intake intake){
         this.intake = intake;
         timer.reset();
         timer.start();
@@ -18,7 +18,7 @@ public class RunOuttake extends CommandBase{
     }
 
     // timeout in seconds
-    public RunOuttake(Intake intake, double timeout){
+    public RunOuttakeCube(Intake intake, double timeout){
         this.intake = intake;
         timer.reset();
         timer.start();
@@ -29,7 +29,7 @@ public class RunOuttake extends CommandBase{
 
     @Override
     public void execute(){
-        intake.runOuttake();
+        intake.runOuttakeCube();
     }
 
     @Override

@@ -21,8 +21,10 @@ import frc.autos.OneTopCube;
 import frc.autos.QuickBalance;
 import frc.autos.TwoTopCube;
 import frc.commands.ManualArm;
-import frc.commands.RunIntake;
-import frc.commands.RunOuttake;
+import frc.commands.ManualWrist;
+import frc.commands.RunIntakeCone;
+import frc.commands.RunIntakeCube;
+import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.commands.TeleOpDrive;
 //import frc.commands.Test;
@@ -53,10 +55,10 @@ public class OI {
     private Trigger manipRightBumper;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
-    private HashMap<String, Command> hmmmmmmmmmmmmmm; 
+    private HashMap<String, Command> hmmmmmmmmmmmmmm = new HashMap<String, Command>(); 
 
     public OI() {
-        hmmmmmmmmmmmmmm.put("start intake", new InstantCommand(() -> intake.runIntake()));
+        hmmmmmmmmmmmmmm.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
         hmmmmmmmmmmmmmm.put("stop intake", new InstantCommand(() -> intake.stop()));
         hmmmmmmmmmmmmmm.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
         hmmmmmmmmmmmmmm.put("arm low", new SetArmPosition(arm, ArmPosition.Low, true));
@@ -87,8 +89,10 @@ public class OI {
         // Press right bumper -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
         
-        manipRightBumper.onTrue(new RunIntake(intake));
-        manipLeftBumper.onTrue(new RunOuttake(intake));
+        manipRightBumper.whileTrue(new RunIntakeCone(intake));
+        manipXButton.whileTrue(new RunIntakeCube(intake));
+        manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
+        manipYButton.whileTrue(new ManualWrist(arm, 0.2));
         // manipXButton.onTrue(new SetArm(arm, ArmPosition.Low));
         // manipYButton.onTrue(new SetArm(arm, ArmPosition.Mid));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
@@ -99,7 +103,7 @@ public class OI {
         final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
         final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
         final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
-        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake,hmmmmmmmmmmmmmm);
+        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
 
   // A chooser for autonomous commands
         

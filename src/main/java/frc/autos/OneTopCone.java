@@ -9,7 +9,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
-import frc.commands.RunOuttake;
+import frc.commands.RunOuttakeCone;
 import frc.commands.SetArmPosition;
 import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
@@ -30,7 +30,7 @@ public class OneTopCone extends SequentialCommandGroup{
         //score initial cone, pick up game piece, balance
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCone, false),
-            new RunOuttake(intake),
+            new RunOuttakeCone(intake),
             new SetArmPosition(arm, ArmPosition.Low, true),
             new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
             new AutoBalance(drivetrain)

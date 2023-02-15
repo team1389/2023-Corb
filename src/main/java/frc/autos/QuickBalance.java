@@ -7,7 +7,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
-import frc.commands.RunOuttake;
+import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
@@ -28,7 +28,7 @@ public class QuickBalance extends SequentialCommandGroup{
 
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCone, false),
-            new RunOuttake(intake),
+            new RunOuttakeCube(intake),
             drivePath, 
             new AutoBalance(drivetrain)
         );

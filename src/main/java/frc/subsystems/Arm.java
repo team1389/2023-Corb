@@ -26,7 +26,7 @@ public class Arm extends SubsystemBase{
     private PIDController pidElbow;
     private PIDController pidWrist;
     
-    private RelativeEncoder wristEncoder;
+    private RelativeEncoder wristEncoder, shoulderEncoder, elbowEncoder;
 
     public enum ArmPosition{
         Intake,
@@ -50,7 +50,10 @@ public class Arm extends SubsystemBase{
         pidShoulder = new PIDController(sP, sI, sD);
         pidElbow = new PIDController(eP, eI, eD);
         pidWrist = new PIDController(wP, wI, wD);
+
         wristEncoder = wrist.getEncoder();
+        shoulderEncoder = shoulder.getEncoder();
+        elbowEncoder = elbow.getEncoder();
 
         wristEncoder.setPositionConversionFactor(ArmConstants.WRIST_CONVERSION_FACTOR);
 
@@ -69,9 +72,9 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic() {
-        shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
-        elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
-        wrist.set(pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2]));
+        // shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
+        // elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
+        // wrist.set(pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2]));
 
         SmartDashboard.putNumber("Shoulder position", getShoulderDistance());
         SmartDashboard.putNumber("Elbow position", getElbowDistance());
@@ -79,10 +82,10 @@ public class Arm extends SubsystemBase{
     }
 
     public double getShoulderDistance(){
-        return 0;
+        return shoulderEncoder.getPosition();
     }
     public double getElbowDistance(){
-        return 0;
+        return elbowEncoder.getPosition();
     }
 
     // Debugging methods below:
@@ -92,6 +95,10 @@ public class Arm extends SubsystemBase{
 
     public void moveElbow(double power) {
         elbow.set(power);
+    }
+
+    public void moveWrist(double power) {
+        wrist.set(power);
     }
 
     public boolean getAtPosition() {
