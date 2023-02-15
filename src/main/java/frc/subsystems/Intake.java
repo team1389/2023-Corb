@@ -11,7 +11,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Intake extends SubsystemBase{
     private CANSparkMax bottomRoller; 
     private CANSparkMax topRoller;
-    private final double speed = 0.5;
+    private final double intakeSpeed = 0.5;
+    private final double outtakeSpeed = 0.5;
     
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
@@ -20,14 +21,14 @@ public class Intake extends SubsystemBase{
 
     public void runIntake(){
         //TODO: Make one of these inverted or negative
-        bottomRoller.set(speed);
-        topRoller.set(speed);
+        bottomRoller.set(intakeSpeed);
+        topRoller.set(intakeSpeed);
     }
 
     public void runOuttake(){
         //TODO: Make one of these inverted or negative
-        bottomRoller.set(-speed);
-        topRoller.set(-speed);
+        bottomRoller.set(-outtakeSpeed);
+        topRoller.set(-outtakeSpeed);
     }
     public void stop(){
         bottomRoller.set(0);

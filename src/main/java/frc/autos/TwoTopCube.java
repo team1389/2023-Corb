@@ -19,9 +19,9 @@ import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 
-public class TwoTopCubeInitial extends SequentialCommandGroup{
+public class TwoTopCube extends SequentialCommandGroup{
 
-    public TwoTopCubeInitial(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
+    public TwoTopCube(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
         
         List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("2 Top Cube", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC,

@@ -19,8 +19,10 @@ import frc.autos.OneBottomCube;
 import frc.autos.OneTopCone;
 import frc.autos.OneTopCube;
 import frc.autos.QuickBalance;
-import frc.autos.TwoTopCubeInitial;
+import frc.autos.TwoTopCube;
 import frc.commands.ManualArm;
+import frc.commands.RunIntake;
+import frc.commands.RunOuttake;
 import frc.commands.SetArmPosition;
 import frc.commands.TeleOpDrive;
 //import frc.commands.Test;
@@ -48,6 +50,7 @@ public class OI {
     private Trigger manipXButton;
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
+    private Trigger manipRightBumper;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
     private HashMap<String, Command> hmmmmmmmmmmmmmm; 
@@ -83,12 +86,9 @@ public class OI {
 
         // Press right bumper -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
-        // driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
-
-        // vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
         
-        // manipAButton.onTrue(new RunIntake(intake));
-        // manipBButton.onTrue(new RunOuttake(intake));
+        manipRightBumper.onTrue(new RunIntake(intake));
+        manipLeftBumper.onTrue(new RunOuttake(intake));
         // manipXButton.onTrue(new SetArm(arm, ArmPosition.Low));
         // manipYButton.onTrue(new SetArm(arm, ArmPosition.Mid));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
@@ -99,7 +99,7 @@ public class OI {
         final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
         final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
         final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
-        final Command twoTopCube = new TwoTopCubeInitial(drivetrain, arm, intake,hmmmmmmmmmmmmmm);
+        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake,hmmmmmmmmmmmmmm);
 
   // A chooser for autonomous commands
         
@@ -124,6 +124,7 @@ public class OI {
         manipController = new XboxController(1);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
+        manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
         manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
