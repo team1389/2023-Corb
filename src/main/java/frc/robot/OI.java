@@ -89,10 +89,11 @@ public class OI {
         // Press right bumper -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
         
-        manipRightBumper.whileTrue(new RunIntakeCone(intake));
+        manipRightBumper.whileTrue(new RunOuttakeCube(intake));
         manipXButton.whileTrue(new RunIntakeCube(intake));
-        manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
+        manipLeftBumper.whileTrue(new ManualWrist(arm, -0.2));
         manipYButton.whileTrue(new ManualWrist(arm, 0.2));
+        
         // manipXButton.onTrue(new SetArm(arm, ArmPosition.Low));
         // manipYButton.onTrue(new SetArm(arm, ArmPosition.Mid));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));

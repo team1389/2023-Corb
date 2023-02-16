@@ -10,6 +10,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -47,6 +48,11 @@ public class Arm extends SubsystemBase{
         shoulder = new CANSparkMax(DriveConstants.SHOULDER_MOTOR, MotorType.kBrushless);
         elbow = new CANSparkMax(DriveConstants.ELBOW_MOTOR, MotorType.kBrushless);
         wrist = new CANSparkMax(DriveConstants.WRIST_MOTOR, MotorType.kBrushless);
+
+        elbow.setIdleMode(IdleMode.kBrake);
+        shoulder.setIdleMode(IdleMode.kBrake);
+        wrist.setIdleMode(IdleMode.kBrake);
+
         pidShoulder = new PIDController(sP, sI, sD);
         pidElbow = new PIDController(eP, eI, eD);
         pidWrist = new PIDController(wP, wI, wD);

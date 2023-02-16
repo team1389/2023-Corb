@@ -131,6 +131,8 @@ public class RobotMap {
         public static final double SHOULDER_DEADZONE = 0.1;
         public static final double ELBOW_DEADZONE = 0.1;
         public static final double WRIST_DEADZONE = 0.1;
+        public static final int INTAKE_SENSOR_PORT_PING = 9;
+        public static final int INTAKE_SENSOR_PORT_RESPONSE = 8;
     }
 
     public static final class FieldConstants {
