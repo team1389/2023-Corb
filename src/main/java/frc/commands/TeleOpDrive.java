@@ -18,7 +18,7 @@ public class TeleOpDrive extends CommandBase {
     private double desiredAngle; // gyro value from getHeading() the robot wants to point at
 
     public TeleOpDrive(Drivetrain drivetrain,
-            Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction, Supplier<Double> rightY,
+            Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
             Supplier<Boolean> fieldOrientedFunction) {
         this.drivetrain = drivetrain;
         this.xSpdFunction = xSpdFunction;
@@ -81,6 +81,8 @@ public class TeleOpDrive extends CommandBase {
         SmartDashboard.putNumber("FL target", moduleStates[1].angle.getDegrees());
         SmartDashboard.putNumber("FR target", moduleStates[2].angle.getDegrees());
         SmartDashboard.putNumber("FL target", moduleStates[3].angle.getDegrees());
+
+        SmartDashboard.putBoolean("Field Oriented?", fieldOrientedFunction.get());
 
         // 6. Output all module states to wheels
         drivetrain.setModuleStates(moduleStates);

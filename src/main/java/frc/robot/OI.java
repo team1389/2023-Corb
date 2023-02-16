@@ -50,16 +50,15 @@ public class OI {
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
         drivetrain.setDefaultCommand(new TeleOpDrive(
             drivetrain,
-            () -> -driveController.getRawAxis(0),
-            () -> -driveController.getRawAxis(1),
-            () -> -driveController.getRawAxis(3),
-            () -> -driveController.getRawAxis(4),
-            () -> !driveController.getRawButton(5)) // By default be in field oriented
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX(),
+            () -> !driveController.getLeftBumper()) // By default be in field oriented
         );
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
-        driveRightBumper.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
+        driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
         vision.setDefaultCommand(new AprilTagPoseEstimisation(drivetrain, vision));
         
