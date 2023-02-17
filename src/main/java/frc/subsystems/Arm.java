@@ -61,6 +61,10 @@ public class Arm extends SubsystemBase{
         shoulderEncoder = shoulder.getEncoder();
         elbowEncoder = elbow.getEncoder();
 
+        wristEncoder.setPosition(0);
+        shoulderEncoder.setPosition(0);
+        elbowEncoder.setPosition(0);
+
         wristEncoder.setPositionConversionFactor(ArmConstants.WRIST_CONVERSION_FACTOR);
 
         // Shoulder, elbow, wrist

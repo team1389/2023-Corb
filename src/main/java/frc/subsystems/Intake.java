@@ -16,8 +16,8 @@ public class Intake extends SubsystemBase{
     private CANSparkMax bottomRoller; 
     private CANSparkMax topRoller;
     private Ultrasonic sensor, sensor2, sensor3;
-    private final double intakeSpeed = 0.5;
-    private final double outtakeSpeed = 1;
+    private final double intakeSpeed = 1;
+    private final double outtakeSpeed = 0.5;
     
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
