@@ -25,6 +25,7 @@ import frc.commands.ManualArm;
 import frc.commands.ManualWrist;
 import frc.commands.RunIntakeCone;
 import frc.commands.RunIntakeCube;
+import frc.commands.RunOuttakeCone;
 import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.commands.TeleOpDrive;
@@ -90,10 +91,13 @@ public class OI {
         // Press right bumper -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
         
-        manipRightBumper.whileTrue(new RunIntakeCone(intake));
+        manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
         manipXButton.whileTrue(new RunIntakeCube(intake));
-        manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
-        manipYButton.whileTrue(new ManualWrist(arm, 0.2));
+        manipAButton.whileTrue(new RunOuttakeCube(intake));
+        manipBButton.whileTrue(new RunOuttakeCone(intake));
+        manipLeftBumper.whileTrue(new ManualWrist(arm, -0.2));
+        manipYButton.whileTrue(new RunIntakeCone(intake));
+        
         // manipXButton.onTrue(new SetArm(arm, ArmPosition.Low));
         // manipYButton.onTrue(new SetArm(arm, ArmPosition.Mid));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));

@@ -20,8 +20,8 @@ public class ManualArm extends CommandBase {
     
     @Override
     public void execute() {
-        arm.moveShoulder(MathUtil.clamp(shoulderFunction.get(), -0.25, 025));
-        arm.moveElbow(MathUtil.clamp(elbowFunction.get(), -0.25, 025));
+        arm.moveShoulder(MathUtil.clamp(shoulderFunction.get(), -1, 1));
+        arm.moveElbow(MathUtil.clamp(elbowFunction.get(), -1, 1));
     }
 
 }
