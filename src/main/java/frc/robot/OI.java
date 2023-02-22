@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,7 +43,7 @@ public class OI {
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
 
-    private XboxController driveController;
+    private GenericHID driveController;
     private Trigger driveRightBumper, driveLeftBumper;
     private Trigger driveAButton;
 
@@ -70,12 +71,12 @@ public class OI {
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
         drivetrain.setDefaultCommand(new TeleOpDrive(
             drivetrain,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX(),
-            () -> -driveController.getRightY(),
-            () -> !driveController.getLeftBumper(),
-            () -> driveController.getRightBumper()) // By default be in field oriented
+            () -> getDriveLeftY(),
+            () -> getDriveLeftX(),
+            () -> getDriveLeftX(),
+            () -> getDriveRightY(),
+            () -> !getDriveLeftBumper(),
+            () -> getDriveRightBumper()) // By default be in field oriented
         );
 
         arm.setDefaultCommand(new ManualArm(
@@ -122,8 +123,8 @@ public class OI {
      */
     private void initControllers() {
         driveController = new XboxController(0);
-        driveRightBumper = new JoystickButton(driveController, XboxController.Button.kRightBumper.value);
-        driveAButton = new JoystickButton(driveController, XboxController.Button.kA.value);
+        driveRightBumper = new JoystickButton(driveController, 6);
+        driveAButton = new JoystickButton(driveController, 1 );
 
         manipController = new XboxController(1);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
@@ -132,6 +133,25 @@ public class OI {
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
         manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
+    }
+
+    private double getDriveLeftX() {
+        return -driveController.getRawAxis(1);
+    }
+    private double getDriveLeftY() {
+        return -driveController.getRawAxis(0);
+    }
+    private double getDriveRightX() {
+        return  -driveController.getRawAxis(3);
+    }
+    private double getDriveRightY() {
+        return  -driveController.getRawAxis(4);
+    }
+    private boolean getDriveLeftBumper() {
+        return !driveController.getRawButton(5);
+    }
+    private boolean getDriveRightBumper() {
+        return !driveController.getRawButton(6);
     }
 
     // Return autocommand
