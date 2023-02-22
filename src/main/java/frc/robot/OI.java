@@ -1,10 +1,14 @@
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -33,9 +37,13 @@ public class OI {
     // public final Intake intake = new Intake();
     // public final Arm arm = new Arm();
 
-    private XboxController driveController;
+    private GenericHID driveController;
+    // private XboxController driveController;
+    private Trigger driveLeftBumper;
     private Trigger driveRightBumper;
     private Trigger driveAButton;
+
+
 
     private XboxController manipController;
     private Trigger manipAButton;
@@ -50,10 +58,10 @@ public class OI {
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
         drivetrain.setDefaultCommand(new TeleOpDrive(
             drivetrain,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX(),
-            () -> !driveController.getLeftBumper()) // By default be in field oriented
+            () -> getDriveLeftX(),
+            () -> getDriveLeftY(),
+            () -> getDriveRightX(),
+            () -> getDriveLeftBumper()) // By default be in field oriented
         );
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
@@ -74,9 +82,14 @@ public class OI {
      * Initialize JoystickButtons and Controllers
      */
     private void initControllers() {
-        driveController = new XboxController(0);
-        driveRightBumper = new JoystickButton(driveController, XboxController.Button.kRightBumper.value);
-        driveAButton = new JoystickButton(driveController, XboxController.Button.kA.value);
+        driveController = new GenericHID(0);
+        // driveController = new XboxController(0);
+
+
+        driveRightBumper = new JoystickButton(driveController, 6);
+        driveAButton = new JoystickButton(driveController, 1);
+        // driveRightBumper = new JoystickButton(driveController, XboxController.Button.kRightBumper.value);
+        // driveAButton = new JoystickButton(driveController, XboxController.Button.kA.value);
 
         manipController = new XboxController(1);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
@@ -85,6 +98,20 @@ public class OI {
         manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
     }
+
+    private double getDriveLeftX() {
+        return -driveController.getRawAxis(1);
+    }
+    private double getDriveLeftY() {
+        return -driveController.getRawAxis(0);
+    }
+    private double getDriveRightX() {
+        return  -driveController.getRawAxis(3);
+    }
+    private boolean getDriveLeftBumper() {
+        return !driveController.getRawButton(5);
+    }
+
 
     // Return autocommand
     public Command getAutoCommand() {

@@ -86,6 +86,10 @@ public class TeleOpDrive extends CommandBase {
 
         // 6. Output all module states to wheels
         drivetrain.setModuleStates(moduleStates);
+
+        SmartDashboard.putNumber("X speed", xSpdFunction.get());
+        SmartDashboard.putNumber("Y speed", ySpdFunction.get());
+        SmartDashboard.putNumber("Turn speed", turningSpdFunction.get());
     }
 
     @Override
