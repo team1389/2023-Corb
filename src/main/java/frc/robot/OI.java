@@ -57,14 +57,14 @@ public class OI {
     private Trigger manipRightBumper;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
-    private HashMap<String, Command> hmmmmmmmmmmmmmm = new HashMap<String, Command>(); 
+    private HashMap<String, Command> autoMap = new HashMap<String, Command>(); 
 
     public OI() {
-        hmmmmmmmmmmmmmm.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
-        hmmmmmmmmmmmmmm.put("stop intake", new InstantCommand(() -> intake.stop()));
-        hmmmmmmmmmmmmmm.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
-        hmmmmmmmmmmmmmm.put("arm low", new SetArmPosition(arm, ArmPosition.Low, true));
-        hmmmmmmmmmmmmmm.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
+        autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
+        autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
+        autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
+        autoMap.put("arm low", new SetArmPosition(arm, ArmPosition.Low, true));
+        autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
 
 
         initControllers();
@@ -92,23 +92,23 @@ public class OI {
         driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
         
         manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
-        manipXButton.whileTrue(new RunIntakeCube(intake));
+        // manipXButton.whileTrue(new RunIntakeCube(intake));
         manipAButton.whileTrue(new RunOuttakeCube(intake));
         manipBButton.whileTrue(new RunOuttakeCone(intake));
         manipLeftBumper.whileTrue(new ManualWrist(arm, -0.2));
-        manipYButton.whileTrue(new RunIntakeCone(intake));
+        // manipYButton.whileTrue(new RunIntakeCone(intake));
         
-        // manipXButton.onTrue(new SetArm(arm, ArmPosition.Low));
-        // manipYButton.onTrue(new SetArm(arm, ArmPosition.Mid));
+        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.Intake, true));
+        manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         //possibly add a wrist joint
 
-        final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
-        final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
-        final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
-        final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
+        final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
+        final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
+        final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
+        final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
         final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
-        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, hmmmmmmmmmmmmmm);
+        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
   // A chooser for autonomous commands
         
