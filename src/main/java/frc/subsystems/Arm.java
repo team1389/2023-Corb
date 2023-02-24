@@ -21,13 +21,13 @@ import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
 
 public class Arm extends SubsystemBase{
-    private CANSparkMax shoulder, elbow, wrist;
+    private CANSparkMax shoulderLeft, shoulderRight, elbow, wrist;
     private double sP, sI, sD, eP, eI, eD, wP, wI, wD;
     private PIDController pidShoulder;
     private PIDController pidElbow;
     private PIDController pidWrist;
     
-    private RelativeEncoder wristEncoder, shoulderEncoder, elbowEncoder;
+    private RelativeEncoder wristEncoder, shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
 
     public enum ArmPosition{
         Intake,
@@ -45,24 +45,31 @@ public class Arm extends SubsystemBase{
 
     
     public Arm(){
-        shoulder = new CANSparkMax(DriveConstants.SHOULDER_MOTOR, MotorType.kBrushless);
-        elbow = new CANSparkMax(DriveConstants.ELBOW_MOTOR, MotorType.kBrushless);
+        shoulderLeft = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_LEFT, MotorType.kBrushless);
+        shoulderRight = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_RIGHT, MotorType.kBrushless);
+
+        elbow = new CANSparkMax(ArmConstants.ELBOW_MOTOR, MotorType.kBrushless);
         wrist = new CANSparkMax(DriveConstants.WRIST_MOTOR, MotorType.kBrushless);
 
         elbow.setIdleMode(IdleMode.kBrake);
-        shoulder.setIdleMode(IdleMode.kBrake);
+        shoulderLeft.setIdleMode(IdleMode.kBrake);
+        shoulderRight.setIdleMode(IdleMode.kBrake);
         wrist.setIdleMode(IdleMode.kBrake);
+
+        shoulderLeft.setInverted(false);
+        shoulderRight.setInverted(false);
 
         pidShoulder = new PIDController(sP, sI, sD);
         pidElbow = new PIDController(eP, eI, eD);
         pidWrist = new PIDController(wP, wI, wD);
 
         wristEncoder = wrist.getEncoder();
-        shoulderEncoder = shoulder.getEncoder();
+        shoulderLeftEncoder = shoulderLeft.getEncoder();
+        shoulderRightEncoder = shoulderLeft.getEncoder();
         elbowEncoder = elbow.getEncoder();
 
         wristEncoder.setPosition(0);
-        shoulderEncoder.setPosition(0);
+        shoulderLeftEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
 
         wristEncoder.setPositionConversionFactor(ArmConstants.WRIST_CONVERSION_FACTOR);
@@ -82,9 +89,21 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic() {
-        // shoulder.set(pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]));
-        // elbow.set(pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]));
-        // wrist.set(pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2]));
+        // double shoulderPower = pidShoulder.calculate(getShoulderDistance(), hmmmmm.get(targetPos)[0]);
+        // double elbowPower = pidElbow.calculate(getElbowDistance(), hmmmmm.get(targetPos)[1]);
+        // double wristPower = pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2])
+        // shoulderLeft.set(shoulderPower);
+        // shoulderRight.set(shoulderPower);
+        // elbow.set(elbowPower);
+        // wrist.set(wristPower);
+
+        // SmartDashboard.putNumber("Shoulder power", shoulderPower);
+        // SmartDashboard.putNumber("Elbow power", elbowPower);
+        // SmartDashboard.putNumber("Wrist power", wristPower);
+
+        SmartDashboard.putNumber("Shoulder target", hmmmmm.get(targetPos)[0]);
+        SmartDashboard.putNumber("Elbow target", hmmmmm.get(targetPos)[1]);
+        SmartDashboard.putNumber("Wrist target", hmmmmm.get(targetPos)[2]);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderDistance());
         SmartDashboard.putNumber("Elbow position", getElbowDistance());
@@ -92,7 +111,7 @@ public class Arm extends SubsystemBase{
     }
 
     public double getShoulderDistance(){
-        return shoulderEncoder.getPosition();
+        return shoulderLeftEncoder.getPosition();
     }
     public double getElbowDistance(){
         return elbowEncoder.getPosition();
@@ -100,7 +119,8 @@ public class Arm extends SubsystemBase{
 
     // Debugging methods below:
     public void moveShoulder(double power) {
-        shoulder.set(power);
+        shoulderLeft.set(power);
+        shoulderRight.set(power);
     }
 
     public void moveElbow(double power) {

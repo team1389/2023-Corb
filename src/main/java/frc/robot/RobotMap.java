@@ -103,9 +103,6 @@ public class RobotMap {
         public static final double MAX_LINEAR_ACCEL = 7.5; // m/s/s
         public static final double MAX_ANGULAR_ACCEL = 10; // rad/s/s
 
-        //TODO: get actual port
-        public static final int SHOULDER_MOTOR = 11;
-        public static final int ELBOW_MOTOR = 10;
     }
 
     public static final class AutoConstants {
@@ -133,6 +130,9 @@ public class RobotMap {
         public static final double WRIST_DEADZONE = 0.1;
         public static final int INTAKE_SENSOR_PORT_PING = 9;
         public static final int INTAKE_SENSOR_PORT_RESPONSE = 8;
+        public static final int SHOULDER_MOTOR_LEFT = 11;
+        public static final int SHOULDER_MOTOR_RIGHT = 15;
+        public static final int ELBOW_MOTOR = 10;
     }
 
     public static final class FieldConstants {
