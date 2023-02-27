@@ -78,11 +78,11 @@ public class Arm extends SubsystemBase{
         elbowEncoder.setPosition(0);
 
 
-        // Shoulder, elbow, wrist
+        // Shoulder, elbow, wrist, min elbow
         positionMap.put(ArmPosition.Low, new Double[]{0.0, 0.0, 0.0});
         positionMap.put(ArmPosition.Intake, new Double[]{0.0, -15.0, 0.0});
         positionMap.put(ArmPosition.MidCone, new Double[]{0.0, 0.0, 0.0});
-        positionMap.put(ArmPosition.HighCone, new Double[]{0.0, 0.0, 0.0});
+        positionMap.put(ArmPosition.HighCone, new Double[]{0.0, 0.0, 0.0, 0.0});
         positionMap.put(ArmPosition.MidCube, new Double[]{0.0, 0.0, 0.0});
         positionMap.put(ArmPosition.HighCube, new Double[]{0.0, 0.0, 0.0});
         positionMap.put(ArmPosition.StartingConfig, new Double[]{0.0, 0.0, 0.0});
@@ -128,7 +128,10 @@ public class Arm extends SubsystemBase{
     }
 
     public void moveElbow(double power) {
-        elbow.set(MathUtil.clamp(power, -0.7, 0.7));
+        if(positionMap.get(targetPos).length > 3) {
+            power = (getElbowDistance() < positionMap.get(targetPos)[3] ? 0 : power);
+        }
+        elbow.set(MathUtil.clamp(power, -0.9, 0.9));
     }
 
     public void moveWrist(double power) {

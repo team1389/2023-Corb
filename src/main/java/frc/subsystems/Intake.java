@@ -15,21 +15,22 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Intake extends SubsystemBase{
     private CANSparkMax bottomRoller; 
     private CANSparkMax topRoller;
-    private Ultrasonic sensor, sensor2, sensor3;
+    private Ultrasonic cubeSensor, coneSensor1, coneSensor2;
+    private double sensorThreshold = 10;
     private final double intakeSpeed = 0.5;
     private final double outtakeSpeed = 0.5;
     
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
         topRoller = new CANSparkMax(DriveConstants.TOP_INTAKE_MOTOR, MotorType.kBrushless);
-        sensor = new Ultrasonic(ArmConstants.INTAKE_SENSOR_PORT_PING, ArmConstants.INTAKE_SENSOR_PORT_RESPONSE);
+        cubeSensor = new Ultrasonic(ArmConstants.INTAKE_SENSOR_PORT_PING, ArmConstants.INTAKE_SENSOR_PORT_RESPONSE);
         // sensor2 = new Ultrasonic(ArmConstants.INTAKE_SENSOR_PORT_PING_TWO, ArmConstants.INTAKE_SENSOR_PORT_RESPONSE_TWO);
         // sensor3 = new Ultrasonic(ArmConstants.INTAKE_SENSOR_PORT_PING_THREE, ArmConstants.INTAKE_SENSOR_PORT_RESPONSE_THREE);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Intake distance", getSensor());
+        SmartDashboard.putNumber("Cube distance", getCube());
     }
 
     public void runIntakeCone(){
@@ -52,8 +53,8 @@ public class Intake extends SubsystemBase{
         topRoller.set(outtakeSpeed);
     }
 
-    public double getSensor() {
-        return sensor.getRangeInches();
+    public double getCube() {
+        return cubeSensor.getRangeInches();
     }
 
     public void stop(){
