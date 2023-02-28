@@ -39,7 +39,8 @@ import frc.subsystems.Arm.ArmPosition;
 
 public class OI {
 
-    public final Drivetrain drivetrain = new Drivetrain();
+   // public final Drivetrain drivetrain = new Drivetrain();
+   public Drivetrain drivetrain;
     public final Arm arm = new Arm();
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
@@ -70,15 +71,15 @@ public class OI {
         initControllers();
         
         // Cool new way to make a drive command by passing in Suppliers for the joysticks
-        drivetrain.setDefaultCommand(new TeleOpDrive(
-            drivetrain,
-            () -> getDriveLeftY(),
-            () -> getDriveLeftX(),
-            () -> getDriveLeftX(),
-            () -> getDriveRightY(),
-            () -> !getDriveLeftBumper(),
-            () -> getDriveRightBumper()) // By default be in field oriented
-        );
+        // drivetrain.setDefaultCommand(new TeleOpDrive(
+        //     drivetrain,
+        //     () -> getDriveLeftY(),
+        //     () -> getDriveLeftX(),
+        //     () -> getDriveRightX(),
+        //     () -> getDriveRightY(),
+        //     () -> !getDriveLeftBumper(),
+        //     () -> getDriveRightBumper()) // By default be in field oriented
+        // );
 
         arm.setDefaultCommand(new ManualArm(
             arm, 
@@ -89,7 +90,7 @@ public class OI {
         //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
-        driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
+        //driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
         
         manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
         // manipXButton.whileTrue(new RunIntakeCube(intake));
@@ -103,22 +104,22 @@ public class OI {
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         //possibly add a wrist joint
 
-        final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
-        final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
-        final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
-        final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
-        final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
-        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
+        // final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
+        // final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
+        // final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
+        // final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
+        // final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
+        // final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
   // A chooser for autonomous commands
         
-        chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
-        chooser.addOption("One Bottom Cube", oneBottomCube);
-        chooser.addOption("One Top Cone", oneTopCone);
-        chooser.addOption("One Top Cube", oneTopCube);
-        chooser.addOption("Quick Balance", quickBalance);
-        chooser.addOption("Two Top Cube", twoTopCube);
-        SmartDashboard.putData("Auto choices", chooser);
+        // chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
+        // chooser.addOption("One Bottom Cube", oneBottomCube);
+        // chooser.addOption("One Top Cone", oneTopCone);
+        // chooser.addOption("One Top Cube", oneTopCube);
+        // chooser.addOption("Quick Balance", quickBalance);
+        // chooser.addOption("Two Top Cube", twoTopCube);
+        // SmartDashboard.putData("Auto choices", chooser);
     }
     
 

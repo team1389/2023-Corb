@@ -27,10 +27,10 @@ public class Robot extends TimedRobot {
         
         oi = new OI();
 
-        frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
-        backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
-        frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
-        backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
+        // frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
+        // backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
+        // frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
+        // backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
 
         pdh = new PowerDistribution();
     }
@@ -95,10 +95,10 @@ public class Robot extends TimedRobot {
         // SendableRegistry.addLW(frontRightTelemetry, "FR Swerve");
         // SendableRegistry.addLW(backRightTelemetry, "BR Swerve");
 
-        oi.drivetrain.frontLeft.resetEncoders();
-        oi.drivetrain.backLeft.resetEncoders();
-        oi.drivetrain.frontRight.resetEncoders();
-        oi.drivetrain.backRight.resetEncoders();
+        // oi.drivetrain.frontLeft.resetEncoders();
+        // oi.drivetrain.backLeft.resetEncoders();
+        // oi.drivetrain.frontRight.resetEncoders();
+        // oi.drivetrain.backRight.resetEncoders();
 
         // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -111,18 +111,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("FL angle", Math.toDegrees(frontLeftTelemetry.getAngle()));
-        SmartDashboard.putNumber("FL speed", frontLeftTelemetry.getSpeed());
+        // SmartDashboard.putNumber("FL angle", Math.toDegrees(frontLeftTelemetry.getAngle()));
+        // SmartDashboard.putNumber("FL speed", frontLeftTelemetry.getSpeed());
 
 
-        SmartDashboard.putNumber("BL angle", Math.toDegrees(backLeftTelemetry.getAngle()));
-        SmartDashboard.putNumber("BL speed", backLeftTelemetry.getSpeed());
+        // SmartDashboard.putNumber("BL angle", Math.toDegrees(backLeftTelemetry.getAngle()));
+        // SmartDashboard.putNumber("BL speed", backLeftTelemetry.getSpeed());
 
-        SmartDashboard.putNumber("FR angle", Math.toDegrees(frontRightTelemetry.getAngle()));
-        SmartDashboard.putNumber("FR speed", frontRightTelemetry.getSpeed());
+        // SmartDashboard.putNumber("FR angle", Math.toDegrees(frontRightTelemetry.getAngle()));
+        // SmartDashboard.putNumber("FR speed", frontRightTelemetry.getSpeed());
 
-        SmartDashboard.putNumber("BR angle", Math.toDegrees(backRightTelemetry.getAngle()));
-        SmartDashboard.putNumber("BR speed", backRightTelemetry.getSpeed());
+        // SmartDashboard.putNumber("BR angle", Math.toDegrees(backRightTelemetry.getAngle()));
+        // SmartDashboard.putNumber("BR speed", backRightTelemetry.getSpeed());
 
     }
 
@@ -131,17 +131,17 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testInit() {
-        SwerveTelemetry frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
-        SwerveTelemetry backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
-        SwerveTelemetry frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
-        SwerveTelemetry backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
-        //SendableRegistry.add(frontLeftTelemetry, "Swerve");
+        // SwerveTelemetry frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
+        // SwerveTelemetry backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
+        // SwerveTelemetry frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
+        // SwerveTelemetry backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
+        // //SendableRegistry.add(frontLeftTelemetry, "Swerve");
 
         
        
-        SendableRegistry.addLW(frontLeftTelemetry, "FL Swerve");
-        SendableRegistry.addLW(backLeftTelemetry, "BL Swerve");
-        SendableRegistry.addLW(frontRightTelemetry, "FR Swerve");
-        SendableRegistry.addLW(backRightTelemetry, "BR Swerve");
+        // SendableRegistry.addLW(frontLeftTelemetry, "FL Swerve");
+        // SendableRegistry.addLW(backLeftTelemetry, "BL Swerve");
+        // SendableRegistry.addLW(frontRightTelemetry, "FR Swerve");
+        // SendableRegistry.addLW(backRightTelemetry, "BR Swerve");
     }
 }

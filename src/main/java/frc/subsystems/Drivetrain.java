@@ -52,14 +52,15 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.BL_ABS_REVERSED,
         ModuleConstants.BL_ANGLE_OFFSET);
 
-    public final SwerveModule backRight = new SwerveModule(
-        DriveConstants.BR_DRIVE_PORT,
-        DriveConstants.BR_TURN_PORT,
-        DriveConstants.BR_DRIVE_REVERSED,
-        DriveConstants.BR_TURN_REVERSED,
-        DriveConstants.BR_ABS_PORT,
-        DriveConstants.BR_ABS_REVERSED,
-        ModuleConstants.BR_ANGLE_OFFSET);
+    // public final SwerveModule backRight = new SwerveModule(
+    //     DriveConstants.BR_DRIVE_PORT,
+    //     DriveConstants.BR_TURN_PORT,
+    //     DriveConstants.BR_DRIVE_REVERSED,
+    //     DriveConstants.BR_TURN_REVERSED,
+    //     DriveConstants.BR_ABS_PORT,
+    //     DriveConstants.BR_ABS_REVERSED,
+    //     ModuleConstants.BR_ANGLE_OFFSET);
+    public SwerveModule backRight;
 
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
     public final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.driveKinematics,
@@ -132,7 +133,7 @@ public class Drivetrain extends SubsystemBase {
         frontLeft.stop();
         frontRight.stop();
         backLeft.stop();
-        backRight.stop();
+        // backRight.stop();
     }
 
     // Wheel order: FR, FL, BR, BL
@@ -140,7 +141,7 @@ public class Drivetrain extends SubsystemBase {
         return new SwerveModulePosition[] {
             frontRight.getPosition(),
             frontLeft.getPosition(),
-            backRight.getPosition(),
+            // backRight.getPosition(),
             backLeft.getPosition()
         };
     }
@@ -151,7 +152,7 @@ public class Drivetrain extends SubsystemBase {
         
         frontRight.setDesiredState(desiredStates[0]);
         frontLeft.setDesiredState(desiredStates[1]);
-        backRight.setDesiredState(desiredStates[2]);
+        // backRight.setDesiredState(desiredStates[2]);
         backLeft.setDesiredState(desiredStates[3]);
         
     }

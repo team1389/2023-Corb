@@ -23,11 +23,14 @@ import frc.robot.RobotMap.DriveConstants;
 
 public class Arm extends SubsystemBase{
     private CANSparkMax shoulderLeft, shoulderRight, elbow, wrist;
-    private double sI, sD, wP, wI, wD;
+    private double sD, wI, wD;
 
-    private double sP = 0.5;
+    private double sP = 1;
+    private double sI = 0.02;
 
     private double eP = 0.6;
+
+    private double wP = 0.09;
     private PIDController pidShoulder;
     private PIDController pidElbow;
     private PIDController pidWrist;
@@ -46,7 +49,7 @@ public class Arm extends SubsystemBase{
 
     public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[] >();
     
-    public ArmPosition targetPos = ArmPosition.Intake;
+    public ArmPosition targetPos = ArmPosition.Low;
 
     
     public Arm(){
@@ -79,12 +82,12 @@ public class Arm extends SubsystemBase{
 
 
         // Shoulder, elbow, wrist, min elbow
-        positionMap.put(ArmPosition.Low, new Double[]{0.0, 0.0, 0.0});
+        positionMap.put(ArmPosition.Low, new Double[]{0.0, 0.0, -27.0});
         positionMap.put(ArmPosition.Intake, new Double[]{0.0, -15.0, 0.0});
         positionMap.put(ArmPosition.MidCone, new Double[]{0.0, 0.0, 0.0});
         positionMap.put(ArmPosition.HighCone, new Double[]{0.0, 0.0, 0.0, 0.0});
-        positionMap.put(ArmPosition.MidCube, new Double[]{0.0, 0.0, 0.0});
-        positionMap.put(ArmPosition.HighCube, new Double[]{0.0, 0.0, 0.0});
+        positionMap.put(ArmPosition.MidCube, new Double[]{1.2, 0.0, 0.0});
+        positionMap.put(ArmPosition.HighCube, new Double[]{2.9, 0.0, 0.0});
         positionMap.put(ArmPosition.StartingConfig, new Double[]{0.0, 0.0, 0.0});
     }
 
@@ -96,18 +99,18 @@ public class Arm extends SubsystemBase{
     public void periodic() {
         double shoulderPower = pidShoulder.calculate(getShoulderDistance(), positionMap.get(targetPos)[0]);
         double elbowPower = pidElbow.calculate(getElbowDistance(), positionMap.get(targetPos)[1]);
-        // double wristPower = pidWrist.calculate(wristEncoder.getPosition(), hmmmmm.get(targetPos)[2])
+        double wristPower = pidWrist.calculate(wristEncoder.getPosition(), positionMap.get(targetPos)[2]);
         // moveShoulder(shoulderPower);
         // moveElbow(elbowPower);
-        // wrist.set(wristPower);
+        // moveWrist(wristPower);
 
         SmartDashboard.putNumber("Shoulder power", shoulderPower);
         SmartDashboard.putNumber("Elbow power", elbowPower);
-        // SmartDashboard.putNumber("Wrist power", wristPower);
+        SmartDashboard.putNumber("Wrist power", wristPower);
 
         SmartDashboard.putNumber("Shoulder target", positionMap.get(targetPos)[0]);
         SmartDashboard.putNumber("Elbow target", positionMap.get(targetPos)[1]);
-        // SmartDashboard.putNumber("Wrist target", hmmmmm.get(targetPos)[2]);
+        SmartDashboard.putNumber("Wrist target", positionMap.get(targetPos)[2]);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderDistance());
         SmartDashboard.putNumber("Elbow position", getElbowDistance());
@@ -123,6 +126,7 @@ public class Arm extends SubsystemBase{
 
     // Debugging methods below:
     public void moveShoulder(double power) {
+        power = MathUtil.clamp(power, -1, 1);
         shoulderLeft.set(power);
         shoulderRight.set(power);
     }
@@ -135,6 +139,7 @@ public class Arm extends SubsystemBase{
     }
 
     public void moveWrist(double power) {
+        power = MathUtil.clamp(power, -0.25, 0.25);
         wrist.set(power);
     }
 
