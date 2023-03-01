@@ -14,14 +14,18 @@ public class ManualArm extends CommandBase {
         this.arm = arm;
         this.shoulderFunction = shoulderFunction;
         this.elbowFunction = elbowFunction;
-        
+
         addRequirements(arm);
     }
-    
+
     @Override
     public void execute() {
-        arm.moveShoulder(MathUtil.clamp(shoulderFunction.get(), -1, 1));
-        arm.moveElbow(MathUtil.clamp(elbowFunction.get(), -1, 1));
+
+        var shoulder = shoulderFunction.get();
+        arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
+
+        var elbow = elbowFunction.get();
+        arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
     }
 
 }

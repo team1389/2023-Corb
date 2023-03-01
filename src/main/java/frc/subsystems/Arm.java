@@ -18,41 +18,36 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
 
-public class Arm extends SubsystemBase{
+public class Arm extends SubsystemBase {
     private CANSparkMax shoulderLeft, shoulderRight, elbow, wrist;
-    private double sD, wI, wD;
 
-    private double sP = 1;
-    private double sI = 0.02;
-
-    private double eP = 0.6;
-
-    private double wP = 0.09;
     private PIDController pidShoulder;
     private PIDController pidElbow;
     private PIDController pidWrist;
-    
+
     private RelativeEncoder wristEncoder, shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
 
-    public enum ArmPosition{
+    public enum ArmPosition {
+        StartingConfig,
         Intake,
         Low,
-        MidCone,
-        HighCone,
+        MidConeTop,
+        HighConeTop,
+        MidConeBottom,
+        HighConeBottom,
         MidCube,
-        HighCube,
-        StartingConfig
+        HighCube
     }
 
-    public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[] >();
-    
+    public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[]>();
+
     public ArmPosition targetPos = ArmPosition.Low;
 
-    
-    public Arm(){
+    public Arm() {
         shoulderLeft = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_LEFT, MotorType.kBrushless);
         shoulderRight = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_RIGHT, MotorType.kBrushless);
 
@@ -67,9 +62,12 @@ public class Arm extends SubsystemBase{
         shoulderLeft.setInverted(false);
         shoulderRight.setInverted(false);
 
-        pidShoulder = new PIDController(sP, sI, sD);
-        pidElbow = new PIDController(eP, 0, 0);
-        pidWrist = new PIDController(wP, wI, wD);
+        pidShoulder = new PIDController(RobotMap.ArmConstants.SHOULDER_P, RobotMap.ArmConstants.SHOULDER_I,
+                RobotMap.ArmConstants.SHOULDER_D);
+        pidElbow = new PIDController(RobotMap.ArmConstants.ELBOW_P, RobotMap.ArmConstants.ELBOW_I,
+                RobotMap.ArmConstants.ELBOW_D);
+        pidWrist = new PIDController(RobotMap.ArmConstants.WRIST_P, RobotMap.ArmConstants.WRIST_I,
+                RobotMap.ArmConstants.WRIST_D);
 
         wristEncoder = wrist.getEncoder();
         shoulderLeftEncoder = shoulderLeft.getEncoder();
@@ -80,26 +78,29 @@ public class Arm extends SubsystemBase{
         shoulderLeftEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
 
+        // Shoulder, elbow, wrist
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.0 }); // by definition
 
-        // Shoulder, elbow, wrist, min elbow
-        positionMap.put(ArmPosition.Low, new Double[]{0.0, 0.0, -27.0});
-        positionMap.put(ArmPosition.Intake, new Double[]{0.0, -15.0, 0.0});
-        positionMap.put(ArmPosition.MidCone, new Double[]{0.0, 0.0, 0.0});
-        positionMap.put(ArmPosition.HighCone, new Double[]{0.0, 0.0, 0.0, 0.0});
-        positionMap.put(ArmPosition.MidCube, new Double[]{1.2, 0.0, 0.0});
-        positionMap.put(ArmPosition.HighCube, new Double[]{2.9, 0.0, 0.0});
-        positionMap.put(ArmPosition.StartingConfig, new Double[]{0.0, 0.0, 0.0});
+        positionMap.put(ArmPosition.Intake, new Double[] { 0.0, -15.0, 0.0 }); // TODO
+
+        positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, -27.0 }); // TODO
+        positionMap.put(ArmPosition.MidConeBottom, new Double[] { 1.62, 11.96, -3.86 });
+        positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.4, -35.78, -57.07 });
+        positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.56, 9.14, 0.5 });
+        positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.12, -22.62, -5.0 });
+        positionMap.put(ArmPosition.MidCube, new Double[] { 0.79, 8.71, 1.36 });
+        positionMap.put(ArmPosition.HighCube, new Double[] { 2.46, 17.44, 1.36 });
     }
 
-    public void setArm(ArmPosition pos){
+    public void setArm(ArmPosition pos) {
         targetPos = pos;
     }
 
     @Override
     public void periodic() {
-        double shoulderPower = pidShoulder.calculate(getShoulderDistance(), positionMap.get(targetPos)[0]);
-        double elbowPower = pidElbow.calculate(getElbowDistance(), positionMap.get(targetPos)[1]);
-        double wristPower = pidWrist.calculate(wristEncoder.getPosition(), positionMap.get(targetPos)[2]);
+        double shoulderPower = pidShoulder.calculate(getShoulderPos(), positionMap.get(targetPos)[0]);
+        double elbowPower = pidElbow.calculate(getElbowPos(), positionMap.get(targetPos)[1]);
+        double wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
         // moveShoulder(shoulderPower);
         // moveElbow(elbowPower);
         // moveWrist(wristPower);
@@ -112,15 +113,20 @@ public class Arm extends SubsystemBase{
         SmartDashboard.putNumber("Elbow target", positionMap.get(targetPos)[1]);
         SmartDashboard.putNumber("Wrist target", positionMap.get(targetPos)[2]);
 
-        SmartDashboard.putNumber("Shoulder position", getShoulderDistance());
-        SmartDashboard.putNumber("Elbow position", getElbowDistance());
-        SmartDashboard.putNumber("Wrist position", wristEncoder.getPosition());
+        SmartDashboard.putNumber("Shoulder position", getShoulderPos());
+        SmartDashboard.putNumber("Elbow position", getElbowPos());
+        SmartDashboard.putNumber("Wrist position", getWristPos());
     }
 
-    public double getShoulderDistance(){
+    private double getWristPos() {
+        return wristEncoder.getPosition();
+    }
+
+    public double getShoulderPos() {
         return shoulderLeftEncoder.getPosition();
     }
-    public double getElbowDistance(){
+
+    public double getElbowPos() {
         return elbowEncoder.getPosition();
     }
 
@@ -132,8 +138,8 @@ public class Arm extends SubsystemBase{
     }
 
     public void moveElbow(double power) {
-        if(positionMap.get(targetPos).length > 3) {
-            power = (getElbowDistance() < positionMap.get(targetPos)[3] ? 0 : power);
+        if (positionMap.get(targetPos).length > 3) {
+            power = (getElbowPos() < positionMap.get(targetPos)[3] ? 0 : power);
         }
         elbow.set(MathUtil.clamp(power, -0.9, 0.9));
     }
@@ -145,11 +151,10 @@ public class Arm extends SubsystemBase{
 
     public boolean getAtPosition() {
         Double[] targetLengths = positionMap.get(targetPos);
-        
-        boolean atPosition = 
-            Math.abs(getShoulderDistance()-targetLengths[0]) < ArmConstants.SHOULDER_DEADZONE &&
-            Math.abs(getElbowDistance()-targetLengths[1]) < ArmConstants.ELBOW_DEADZONE &&
-            Math.abs(wristEncoder.getPosition()-targetLengths[2]) < ArmConstants.WRIST_DEADZONE;
+
+        boolean atPosition = Math.abs(getShoulderPos() - targetLengths[0]) < ArmConstants.SHOULDER_DEADZONE &&
+                Math.abs(getElbowPos() - targetLengths[1]) < ArmConstants.ELBOW_DEADZONE &&
+                Math.abs(getWristPos() - targetLengths[2]) < ArmConstants.WRIST_DEADZONE;
 
         return atPosition;
     }

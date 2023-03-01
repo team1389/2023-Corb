@@ -27,7 +27,7 @@ public class QuickBalance extends SequentialCommandGroup{
         Command drivePath = drivetrain.followTrajectoryCommand(trajectory, true);
 
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCone, false),
+            new SetArmPosition(arm, ArmPosition.HighConeTop, false),
             new RunOuttakeCube(intake),
             drivePath, 
             new AutoBalance(drivetrain)

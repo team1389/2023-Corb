@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-//import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.autos.OneBottomCone;
@@ -29,18 +28,16 @@ import frc.commands.RunOuttakeCone;
 import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.commands.TeleOpDrive;
-//import frc.commands.Test;
 import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
-//import frc.autos.TestAuto;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 
 public class OI {
 
-   // public final Drivetrain drivetrain = new Drivetrain();
-   public Drivetrain drivetrain;
+    public final Drivetrain drivetrain = new Drivetrain();
+    // public Drivetrain drivetrain;
     public final Arm arm = new Arm();
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
@@ -58,61 +55,62 @@ public class OI {
     private Trigger manipRightBumper;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
-    private HashMap<String, Command> autoMap = new HashMap<String, Command>(); 
+    private HashMap<String, Command> autoMap = new HashMap<String, Command>();
 
     public OI() {
         autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
         autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
-        autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
+        autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighConeTop, true));
         autoMap.put("arm low", new SetArmPosition(arm, ArmPosition.Low, true));
-        autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
-
+        autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidConeTop, true));
 
         initControllers();
-        
-        // Cool new way to make a drive command by passing in Suppliers for the joysticks
-        // drivetrain.setDefaultCommand(new TeleOpDrive(
-        //     drivetrain,
-        //     () -> getDriveLeftY(),
-        //     () -> getDriveLeftX(),
-        //     () -> getDriveRightX(),
-        //     () -> getDriveRightY(),
-        //     () -> !getDriveLeftBumper(),
-        //     () -> getDriveRightBumper()) // By default be in field oriented
-        // );
 
-        arm.setDefaultCommand(new ManualArm(
-            arm, 
-            () -> manipController.getLeftX(), 
-            () -> manipController.getRightX())
+        // Cool new way to make a drive command by passing in Suppliers for the
+        // joysticks
+        drivetrain.setDefaultCommand(new TeleOpDrive(
+                drivetrain,
+                () -> getDriveLeftY(),
+                () -> getDriveLeftX(),
+                () -> getDriveRightX(),
+                () -> getDriveRightY(),
+                () -> !getDriveLeftBumper(),
+                () -> getDriveRightBumper()) // By default be in field oriented
         );
 
-        //drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
+        arm.setDefaultCommand(new ManualArm(
+                arm,
+                () -> getManipLeftX(),
+                () -> getManipRightX()));
+
+        // drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
         // Press right bumper -> zero gyro heading
-        //driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
-        
+        // driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
+
         manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
         // manipXButton.whileTrue(new RunIntakeCube(intake));
         manipAButton.whileTrue(new RunOuttakeCube(intake));
         manipBButton.whileTrue(new RunOuttakeCone(intake));
         manipLeftBumper.whileTrue(new ManualWrist(arm, -0.2));
         // manipYButton.whileTrue(new RunIntakeCone(intake));
-        
+
         manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.Intake, true));
         manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
-        //possibly add a wrist joint
+        // possibly add a wrist joint
 
-        // final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
+        // final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake,
+        // autoMap);
         // final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
-        // final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
+        // final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake,
+        // autoMap);
         // final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
         // final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
         // final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
-  // A chooser for autonomous commands
-        
+        // A chooser for autonomous commands
+
         // chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
         // chooser.addOption("One Bottom Cube", oneBottomCube);
         // chooser.addOption("One Top Cone", oneTopCone);
@@ -121,7 +119,6 @@ public class OI {
         // chooser.addOption("Two Top Cube", twoTopCube);
         // SmartDashboard.putData("Auto choices", chooser);
     }
-    
 
     /**
      * Initialize JoystickButtons and Controllers
@@ -129,7 +126,7 @@ public class OI {
     private void initControllers() {
         driveController = new XboxController(0);
         driveRightBumper = new JoystickButton(driveController, 6);
-        driveAButton = new JoystickButton(driveController, 1 );
+        driveAButton = new JoystickButton(driveController, 1);
 
         manipController = new XboxController(1);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
@@ -143,32 +140,62 @@ public class OI {
     private double getDriveLeftX() {
         return -driveController.getRawAxis(1);
     }
+
     private double getDriveLeftY() {
         return -driveController.getRawAxis(0);
     }
+
     private double getDriveRightX() {
-        return  -driveController.getRawAxis(3);
+        return -driveController.getRawAxis(3);
     }
+
     private double getDriveRightY() {
-        return  -driveController.getRawAxis(4);
+        return -driveController.getRawAxis(4);
     }
+
     private boolean getDriveLeftBumper() {
         return !driveController.getRawButton(5);
     }
+
     private boolean getDriveRightBumper() {
         return !driveController.getRawButton(6);
     }
 
+    private double getManipLeftX() {
+        return -manipController.getRawAxis(0);
+    }
+
+    private double getManipLeftY() {
+        return -manipController.getRawAxis(1);
+    }
+
+    private double getManipRightX() {
+        return -manipController.getRawAxis(3);
+    }
+
+    private double getManipRightY() {
+        return -manipController.getRawAxis(4);
+    }
+
+    private boolean getManipLeftBumper() {
+        return !manipController.getRawButton(5);
+    }
+
+    private boolean getManipRightBumper() {
+        return !manipController.getRawButton(6);
+    }
+
     // Return autocommand
     public Command getAutoCommand() {
-        // PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new PathConstraints(
-        //     AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-        //     AutoConstants.AUTO_MAX_MPSS)
+        // PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new
+        // PathConstraints(
+        // AutoConstants.AUTO_MAX_METERS_PER_SEC,
+        // AutoConstants.AUTO_MAX_MPSS)
         // );
 
         // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
         // return trajCommand;
-        //return new AutoBalanceController(drivetrain);
+        // return new AutoBalanceController(drivetrain);
         return chooser.getSelected();
     }
 
