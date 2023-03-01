@@ -134,15 +134,15 @@ public class RobotMap {
         public static final int SHOULDER_MOTOR_RIGHT = 15;
         public static final int ELBOW_MOTOR = 10;
 
-        public static final double SHOULDER_P = 0.0001;
-        public static final double SHOULDER_I = 0.0000001;
-        public static final double SHOULDER_D = 0.0000001;
-        public static final double ELBOW_P = 0.0001;
-        public static final double ELBOW_I = 0.0000001;
-        public static final double ELBOW_D = 0.0000001;
-        public static final double WRIST_P = 0.0001;
-        public static final double WRIST_I = 0.0000001;
-        public static final double WRIST_D = 0.0000001;
+        public static final double SHOULDER_P = 1.0;
+        public static final double SHOULDER_I = 0.02;
+        public static final double SHOULDER_D = 0;
+        public static final double ELBOW_P = 0.6;
+        public static final double ELBOW_I = 0;
+        public static final double ELBOW_D = 0;
+        public static final double WRIST_P = 0.09;
+        public static final double WRIST_I = 0;
+        public static final double WRIST_D = 0;
     }
 
     public static final class FieldConstants {
