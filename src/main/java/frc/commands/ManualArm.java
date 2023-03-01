@@ -22,10 +22,15 @@ public class ManualArm extends CommandBase {
     public void execute() {
 
         var shoulder = shoulderFunction.get();
-        arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
-
         var elbow = elbowFunction.get();
-        arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
+        if (Math.abs(shoulder) > 0.01 || Math.abs(elbow) > 0.01) {
+            arm.controllerInterupt = true;
+        }
+
+        if (arm.controllerInterupt) {
+            arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
+            arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
+        }
     }
 
 }

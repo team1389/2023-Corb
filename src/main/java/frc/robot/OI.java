@@ -53,6 +53,7 @@ public class OI {
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
     private Trigger manipRightBumper;
+    private Trigger manipMenuButton;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
     private HashMap<String, Command> autoMap = new HashMap<String, Command>();
@@ -88,6 +89,7 @@ public class OI {
         // Press right bumper -> zero gyro heading
         // driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
+        
         manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
         // manipXButton.whileTrue(new RunIntakeCube(intake));
         manipAButton.whileTrue(new RunOuttakeCube(intake));
@@ -95,7 +97,9 @@ public class OI {
         manipLeftBumper.whileTrue(new ManualWrist(arm, -0.2));
         // manipYButton.whileTrue(new RunIntakeCone(intake));
 
-        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.Intake, true));
+        manipMenuButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
+
+        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
         manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         // possibly add a wrist joint
@@ -129,6 +133,7 @@ public class OI {
         driveAButton = new JoystickButton(driveController, 1);
 
         manipController = new XboxController(1);
+        manipMenuButton = new JoystickButton(manipController, 9);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);
@@ -138,11 +143,11 @@ public class OI {
     }
 
     private double getDriveLeftX() {
-        return -driveController.getRawAxis(1);
+        return -driveController.getRawAxis(0);
     }
 
     private double getDriveLeftY() {
-        return -driveController.getRawAxis(0);
+        return -driveController.getRawAxis(1);
     }
 
     private double getDriveRightX() {

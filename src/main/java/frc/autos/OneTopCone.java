@@ -29,7 +29,7 @@ public class OneTopCone extends SequentialCommandGroup{
 
         //score initial cone, pick up game piece, balance
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCone, false),
+            // new SetArmPosition(arm, ArmPosition.HighCone, false),
             new RunOuttakeCone(intake),
             new SetArmPosition(arm, ArmPosition.Low, true),
             new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),

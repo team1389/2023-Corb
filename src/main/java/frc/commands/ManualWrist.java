@@ -22,6 +22,7 @@ public class ManualWrist extends CommandBase {
         // arm.moveShoulder(MathUtil.clamp(shoulderFuction.get(), -0.25, 025));
         // arm.moveElbow(MathUtil.clamp(elbowFunction.get(), -0.25, 025));
         arm.moveWrist(power);
+        
     }
 
     @Override
