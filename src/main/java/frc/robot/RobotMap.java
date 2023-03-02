@@ -86,12 +86,6 @@ public class RobotMap {
         public static final boolean FR_DRIVE_REVERSED = true;
         public static final boolean BR_DRIVE_REVERSED = true;
 
-        // Absolute encoder ports
-        public static final int FL_ABS_PORT = 0;
-        public static final int BL_ABS_PORT = 3;
-        public static final int FR_ABS_PORT = 2;
-        public static final int BR_ABS_PORT = 1;
-
         public static final boolean FL_ABS_REVERSED = true;
         public static final boolean BL_ABS_REVERSED = true;
         public static final boolean FR_ABS_REVERSED = true;
@@ -128,19 +122,32 @@ public class RobotMap {
         public static final double SHOULDER_DEADZONE = 0.1;
         public static final double ELBOW_DEADZONE = 0.1;
         public static final double WRIST_DEADZONE = 0.1;
-        public static final int INTAKE_SENSOR_PORT_PING = 9;
-        public static final int INTAKE_SENSOR_PORT_RESPONSE = 8;
+
+        //echo 6, responde 7
+        //echo 3, response 4
+        //echo 0, response 1
+
+        public static final int BOTTOM_CONE_INTAKE_SENSOR_PORT_PING = 6;
+        public static final int BOTTOM_CONE_INTAKE_SENSOR_PORT_RESPONSE = 7;
+
+        public static final int TOP_CONE_INTAKE_SENSOR_PORT_PING = 4;
+        public static final int TOP_CONE_INTAKE_SENSOR_PORT_RESPONSE = 3;
+
+        public static final int CUBE_INTAKE_SENSOR_PORT_PING = 1;
+        public static final int CUBE_INTAKE_SENSOR_PORT_RESPONSE = 0;
+
+
         public static final int SHOULDER_MOTOR_LEFT = 11;
         public static final int SHOULDER_MOTOR_RIGHT = 15;
         public static final int ELBOW_MOTOR = 10;
 
-        public static final double SHOULDER_P = 1.0;
+        public static final double SHOULDER_P = 0.5;
         public static final double SHOULDER_I = 0.02;
         public static final double SHOULDER_D = 0;
-        public static final double ELBOW_P = 0.7;
+        public static final double ELBOW_P = 0.4;
         public static final double ELBOW_I = 0;
         public static final double ELBOW_D = 0;
-        public static final double WRIST_P = 0.09;
+        public static final double WRIST_P = 0.04;
         public static final double WRIST_I = 0;
         public static final double WRIST_D = 0;
     }

@@ -34,8 +34,8 @@ public class SwerveModule extends SubsystemBase{
     public double angularOffset;
 
     // Instatiate new module with given ports and inversions
-    public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
-            int absoluteEncoderId, boolean absoluteEncoderReversed, double anglularOffset) {
+    public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed, 
+                            boolean absoluteEncoderReversed, double anglularOffset) {
 
         this.angularOffset = anglularOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;

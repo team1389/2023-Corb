@@ -30,7 +30,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.FL_TURN_PORT,
         DriveConstants.FL_DRIVE_REVERSED,
         DriveConstants.FL_TURN_REVERSED,
-        DriveConstants.FL_ABS_PORT,
         DriveConstants.FL_ABS_REVERSED,
         ModuleConstants.FL_ANGLE_OFFSET);
 
@@ -39,7 +38,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.FR_TURN_PORT,
         DriveConstants.FR_DRIVE_REVERSED,
         DriveConstants.FR_TURN_REVERSED,
-        DriveConstants.FR_ABS_PORT,
         DriveConstants.FR_ABS_REVERSED,
         ModuleConstants.FR_ANGLE_OFFSET);
 
@@ -48,7 +46,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.BL_TURN_PORT,
         DriveConstants.BL_DRIVE_REVERSED,
         DriveConstants.BL_TURN_REVERSED,
-        DriveConstants.BL_ABS_PORT,
         DriveConstants.BL_ABS_REVERSED,
         ModuleConstants.BL_ANGLE_OFFSET);
 
@@ -57,7 +54,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.BR_TURN_PORT,
         DriveConstants.BR_DRIVE_REVERSED,
         DriveConstants.BR_TURN_REVERSED,
-        DriveConstants.BR_ABS_PORT,
         DriveConstants.BR_ABS_REVERSED,
         ModuleConstants.BR_ANGLE_OFFSET);
     // public SwerveModule backRight;

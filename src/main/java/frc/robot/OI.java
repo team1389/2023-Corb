@@ -81,8 +81,8 @@ public class OI {
 
         arm.setDefaultCommand(new ManualArm(
                 arm,
-                () -> getManipLeftX(),
-                () -> getManipRightX()));
+                () -> getManipLeftY(),
+                () -> getManipRightY()));
 
         // drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
@@ -90,11 +90,13 @@ public class OI {
         // driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
         
-        manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
         // manipXButton.whileTrue(new RunIntakeCube(intake));
         manipAButton.whileTrue(new RunOuttakeCube(intake));
         manipBButton.whileTrue(new RunOuttakeCone(intake));
+
         manipLeftBumper.whileTrue(new ManualWrist(arm, -0.2));
+        manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
+
         // manipYButton.whileTrue(new RunIntakeCone(intake));
 
         manipMenuButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
