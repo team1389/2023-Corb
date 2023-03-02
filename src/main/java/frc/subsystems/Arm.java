@@ -15,7 +15,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -28,9 +30,16 @@ public class Arm extends SubsystemBase {
     private PIDController pidShoulder;
     private PIDController pidElbow;
     private PIDController pidWrist;
+
+
+
     public boolean controllerInterupt;
 
+    private double lastMovement;
+
     private RelativeEncoder wristEncoder, shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
+    private DutyCycleEncoder wristAbsoluteEncoder = new DutyCycleEncoder(8);
+
 
     public enum ArmPosition {
         StartingConfig,
@@ -84,7 +93,7 @@ public class Arm extends SubsystemBase {
         // Shoulder, elbow, wrist
         positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.0 }); // by definition
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { -0.009, 15.51, -31.22}); // TODO
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.203, -4.52, -26.12}); // TODO
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -15.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.IntakeConeTop, new Double[] {0.0161, 13.74, -27.0}); // TODO
 
@@ -100,19 +109,26 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArm(ArmPosition pos) {
+        if (this.targetPos == ArmPosition.StartingConfig) {
+            lastMovement = Timer.getFPGATimestamp();
+        }
         targetPos = pos;
     }
 
     @Override
     public void periodic() {
-        double shoulderPower = pidShoulder.calculate(getShoulderPos(), positionMap.get(targetPos)[0]);
-        double elbowPower = pidElbow.calculate(getElbowPos(), positionMap.get(targetPos)[1]);
-        double wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
+        double shoulderPower = 0, wristPower = 0, elbowPower = 0;
 
-        if(!controllerInterupt) {
-            moveShoulder(shoulderPower);
+        if (!controllerInterupt) {
+            // wait time to let elbow drop
+            if (lastMovement + 0.4 > Timer.getFPGATimestamp()) {
+                shoulderPower = pidShoulder.calculate(getShoulderPos(), positionMap.get(targetPos)[0]);
+                moveShoulder(shoulderPower);
+                wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
+                moveWrist(wristPower);
+            }
+            elbowPower = pidElbow.calculate(getElbowPos(), positionMap.get(targetPos)[1]);
             moveElbow(elbowPower);
-            moveWrist(wristPower);
         }
 
         SmartDashboard.putNumber("Shoulder power", shoulderPower);
@@ -129,7 +145,7 @@ public class Arm extends SubsystemBase {
     }
 
     private double getWristPos() {
-        return wristEncoder.getPosition();
+        return wristAbsoluteEncoder.getDistance();
     }
 
     public double getShoulderPos() {
@@ -151,11 +167,11 @@ public class Arm extends SubsystemBase {
         if (positionMap.get(targetPos).length > 3) {
             power = (getElbowPos() < positionMap.get(targetPos)[3] ? 0 : power);
         }
-        elbow.set(MathUtil.clamp(power, -0.9, 0.9));
+        elbow.set(MathUtil.clamp(power, -0.2, 0.6));
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.25, 0.25);
+        power = MathUtil.clamp(power, -0.4, 0.4);
         wrist.set(power);
     }
 

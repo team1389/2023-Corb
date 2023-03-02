@@ -157,7 +157,7 @@ public class OI {
     }
 
     private double getDriveRightY() {
-        return -driveController.getRawAxis(4);
+        return driveController.getRawAxis(4);
     }
 
     private boolean getDriveLeftBumper() {
