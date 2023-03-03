@@ -31,15 +31,12 @@ public class Arm extends SubsystemBase {
     private PIDController pidElbow;
     private PIDController pidWrist;
 
-
-
-    public boolean controllerInterupt;
+    public boolean controllerInterupt = true;
 
     private double lastMovement;
 
     private RelativeEncoder wristEncoder, shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
     private DutyCycleEncoder wristAbsoluteEncoder = new DutyCycleEncoder(8);
-
 
     public enum ArmPosition {
         StartingConfig,
@@ -86,18 +83,18 @@ public class Arm extends SubsystemBase {
         shoulderRightEncoder = shoulderLeft.getEncoder();
         elbowEncoder = elbow.getEncoder();
 
+
         wristEncoder.setPosition(0);
         shoulderLeftEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
 
         // Shoulder, elbow, wrist
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.0 }); // by definition
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.1122 }); // by definition, -0.1122 on
+                                                                                        // absolute encoder
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.203, -4.52, -26.12}); // TODO
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.18, -4.2, -0.0456 }); // TODO
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -15.0, 0.0 }); // TODO
-        positionMap.put(ArmPosition.IntakeConeTop, new Double[] {0.0161, 13.74, -27.0}); // TODO
-
-
+        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.1418, -4.341, -0.04143 }); // TODO
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, -27.0 }); // TODO
         positionMap.put(ArmPosition.MidConeBottom, new Double[] { 1.62, 11.96, -3.86 });
@@ -121,12 +118,12 @@ public class Arm extends SubsystemBase {
 
         if (!controllerInterupt) {
             // wait time to let elbow drop
-            if (lastMovement + 0.4 > Timer.getFPGATimestamp()) {
-                shoulderPower = pidShoulder.calculate(getShoulderPos(), positionMap.get(targetPos)[0]);
-                moveShoulder(shoulderPower);
-                wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
-                moveWrist(wristPower);
-            }
+            // if (lastMovement + 0.0 > Timer.getFPGATimestamp()) {
+            shoulderPower = pidShoulder.calculate(getShoulderPos(), positionMap.get(targetPos)[0]);
+            moveShoulder(shoulderPower);
+            wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
+            moveWrist(wristPower);
+            // }
             elbowPower = pidElbow.calculate(getElbowPos(), positionMap.get(targetPos)[1]);
             moveElbow(elbowPower);
         }
@@ -171,7 +168,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.4, 0.4);
+        power = MathUtil.clamp(power, -0.8, 0.8);
         wrist.set(power);
     }
 

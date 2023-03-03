@@ -21,6 +21,8 @@ public class ManualWrist extends CommandBase {
     public void execute() {
         // arm.moveShoulder(MathUtil.clamp(shoulderFuction.get(), -0.25, 025));
         // arm.moveElbow(MathUtil.clamp(elbowFunction.get(), -0.25, 025));
+        arm.controllerInterupt = true;
+        
         arm.moveWrist(power);
         
     }

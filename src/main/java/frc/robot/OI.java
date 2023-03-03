@@ -101,7 +101,7 @@ public class OI {
 
         manipMenuButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
 
-        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
+        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
         manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         // possibly add a wrist joint

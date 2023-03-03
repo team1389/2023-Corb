@@ -147,7 +147,7 @@ public class RobotMap {
         public static final double ELBOW_P = 0.4;
         public static final double ELBOW_I = 0;
         public static final double ELBOW_D = 0;
-        public static final double WRIST_P = 0.04;
+        public static final double WRIST_P = 3;
         public static final double WRIST_I = 0;
         public static final double WRIST_D = 0;
     }
