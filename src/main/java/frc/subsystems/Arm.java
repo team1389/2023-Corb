@@ -124,8 +124,10 @@ public class Arm extends SubsystemBase {
             lastMovement = Timer.getFPGATimestamp();
         }
 
-        shoulderSpeed = (shoulderTarget - getShoulderPos())/numSteps;
-        elbowSpeed = (elbowTarget - getElbowPos())/numSteps;
+        shoulderSpeed = (positionMap.get(targetPos)[0] - getShoulderPos())/numSteps;
+        elbowSpeed = (positionMap.get(targetPos)[1] - getElbowPos())/numSteps;
+
+        currentStep = 0;
     }
 
 
