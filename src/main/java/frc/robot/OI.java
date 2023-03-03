@@ -38,7 +38,6 @@ import frc.subsystems.Arm.ArmPosition;
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    // public Drivetrain drivetrain;
     public final Arm arm = new Arm();
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
@@ -79,8 +78,8 @@ public class OI {
                 () -> getDriveLeftX(),
                 () -> getDriveRightX(),
                 () -> getDriveRightY(),
-                () -> !getDriveLeftBumper(),
-                () -> getDriveRightBumper()) // By default be in field oriented
+                () -> !getDriveLeftBumper(), // By default be in field oriented
+                () -> getDriveRightBumper()) //Slow function
         );
 
         arm.setDefaultCommand(new ManualArm(
