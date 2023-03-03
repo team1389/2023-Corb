@@ -162,21 +162,25 @@ public class Arm extends SubsystemBase {
             moveElbow(elbowPower);
         }
 
-        SmartDashboard.putNumber("Shoulder power", shoulderPower);
-        SmartDashboard.putNumber("Elbow power", elbowPower);
-        SmartDashboard.putNumber("Wrist power", wristPower);
+        // SmartDashboard.putNumber("Shoulder power", shoulderPower);
+        // SmartDashboard.putNumber("Elbow power", elbowPower);
+        // SmartDashboard.putNumber("Wrist power", wristPower);
 
         SmartDashboard.putNumber("Shoulder target", shoulderTarget);
         SmartDashboard.putNumber("Elbow target", elbowTarget);
         SmartDashboard.putNumber("Wrist target", wristTarget);
 
-        SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
-        SmartDashboard.putNumber("last", lastMovement);
-
+        // SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
+        // SmartDashboard.putNumber("last", lastMovement);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
         SmartDashboard.putNumber("Elbow position", getElbowPos());
         SmartDashboard.putNumber("Wrist position", getWristPos());
+
+        shoulderTarget = SmartDashboard.getNumber("Shoulder target", getShoulderPos());
+        elbowTarget = SmartDashboard.getNumber("Elbow target", getElbowPos());
+        wristTarget = SmartDashboard.getNumber("Wrist target", getWristPos());
+
     }
 
     public double getWristPos() {

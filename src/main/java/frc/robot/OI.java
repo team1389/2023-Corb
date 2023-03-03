@@ -88,10 +88,9 @@ public class OI {
                 () -> getManipLeftY(),
                 () -> getManipRightY()));
 
-        // drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
-        // Press right bumper -> zero gyro heading
-        // driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
+        // Press A button -> zero gyro heading
+        driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
         
         // manipXButton.whileTrue(new RunIntakeCube(intake));
@@ -110,8 +109,7 @@ public class OI {
         manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         manipStadiaButton.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
         manipFullscreenButton.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
-        // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
-        // possibly add a wrist joint
+     
 
         // final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake,
         // autoMap);
@@ -138,17 +136,20 @@ public class OI {
      */
     private void initControllers() {
         driveController = new XboxController(0);
-        driveRightBumper = new JoystickButton(driveController, 6);
-        driveAButton = new JoystickButton(driveController, 1);
-
         manipController = new XboxController(1);
+
+        driveAButton = new JoystickButton(driveController, 1);
+        driveRightBumper = new JoystickButton(driveController, 6);
+
         manipElipsisButton = new JoystickButton(manipController, 9);
         manipMenuButton = new JoystickButton(manipController, 10);
         manipStadiaButton = new JoystickButton(manipController, 14);
         manipFullscreenButton = new JoystickButton(manipController, 15);
-        manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
+
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);
+
+        manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
         manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);

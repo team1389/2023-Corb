@@ -31,10 +31,6 @@ public class Intake extends SubsystemBase{
 
     @Override
     public void periodic() {
-        // Shuffleboard.getTab("Sensors").add(coneSensorBottom);
-        // Shuffleboard.getTab("Sensors").add(coneSensorTop);
-        // Shuffleboard.getTab("Sensors").add(cubeSensor);
-
 
         SmartDashboard.putNumber("Cone bottom distance", getBottomCone());
         SmartDashboard.putNumber("Cone Top distance", getTopCone());
