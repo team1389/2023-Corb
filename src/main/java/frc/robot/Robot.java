@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
         oi.drivetrain.frontRight.resetEncoders();
         oi.drivetrain.backRight.resetEncoders();
 
-        oi.arm.controllerInterupt = true;
+        oi.arm.controllerInterrupt = true;
 
         // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

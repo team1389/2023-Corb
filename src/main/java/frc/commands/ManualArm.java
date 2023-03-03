@@ -24,10 +24,10 @@ public class ManualArm extends CommandBase {
         var shoulder = shoulderFunction.get();
         var elbow = elbowFunction.get();
         if (Math.abs(shoulder) > 0.01 || Math.abs(elbow) > 0.01) {
-            arm.controllerInterupt = true;
+            arm.controllerInterrupt = true;
         }
 
-        if (arm.controllerInterupt) {
+        if (arm.controllerInterrupt) {
             arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
             arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
         }

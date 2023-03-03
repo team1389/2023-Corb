@@ -31,7 +31,7 @@ public class Arm extends SubsystemBase {
     private PIDController pidElbow;
     private PIDController pidWrist;
 
-    public boolean controllerInterupt = true;
+    public boolean controllerInterrupt = true;
 
     private double lastMovement;
 
@@ -54,7 +54,15 @@ public class Arm extends SubsystemBase {
 
     public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[]>();
 
-    public ArmPosition targetPos = ArmPosition.StartingConfig;
+    public ArmPosition targetPos;
+    private double shoulderTarget;
+    private double elbowTarget;
+    private double shoulderSpeed;
+    private double elbowSpeed;
+    
+    // Number of steps to take to get there. Higher is smoother but slower
+    private double numSteps = 20;
+    private double currentStep = 0;
 
     public Arm() {
         shoulderLeft = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_LEFT, MotorType.kBrushless);
@@ -103,28 +111,45 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.12, -22.62, -5.0 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 0.79, 8.71, 1.36 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 2.46, 17.44, 1.36 });
+
+        setArm(ArmPosition.StartingConfig);
+        shoulderTarget = positionMap.get(targetPos)[0];
+        elbowTarget = positionMap.get(targetPos)[1];
     }
 
     public void setArm(ArmPosition pos) {
+        targetPos = pos;
+
         if (this.targetPos == ArmPosition.StartingConfig) {
             lastMovement = Timer.getFPGATimestamp();
         }
-        targetPos = pos;
+
+        shoulderSpeed = (shoulderTarget - getShoulderPos())/numSteps;
+        elbowSpeed = (elbowTarget - getElbowPos())/numSteps;
     }
+
+
 
     @Override
     public void periodic() {
         double shoulderPower = 0, wristPower = 0, elbowPower = 0;
 
-        if (!controllerInterupt) {
+        // Update targets by speed and increment step number
+        if(currentStep < numSteps) {
+            shoulderTarget += shoulderSpeed;
+            elbowTarget += elbowSpeed;
+            currentStep ++;
+        }
+
+        if (!controllerInterrupt) {
             // wait time to let elbow drop
             // if (lastMovement + 0.0 > Timer.getFPGATimestamp()) {
-            shoulderPower = pidShoulder.calculate(getShoulderPos(), positionMap.get(targetPos)[0]);
+            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
             moveShoulder(shoulderPower);
             wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
             moveWrist(wristPower);
             // }
-            elbowPower = pidElbow.calculate(getElbowPos(), positionMap.get(targetPos)[1]);
+            elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
         }
 
