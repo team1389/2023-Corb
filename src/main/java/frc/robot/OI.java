@@ -20,6 +20,7 @@ import frc.autos.OneTopCone;
 import frc.autos.OneTopCube;
 import frc.autos.QuickBalance;
 import frc.autos.TwoTopCube;
+import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
 import frc.commands.ManualWrist;
 import frc.commands.RunIntakeCone;
@@ -53,6 +54,7 @@ public class OI {
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
     private Trigger manipRightBumper;
+    private Trigger manipElipsisButton;
     private Trigger manipMenuButton;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -99,9 +101,10 @@ public class OI {
 
         // manipYButton.whileTrue(new RunIntakeCone(intake));
 
-        manipMenuButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
+        manipElipsisButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
+        manipMenuButton.onTrue(new HoldPosition(arm));
 
-        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
+        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
         manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         // possibly add a wrist joint
@@ -135,7 +138,8 @@ public class OI {
         driveAButton = new JoystickButton(driveController, 1);
 
         manipController = new XboxController(1);
-        manipMenuButton = new JoystickButton(manipController, 9);
+        manipElipsisButton = new JoystickButton(manipController, 9);
+        manipMenuButton = new JoystickButton(manipController, 10);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);

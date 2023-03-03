@@ -55,13 +55,14 @@ public class Arm extends SubsystemBase {
     public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[]>();
 
     public ArmPosition targetPos;
-    private double shoulderTarget;
-    private double elbowTarget;
+    public double shoulderTarget;
+    public double elbowTarget;
+    public double wristTarget;
     private double shoulderSpeed;
     private double elbowSpeed;
     
     // Number of steps to take to get there. Higher is smoother but slower
-    private double numSteps = 20;
+    private double numSteps = 150;
     private double currentStep = 0;
 
     public Arm() {
@@ -100,7 +101,7 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.1122 }); // by definition, -0.1122 on
                                                                                         // absolute encoder
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.18, -4.2, -0.0456 }); // TODO
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.25, -4.64, -0.0456 }); // TODO
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -15.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.1418, -4.341, -0.04143 }); // TODO
 
@@ -109,25 +110,29 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.4, -35.78, -57.07 });
         positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.56, 9.14, 0.5 });
         positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.12, -22.62, -5.0 });
-        positionMap.put(ArmPosition.MidCube, new Double[] { 0.79, 8.71, 1.36 });
+        positionMap.put(ArmPosition.MidCube, new Double[] { 2.05933141708374, -2.868226289749146, 0.109320752733019 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 2.46, 17.44, 1.36 });
 
         setArm(ArmPosition.StartingConfig);
         shoulderTarget = positionMap.get(targetPos)[0];
         elbowTarget = positionMap.get(targetPos)[1];
+        wristTarget = positionMap.get(targetPos)[2];
     }
 
     public void setArm(ArmPosition pos) {
-        targetPos = pos;
-
         if (this.targetPos == ArmPosition.StartingConfig) {
             lastMovement = Timer.getFPGATimestamp();
         }
+
+        targetPos = pos;
 
         shoulderSpeed = (positionMap.get(targetPos)[0] - getShoulderPos())/numSteps;
         elbowSpeed = (positionMap.get(targetPos)[1] - getElbowPos())/numSteps;
 
         currentStep = 0;
+        shoulderTarget = positionMap.get(targetPos)[0];
+        elbowTarget = positionMap.get(targetPos)[1];
+        wristTarget = positionMap.get(targetPos)[2];
     }
 
 
@@ -137,20 +142,22 @@ public class Arm extends SubsystemBase {
         double shoulderPower = 0, wristPower = 0, elbowPower = 0;
 
         // Update targets by speed and increment step number
-        if(currentStep < numSteps) {
-            shoulderTarget += shoulderSpeed;
-            elbowTarget += elbowSpeed;
-            currentStep ++;
-        }
+        // if(currentStep < numSteps) {
+        //     shoulderTarget += shoulderSpeed;
+        //     elbowTarget += elbowSpeed;
+        //     currentStep ++;
+        // }
+
+        
 
         if (!controllerInterrupt) {
             // wait time to let elbow drop
-            // if (lastMovement + 0.0 > Timer.getFPGATimestamp()) {
-            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
-            moveShoulder(shoulderPower);
-            wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
-            moveWrist(wristPower);
-            // }
+            if (lastMovement + 0.4 < Timer.getFPGATimestamp()) {
+                shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
+                moveShoulder(shoulderPower);
+                wristPower = pidWrist.calculate(getWristPos(), wristTarget);
+                moveWrist(wristPower);
+            }
             elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
         }
@@ -159,16 +166,20 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Elbow power", elbowPower);
         SmartDashboard.putNumber("Wrist power", wristPower);
 
-        SmartDashboard.putNumber("Shoulder target", positionMap.get(targetPos)[0]);
-        SmartDashboard.putNumber("Elbow target", positionMap.get(targetPos)[1]);
-        SmartDashboard.putNumber("Wrist target", positionMap.get(targetPos)[2]);
+        SmartDashboard.putNumber("Shoulder target", shoulderTarget);
+        SmartDashboard.putNumber("Elbow target", elbowTarget);
+        SmartDashboard.putNumber("Wrist target", wristTarget);
+
+        SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
+        SmartDashboard.putNumber("last", lastMovement);
+
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
         SmartDashboard.putNumber("Elbow position", getElbowPos());
         SmartDashboard.putNumber("Wrist position", getWristPos());
     }
 
-    private double getWristPos() {
+    public double getWristPos() {
         return wristAbsoluteEncoder.getDistance();
     }
 

@@ -141,7 +141,7 @@ public class RobotMap {
         public static final int SHOULDER_MOTOR_RIGHT = 15;
         public static final int ELBOW_MOTOR = 10;
 
-        public static final double SHOULDER_P = 0.5;
+        public static final double SHOULDER_P = 0.75;
         public static final double SHOULDER_I = 0.02;
         public static final double SHOULDER_D = 0;
         public static final double ELBOW_P = 0.4;
