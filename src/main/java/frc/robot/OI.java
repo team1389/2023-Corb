@@ -56,6 +56,8 @@ public class OI {
     private Trigger manipRightBumper;
     private Trigger manipElipsisButton;
     private Trigger manipMenuButton;
+    private Trigger manipStadiaButton;
+    private Trigger manipFullscreenButton;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
     private HashMap<String, Command> autoMap = new HashMap<String, Command>();
@@ -104,8 +106,10 @@ public class OI {
         manipElipsisButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
         manipMenuButton.onTrue(new HoldPosition(arm));
 
-        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
+        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
         manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
+        manipStadiaButton.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
+        manipFullscreenButton.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         // possibly add a wrist joint
 
@@ -140,6 +144,8 @@ public class OI {
         manipController = new XboxController(1);
         manipElipsisButton = new JoystickButton(manipController, 9);
         manipMenuButton = new JoystickButton(manipController, 10);
+        manipStadiaButton = new JoystickButton(manipController, 14);
+        manipFullscreenButton = new JoystickButton(manipController, 15);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);
