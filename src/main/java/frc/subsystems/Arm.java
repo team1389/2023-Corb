@@ -170,13 +170,103 @@ public class Arm extends SubsystemBase {
         return wristAbsoluteEncoder.getDistance();
     }
 
+    // Returns encoder count
     public double getShoulderPos() {
         return shoulderLeftEncoder.getPosition();
     }
 
+    // Returns encoder count
     public double getElbowPos() {
         return elbowEncoder.getPosition();
     }
+
+    // Returns shoulder angle (rad)
+    public double getShoulderAngle() {
+        return shoulderLeftEncoder.getPosition() * ArmConstants.SHOULDER_ENCODER_TO_RAD;
+    }
+
+    // Returns elbow angle (rad)
+    public double getElbowAngle() {
+
+        // String length (meters)
+        double length = elbowEncoder.getPosition() * ArmConstants.ELBOW_ENCODER_TO_METERS;
+        
+        // Law of cosines
+        double cosAngle = (length*length) - (ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.SHOULDER_TO_ELBOW) - (ArmConstants.ELBOW_TO_STRING*ArmConstants.ELBOW_TO_STRING);
+        cosAngle = cosAngle/((-2) * ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.ELBOW_TO_STRING);
+
+        return Math.acos(cosAngle);
+    }
+
+    // Get length given angle (radians)
+    public double getElbowLength(double angle) {
+        // Law of cosines again
+        double temp = (ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.SHOULDER_TO_ELBOW) + (ArmConstants.ELBOW_TO_STRING*ArmConstants.ELBOW_TO_STRING);
+        temp = temp - (2*ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.ELBOW_TO_STRING*Math.cos(angle));
+        return Math.sqrt(temp);
+    }
+
+    // Returns (x, y) position of elbow joint relative to shoulder
+    public double[] getElbowPosition() {
+        double x = Math.sin(getShoulderAngle()) * ArmConstants.SHOULDER_TO_ELBOW;
+        double y = -Math.cos(getShoulderAngle()) * ArmConstants.SHOULDER_TO_ELBOW;
+
+        return new double[]{x, y};
+    }
+
+    // Returns (x, y) position of wrist joint relative to shoulder
+    public double[] getTipPosition() {
+        double[] elbowPos = getElbowPosition();
+        double x = -Math.cos(getElbowAngle()) * ArmConstants.ELBOW_TO_WRIST;
+        double y = Math.sin(getElbowAngle()) * ArmConstants.ELBOW_TO_WRIST;
+        double shoulderAngle = getShoulderAngle();
+
+        // Do some trig  Ithink this works
+        double xRotated = x*Math.cos(shoulderAngle) - y*Math.sin(shoulderAngle);
+        double yRotated = x*Math.sin(shoulderAngle) + y*Math.cos(shoulderAngle);
+
+        return new double[]{elbowPos[0] + xRotated, elbowPos[1] + yRotated};
+    }
+
+    // Returns target (x, y) for wrist based on target angles
+    public double[] getPosFromAngles(double shoulderAngle, double elbowAngle) {
+        // It's mathin' time
+        double elbowX = Math.sin(shoulderAngle) * ArmConstants.SHOULDER_TO_ELBOW;
+        double elbowY = -Math.cos(shoulderAngle) * ArmConstants.SHOULDER_TO_ELBOW;
+        double x = -Math.cos(elbowAngle) * ArmConstants.ELBOW_TO_WRIST;
+        double y = Math.sin(elbowAngle) * ArmConstants.ELBOW_TO_WRIST;
+        double xRotated = x*Math.cos(shoulderAngle) - y*Math.sin(shoulderAngle);
+        double yRotated = x*Math.sin(shoulderAngle) + y*Math.cos(shoulderAngle);
+
+        return new double[]{elbowX + xRotated, elbowY + yRotated};
+    }
+
+    // Returns gradient component for a joint given vector from joint to tip and vector from tip to target
+    public double getGradient(double[] jointToTip, double[] tipToTarget) {
+        // First get vector by which turning joint will move tip
+        // Do this by crossing joint to tip with axis of rotation, (0,0,1) for both joints in this case 
+        double[] movementVector = cross(jointToTip, new double[]{0, 0, 1});
+        
+        // Then dot this movement with the desired direction of motion
+        return dot(movementVector, tipToTarget);
+    }
+
+    // Vector methods
+    // Only for 2d vectors
+    public double dot(double[] v1, double[] v2) {
+        return v1[0]*v2[0] + v1[1]*v2[1];
+    }
+
+    //Only for 3d vectors
+    public double[] cross(double[] v1, double[] v2) {
+        double[] toReturn = new double[3];
+        toReturn[0] = v1[1]*v2[2] - v1[2]*v2[1];
+        toReturn[1] = v1[0]*v2[2] - v1[2]*v2[0];
+        toReturn[2] = v1[0]*v2[1] - v1[1]*v2[0];
+
+        return toReturn;
+    }
+
 
     // Debugging methods below:
     public void moveShoulder(double power) {
