@@ -15,7 +15,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -28,9 +30,13 @@ public class Arm extends SubsystemBase {
     private PIDController pidShoulder;
     private PIDController pidElbow;
     private PIDController pidWrist;
-    public boolean controllerInterupt;
+
+    public boolean controllerInterrupt = true;
+
+    private double lastMovement;
 
     private RelativeEncoder wristEncoder, shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
+    private DutyCycleEncoder wristAbsoluteEncoder = new DutyCycleEncoder(8);
 
     public enum ArmPosition {
         StartingConfig,
@@ -48,7 +54,16 @@ public class Arm extends SubsystemBase {
 
     public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[]>();
 
-    public ArmPosition targetPos = ArmPosition.StartingConfig;
+    public ArmPosition targetPos;
+    public double shoulderTarget;
+    public double elbowTarget;
+    public double wristTarget;
+    private double shoulderSpeed;
+    private double elbowSpeed;
+    
+    // Number of steps to take to get there. Higher is smoother but slower
+    private double numSteps = 150;
+    private double currentStep = 0;
 
     public Arm() {
         shoulderLeft = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_LEFT, MotorType.kBrushless);
@@ -77,72 +92,202 @@ public class Arm extends SubsystemBase {
         shoulderRightEncoder = shoulderLeft.getEncoder();
         elbowEncoder = elbow.getEncoder();
 
+
         wristEncoder.setPosition(0);
         shoulderLeftEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
 
         // Shoulder, elbow, wrist
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.0 }); // by definition
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.1122 }); // by definition, -0.1122 on
+                                                                                        // absolute encoder
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { -0.009, 15.51, -31.22}); // TODO
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.209478259086609, -6.790310859680176, -0.102317477557937 }); // TODO
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -15.0, 0.0 }); // TODO
-        positionMap.put(ArmPosition.IntakeConeTop, new Double[] {0.0161, 13.74, -27.0}); // TODO
-
-
+        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.0, -5.183, -0.069102976727574 }); // TODO
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, -27.0 }); // TODO
         positionMap.put(ArmPosition.MidConeBottom, new Double[] { 1.62, 11.96, -3.86 });
         positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.4, -35.78, -57.07 });
         positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.56, 9.14, 0.5 });
         positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.12, -22.62, -5.0 });
-        positionMap.put(ArmPosition.MidCube, new Double[] { 0.79, 8.71, 1.36 });
-        positionMap.put(ArmPosition.HighCube, new Double[] { 2.46, 17.44, 1.36 });
+        positionMap.put(ArmPosition.MidCube, new Double[] { 2.05933141708374, -2.868226289749146, 0.109320752733019 });
+        positionMap.put(ArmPosition.HighCube, new Double[] { 3.151823282241821, -6.351974964141846, 0.020493000512325 });
+
+        setArm(ArmPosition.StartingConfig);
+        shoulderTarget = positionMap.get(targetPos)[0];
+        elbowTarget = positionMap.get(targetPos)[1];
+        wristTarget = positionMap.get(targetPos)[2];
     }
 
     public void setArm(ArmPosition pos) {
+        if (this.targetPos == ArmPosition.StartingConfig) {
+            lastMovement = Timer.getFPGATimestamp();
+        }
+
         targetPos = pos;
+
+        shoulderSpeed = (positionMap.get(targetPos)[0] - getShoulderPos())/numSteps;
+        elbowSpeed = (positionMap.get(targetPos)[1] - getElbowPos())/numSteps;
+
+        currentStep = 0;
+        shoulderTarget = positionMap.get(targetPos)[0];
+        elbowTarget = positionMap.get(targetPos)[1];
+        wristTarget = positionMap.get(targetPos)[2];
     }
+
+
 
     @Override
     public void periodic() {
-        double shoulderPower = pidShoulder.calculate(getShoulderPos(), positionMap.get(targetPos)[0]);
-        double elbowPower = pidElbow.calculate(getElbowPos(), positionMap.get(targetPos)[1]);
-        double wristPower = pidWrist.calculate(getWristPos(), positionMap.get(targetPos)[2]);
+        double shoulderPower = 0, wristPower = 0, elbowPower = 0;
 
-        if(!controllerInterupt) {
-            moveShoulder(shoulderPower);
+        // Update targets by speed and increment step number
+        // if(currentStep < numSteps) {
+        //     shoulderTarget += shoulderSpeed;
+        //     elbowTarget += elbowSpeed;
+        //     currentStep ++;
+        // }
+
+        
+
+        if (!controllerInterrupt) {
+            // wait time to let elbow drop
+            if (lastMovement + 0.4 < Timer.getFPGATimestamp()) {
+                shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
+                moveShoulder(shoulderPower);
+                wristPower = pidWrist.calculate(getWristPos(), wristTarget);
+                moveWrist(wristPower);
+            }
+            elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
-            moveWrist(wristPower);
         }
 
-        SmartDashboard.putNumber("Shoulder power", shoulderPower);
-        SmartDashboard.putNumber("Elbow power", elbowPower);
-        SmartDashboard.putNumber("Wrist power", wristPower);
+        // SmartDashboard.putNumber("Shoulder power", shoulderPower);
+        // SmartDashboard.putNumber("Elbow power", elbowPower);
+        // SmartDashboard.putNumber("Wrist power", wristPower);
 
-        SmartDashboard.putNumber("Shoulder target", positionMap.get(targetPos)[0]);
-        SmartDashboard.putNumber("Elbow target", positionMap.get(targetPos)[1]);
-        SmartDashboard.putNumber("Wrist target", positionMap.get(targetPos)[2]);
+        SmartDashboard.putNumber("Shoulder target", shoulderTarget);
+        SmartDashboard.putNumber("Elbow target", elbowTarget);
+        SmartDashboard.putNumber("Wrist target", wristTarget);
+
+        // SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
+        // SmartDashboard.putNumber("last", lastMovement);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
         SmartDashboard.putNumber("Elbow position", getElbowPos());
         SmartDashboard.putNumber("Wrist position", getWristPos());
+
+        shoulderTarget = SmartDashboard.getNumber("Shoulder target", getShoulderPos());
+        elbowTarget = SmartDashboard.getNumber("Elbow target", getElbowPos());
+        wristTarget = SmartDashboard.getNumber("Wrist target", getWristPos());
+
     }
 
-    private double getWristPos() {
-        return wristEncoder.getPosition();
+    public double getWristPos() {
+        return wristAbsoluteEncoder.getDistance();
     }
 
+    // Returns encoder count
     public double getShoulderPos() {
         return shoulderLeftEncoder.getPosition();
     }
 
+    // Returns encoder count
     public double getElbowPos() {
         return elbowEncoder.getPosition();
     }
 
+    // Returns shoulder angle (rad)
+    public double getShoulderAngle() {
+        return shoulderLeftEncoder.getPosition() * ArmConstants.SHOULDER_ENCODER_TO_RAD;
+    }
+
+    // Returns elbow angle (rad)
+    public double getElbowAngle() {
+
+        // String length (meters)
+        double length = elbowEncoder.getPosition() * ArmConstants.ELBOW_ENCODER_TO_METERS;
+        
+        // Law of cosines
+        double cosAngle = (length*length) - (ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.SHOULDER_TO_ELBOW) - (ArmConstants.ELBOW_TO_STRING*ArmConstants.ELBOW_TO_STRING);
+        cosAngle = cosAngle/((-2) * ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.ELBOW_TO_STRING);
+
+        return Math.acos(cosAngle);
+    }
+
+    // Get length given angle (radians)
+    public double getElbowLength(double angle) {
+        // Law of cosines again
+        double temp = (ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.SHOULDER_TO_ELBOW) + (ArmConstants.ELBOW_TO_STRING*ArmConstants.ELBOW_TO_STRING);
+        temp = temp - (2*ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.ELBOW_TO_STRING*Math.cos(angle));
+        return Math.sqrt(temp);
+    }
+
+    // Returns (x, y) position of elbow joint relative to shoulder
+    public double[] getElbowPosition() {
+        double x = Math.sin(getShoulderAngle()) * ArmConstants.SHOULDER_TO_ELBOW;
+        double y = -Math.cos(getShoulderAngle()) * ArmConstants.SHOULDER_TO_ELBOW;
+
+        return new double[]{x, y};
+    }
+
+    // Returns (x, y) position of wrist joint relative to shoulder
+    public double[] getTipPosition() {
+        double[] elbowPos = getElbowPosition();
+        double x = -Math.cos(getElbowAngle()) * ArmConstants.ELBOW_TO_WRIST;
+        double y = Math.sin(getElbowAngle()) * ArmConstants.ELBOW_TO_WRIST;
+        double shoulderAngle = getShoulderAngle();
+
+        // Do some trig  Ithink this works
+        double xRotated = x*Math.cos(shoulderAngle) - y*Math.sin(shoulderAngle);
+        double yRotated = x*Math.sin(shoulderAngle) + y*Math.cos(shoulderAngle);
+
+        return new double[]{elbowPos[0] + xRotated, elbowPos[1] + yRotated};
+    }
+
+    // Returns target (x, y) for wrist based on target angles
+    public double[] getPosFromAngles(double shoulderAngle, double elbowAngle) {
+        // It's mathin' time
+        double elbowX = Math.sin(shoulderAngle) * ArmConstants.SHOULDER_TO_ELBOW;
+        double elbowY = -Math.cos(shoulderAngle) * ArmConstants.SHOULDER_TO_ELBOW;
+        double x = -Math.cos(elbowAngle) * ArmConstants.ELBOW_TO_WRIST;
+        double y = Math.sin(elbowAngle) * ArmConstants.ELBOW_TO_WRIST;
+        double xRotated = x*Math.cos(shoulderAngle) - y*Math.sin(shoulderAngle);
+        double yRotated = x*Math.sin(shoulderAngle) + y*Math.cos(shoulderAngle);
+
+        return new double[]{elbowX + xRotated, elbowY + yRotated};
+    }
+
+    // Returns gradient component for a joint given vector from joint to tip and vector from tip to target
+    public double getGradient(double[] jointToTip, double[] tipToTarget) {
+        // First get vector by which turning joint will move tip
+        // Do this by crossing joint to tip with axis of rotation, (0,0,1) for both joints in this case 
+        double[] movementVector = cross(jointToTip, new double[]{0, 0, 1});
+        
+        // Then dot this movement with the desired direction of motion
+        return dot(movementVector, tipToTarget);
+    }
+
+    // Vector methods
+    // Only for 2d vectors
+    public double dot(double[] v1, double[] v2) {
+        return v1[0]*v2[0] + v1[1]*v2[1];
+    }
+
+    //Only for 3d vectors
+    public double[] cross(double[] v1, double[] v2) {
+        double[] toReturn = new double[3];
+        toReturn[0] = v1[1]*v2[2] - v1[2]*v2[1];
+        toReturn[1] = v1[0]*v2[2] - v1[2]*v2[0];
+        toReturn[2] = v1[0]*v2[1] - v1[1]*v2[0];
+
+        return toReturn;
+    }
+
+
     // Debugging methods below:
     public void moveShoulder(double power) {
-        power = MathUtil.clamp(power, -1, 1);
+        power = MathUtil.clamp(power, -0.5, 1);
         shoulderLeft.set(power);
         shoulderRight.set(power);
     }
@@ -151,11 +296,11 @@ public class Arm extends SubsystemBase {
         if (positionMap.get(targetPos).length > 3) {
             power = (getElbowPos() < positionMap.get(targetPos)[3] ? 0 : power);
         }
-        elbow.set(MathUtil.clamp(power, -0.9, 0.9));
+        elbow.set(MathUtil.clamp(power, -0.2, 0.6));
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.25, 0.25);
+        power = MathUtil.clamp(power, -0.8, 0.8);
         wrist.set(power);
     }
 
