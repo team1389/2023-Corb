@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -110,7 +111,7 @@ public class Drivetrain extends SubsystemBase {
 
     //Use with vision
     public void updateOdometryLatency(Pose2d measuredPose, double timestamp) {
-        poseEstimator.addVisionMeasurement(measuredPose, timestamp);
+        poseEstimator.addVisionMeasurement( measuredPose, timestamp);
     }
 
     public void updateFieldPose() {
@@ -119,7 +120,7 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        poseEstimator.update(getRotation2d(), getModulePositions());
+        poseEstimator.updateWithTime(Timer.getFPGATimestamp(), getRotation2d(), getModulePositions());
 
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
