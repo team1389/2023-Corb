@@ -20,6 +20,7 @@ public class Intake extends SubsystemBase{
     private double sensorThreshold = 10;
     private final double intakeSpeed = 0.5;
     private final double outtakeSpeed = 0.5;
+    private int temp=0;
     
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
@@ -28,23 +29,28 @@ public class Intake extends SubsystemBase{
         coneSensorBottom = new Ultrasonic(ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_PING, ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_RESPONSE);
         coneSensorTop = new Ultrasonic(ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_PING, ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_RESPONSE);
         cubeSensor = new Ultrasonic(ArmConstants.CUBE_INTAKE_SENSOR_PORT_PING, ArmConstants.CUBE_INTAKE_SENSOR_PORT_RESPONSE);
-    }
-
-    @Override
-    public void periodic() {
-        Shuffleboard.getTab("Sensors").add(coneSensorBottom);
-        Shuffleboard.getTab("Sensors").add(coneSensorTop);
-        Shuffleboard.getTab("Sensors").add(cubeSensor);
-
 
         coneSensorBottom.setEnabled(true);
         coneSensorTop.setEnabled(true);
         cubeSensor.setEnabled(true);
         Ultrasonic.setAutomaticMode(true);
+    }
+
+    @Override
+    public void periodic() {   
         SmartDashboard.putBoolean("Bottom Cone Intake", getBottomCone());
         SmartDashboard.putBoolean("Top Cone Intake", getTopCone());
         SmartDashboard.putBoolean("Cube Intake", getCube());
 
+        if(getBottomCone()==true||getTopCone()==true||getCube()==true){
+            temp++;
+            if(temp>5){
+                stop();
+            }
+        }
+        else{
+            temp=0;
+        }
     }
 
     public void runIntakeCone(){

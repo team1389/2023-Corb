@@ -1,6 +1,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,6 +34,8 @@ public class Robot extends TimedRobot {
         backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
 
         pdh = new PowerDistribution();
+
+        CameraServer.startAutomaticCapture();
     }
 
     /**
@@ -46,18 +49,18 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
 
-        double voltage = pdh.getVoltage();
-        SmartDashboard.putNumber("Voltage", voltage);
+        // double voltage = pdh.getVoltage();
+        // SmartDashboard.putNumber("Voltage", voltage);
 
-        SmartDashboard.putNumber("FR Drive Current", pdh.getCurrent(17));
-        SmartDashboard.putNumber("FL Drive Current", pdh.getCurrent(10));
-        SmartDashboard.putNumber("BR Drive Current", pdh.getCurrent(1));
-        SmartDashboard.putNumber("BL Drive Current", pdh.getCurrent(9));
-        SmartDashboard.putNumber("FR Turn Current", pdh.getCurrent(18));
-        SmartDashboard.putNumber("FL Turn Current", pdh.getCurrent(11));
-        SmartDashboard.putNumber("BL Turn Current", pdh.getCurrent(8));
-        SmartDashboard.putNumber("BR Turn Current", pdh.getCurrent(0));
-        SmartDashboard.putNumber("Total Current", pdh.getTotalCurrent());
+        // SmartDashboard.putNumber("FR Drive Current", pdh.getCurrent(17));
+        // SmartDashboard.putNumber("FL Drive Current", pdh.getCurrent(10));
+        // SmartDashboard.putNumber("BR Drive Current", pdh.getCurrent(1));
+        // SmartDashboard.putNumber("BL Drive Current", pdh.getCurrent(9));
+        // SmartDashboard.putNumber("FR Turn Current", pdh.getCurrent(18));
+        // SmartDashboard.putNumber("FL Turn Current", pdh.getCurrent(11));
+        // SmartDashboard.putNumber("BL Turn Current", pdh.getCurrent(8));
+        // SmartDashboard.putNumber("BR Turn Current", pdh.getCurrent(0));
+        // SmartDashboard.putNumber("Total Current", pdh.getTotalCurrent());
 
     }
 
@@ -82,18 +85,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        SwerveTelemetry frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
-        SwerveTelemetry backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
-        SwerveTelemetry frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
-        SwerveTelemetry backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
+        // SwerveTelemetry frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
+        // SwerveTelemetry backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
+        // SwerveTelemetry frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
+        // SwerveTelemetry backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
         //SendableRegistry.add(frontLeftTelemetry, "Swerve");
 
         //SmartDashboard.putNumber("FL angular", frontLeftTelemetry.get);
        
-        SendableRegistry.addLW(frontLeftTelemetry, "FL Swerve");
-        SendableRegistry.addLW(backLeftTelemetry, "BL Swerve");
-        SendableRegistry.addLW(frontRightTelemetry, "FR Swerve");
-        SendableRegistry.addLW(backRightTelemetry, "BR Swerve");
+        // SendableRegistry.addLW(frontLeftTelemetry, "FL Swerve");
+        // SendableRegistry.addLW(backLeftTelemetry, "BL Swerve");
+        // SendableRegistry.addLW(frontRightTelemetry, "FR Swerve");
+        // SendableRegistry.addLW(backRightTelemetry, "BR Swerve");
 
         oi.drivetrain.frontLeft.resetEncoders();
         oi.drivetrain.backLeft.resetEncoders();
