@@ -24,6 +24,7 @@ import frc.autos.OneTopCone;
 import frc.autos.OneTopCube;
 import frc.autos.QuickBalance;
 import frc.autos.TwoTopCube;
+import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
 import frc.commands.ManualWrist;
 import frc.commands.RunIntakeCone;
@@ -42,7 +43,6 @@ import frc.subsystems.Arm.ArmPosition;
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    // public Drivetrain drivetrain;
     public final Arm arm = new Arm();
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
@@ -58,6 +58,7 @@ public class OI {
     private Trigger manipYButton;
     private Trigger manipLeftBumper;
     private Trigger manipRightBumper;
+    private Trigger manipElipsisButton;
     private Trigger manipMenuButton;
     private Trigger manipLeftTrigger;
     private Trigger manipRightTrigger;
@@ -92,19 +93,18 @@ public class OI {
                 () -> getDriveLeftX(),
                 () -> getDriveRightX(),
                 () -> getDriveRightY(),
-                () -> !getDriveLeftBumper(),
-                () -> getDriveRightBumper()) // By default be in field oriented
+                () -> !getDriveLeftBumper(), // By default be in field oriented
+                () -> getDriveRightBumper()) //Slow function
         );
 
         arm.setDefaultCommand(new ManualArm(
                 arm,
-                () -> getManipLeftX(),
-                () -> getManipRightX()));
+                () -> getManipLeftY(),
+                () -> getManipRightY()));
 
-        // drivetrain.setDefaultCommand(new AutoBalance(drivetrain));
 
-        // Press right bumper -> zero gyro heading
-        // driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
+        // Press A button -> zero gyro heading
+        driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
         
         manipRight.whileTrue(new RunIntakeCube(intake));
@@ -112,7 +112,8 @@ public class OI {
         manipRightBumper.whileTrue(new RunOuttakeCone(intake));
         manipBButton.whileTrue(new RunIntakeCone(intake));
 
-        manipMenuButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
+        manipElipsisButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
+        manipMenuButton.onTrue(new HoldPosition(arm));
 
         manipDown.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
         manipStadia.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
@@ -155,8 +156,13 @@ public class OI {
      */
     private void initControllers() {
         driveController = new XboxController(0);
-        driveRightBumper = new JoystickButton(driveController, 6);
+        manipController = new XboxController(1);
+
         driveAButton = new JoystickButton(driveController, 1);
+        driveRightBumper = new JoystickButton(driveController, 6);
+
+        manipElipsisButton = new JoystickButton(manipController, 9);
+        manipMenuButton = new JoystickButton(manipController, 10);
 
         manipController = new XboxController(1);
 
@@ -164,6 +170,8 @@ public class OI {
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);
+
+        manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
         manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
@@ -194,7 +202,7 @@ public class OI {
     }
 
     private double getDriveRightY() {
-        return -driveController.getRawAxis(4);
+        return driveController.getRawAxis(4);
     }
 
     private boolean getDriveLeftBumper() {

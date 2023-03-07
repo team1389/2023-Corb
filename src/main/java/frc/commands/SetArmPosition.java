@@ -19,7 +19,7 @@ public class SetArmPosition extends CommandBase {
 
     @Override
     public void initialize() {
-        arm.controllerInterupt = false;
+        arm.controllerInterrupt = false;
         arm.setArm(target);
     }
 

@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,7 +31,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.FL_TURN_PORT,
         DriveConstants.FL_DRIVE_REVERSED,
         DriveConstants.FL_TURN_REVERSED,
-        DriveConstants.FL_ABS_PORT,
         DriveConstants.FL_ABS_REVERSED,
         ModuleConstants.FL_ANGLE_OFFSET);
 
@@ -39,7 +39,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.FR_TURN_PORT,
         DriveConstants.FR_DRIVE_REVERSED,
         DriveConstants.FR_TURN_REVERSED,
-        DriveConstants.FR_ABS_PORT,
         DriveConstants.FR_ABS_REVERSED,
         ModuleConstants.FR_ANGLE_OFFSET);
 
@@ -48,7 +47,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.BL_TURN_PORT,
         DriveConstants.BL_DRIVE_REVERSED,
         DriveConstants.BL_TURN_REVERSED,
-        DriveConstants.BL_ABS_PORT,
         DriveConstants.BL_ABS_REVERSED,
         ModuleConstants.BL_ANGLE_OFFSET);
 
@@ -57,7 +55,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.BR_TURN_PORT,
         DriveConstants.BR_DRIVE_REVERSED,
         DriveConstants.BR_TURN_REVERSED,
-        DriveConstants.BR_ABS_PORT,
         DriveConstants.BR_ABS_REVERSED,
         ModuleConstants.BR_ANGLE_OFFSET);
     // public SwerveModule backRight;
@@ -114,7 +111,7 @@ public class Drivetrain extends SubsystemBase {
 
     //Use with vision
     public void updateOdometryLatency(Pose2d measuredPose, double timestamp) {
-        poseEstimator.addVisionMeasurement(measuredPose, timestamp);
+        poseEstimator.addVisionMeasurement( measuredPose, timestamp);
     }
 
     public void updateFieldPose() {
@@ -123,7 +120,7 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        poseEstimator.update(getRotation2d(), getModulePositions());
+        poseEstimator.updateWithTime(Timer.getFPGATimestamp(), getRotation2d(), getModulePositions());
 
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());

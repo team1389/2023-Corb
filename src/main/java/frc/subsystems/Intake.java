@@ -7,6 +7,7 @@ import frc.robot.RobotMap.ModuleConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
@@ -15,7 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Intake extends SubsystemBase{
     private CANSparkMax bottomRoller; 
     private CANSparkMax topRoller;
-    private Ultrasonic cubeSensor, coneSensor1, coneSensor2;
+    private Ultrasonic cubeSensor, coneSensorBottom, coneSensorTop;
     private double sensorThreshold = 10;
     private final double intakeSpeed = 0.5;
     private final double outtakeSpeed = 0.5;
@@ -23,14 +24,27 @@ public class Intake extends SubsystemBase{
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
         topRoller = new CANSparkMax(DriveConstants.TOP_INTAKE_MOTOR, MotorType.kBrushless);
-        cubeSensor = new Ultrasonic(ArmConstants.INTAKE_SENSOR_PORT_PING, ArmConstants.INTAKE_SENSOR_PORT_RESPONSE);
-        // sensor2 = new Ultrasonic(ArmConstants.INTAKE_SENSOR_PORT_PING_TWO, ArmConstants.INTAKE_SENSOR_PORT_RESPONSE_TWO);
-        // sensor3 = new Ultrasonic(ArmConstants.INTAKE_SENSOR_PORT_PING_THREE, ArmConstants.INTAKE_SENSOR_PORT_RESPONSE_THREE);
+
+        coneSensorBottom = new Ultrasonic(ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_PING, ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_RESPONSE);
+        coneSensorTop = new Ultrasonic(ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_PING, ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_RESPONSE);
+        cubeSensor = new Ultrasonic(ArmConstants.CUBE_INTAKE_SENSOR_PORT_PING, ArmConstants.CUBE_INTAKE_SENSOR_PORT_RESPONSE);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Cube distance", getCube());
+        Shuffleboard.getTab("Sensors").add(coneSensorBottom);
+        Shuffleboard.getTab("Sensors").add(coneSensorTop);
+        Shuffleboard.getTab("Sensors").add(cubeSensor);
+
+
+        coneSensorBottom.setEnabled(true);
+        coneSensorTop.setEnabled(true);
+        cubeSensor.setEnabled(true);
+        Ultrasonic.setAutomaticMode(true);
+        SmartDashboard.putBoolean("Bottom Cone Intake", getBottomCone());
+        SmartDashboard.putBoolean("Top Cone Intake", getTopCone());
+        SmartDashboard.putBoolean("Cube Intake", getCube());
+
     }
 
     public void runIntakeCone(){
@@ -53,8 +67,15 @@ public class Intake extends SubsystemBase{
         topRoller.set(outtakeSpeed);
     }
 
-    public double getCube() {
-        return cubeSensor.getRangeInches();
+    public boolean getCube() {
+        return cubeSensor.getRangeInches()<24&&cubeSensor.getRangeInches()>1;
+    }
+
+    public boolean getBottomCone() {
+        return coneSensorBottom.getRangeInches()<24&&coneSensorBottom.getRangeInches()>1;
+    }
+    public boolean getTopCone() {
+        return coneSensorTop.getRangeInches()<24&&coneSensorTop.getRangeInches()>1;
     }
 
     public void stop(){
