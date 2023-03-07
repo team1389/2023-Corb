@@ -6,6 +6,10 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
+import frc.util.DPadButton;
+import frc.util.DPadButton.Direction;
+
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,6 +38,7 @@ import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 
+
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
@@ -54,6 +59,18 @@ public class OI {
     private Trigger manipLeftBumper;
     private Trigger manipRightBumper;
     private Trigger manipMenuButton;
+    private Trigger manipLeftTrigger;
+    private Trigger manipRightTrigger;
+    private Trigger manipUp;
+    private Trigger manipDown;
+    private Trigger manipRight;
+    private Trigger manipLeft;
+    private Trigger manipTopRight;
+    private Trigger manipBottomLeft;
+    private Trigger manipBottomRight;
+    private Trigger manipStadia;
+
+    
     SendableChooser<Command> chooser = new SendableChooser<>();
 
     private HashMap<String, Command> autoMap = new HashMap<String, Command>();
@@ -90,17 +107,26 @@ public class OI {
         // driveAButton.onTrue(new InstantCommand(()->drivetrain.zeroHeading()));
 
         
-        manipRightBumper.whileTrue(new ManualWrist(arm, 0.2));
-        // manipXButton.whileTrue(new RunIntakeCube(intake));
-        manipAButton.whileTrue(new RunOuttakeCube(intake));
-        manipBButton.whileTrue(new RunOuttakeCone(intake));
-        manipLeftBumper.whileTrue(new ManualWrist(arm, -0.2));
-        // manipYButton.whileTrue(new RunIntakeCone(intake));
+        manipRight.whileTrue(new RunIntakeCube(intake));
+        manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
+        manipRightBumper.whileTrue(new RunOuttakeCone(intake));
+        manipBButton.whileTrue(new RunIntakeCone(intake));
 
         manipMenuButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
 
-        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
-        manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
+        manipDown.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
+        manipStadia.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
+        manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeBottom, true));
+        manipRightTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
+        manipRightTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeTop, true));
+        manipRightTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeTop, true));
+        manipLeftTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeBottom, true));
+        manipLeftTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeBottom, true));
+        manipLeft.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
+        manipUp.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
+
+
+
         // manipLeftBumper.onTrue(new SetArm(arm, ArmPosition.High));
         // possibly add a wrist joint
 
@@ -133,6 +159,7 @@ public class OI {
         driveAButton = new JoystickButton(driveController, 1);
 
         manipController = new XboxController(1);
+
         manipMenuButton = new JoystickButton(manipController, 9);
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
@@ -140,6 +167,18 @@ public class OI {
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
         manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
+        manipLeftTrigger = new JoystickButton(manipController, 13);
+        manipRightTrigger = new JoystickButton(manipController, 12);
+        manipUp = new DPadButton(manipController, Direction.UP);
+        manipLeft = new DPadButton(manipController, Direction.LEFT);
+        manipDown = new DPadButton(manipController, Direction.DOWN);
+        manipRight = new DPadButton(manipController, Direction.RIGHT);
+        manipTopRight = new JoystickButton(manipController, 10);
+        manipBottomLeft = new JoystickButton(manipController, 14);
+        manipBottomRight = new JoystickButton(manipController, 15);
+        manipStadia = new JoystickButton(manipController, 11);
+
+
     }
 
     private double getDriveLeftX() {
