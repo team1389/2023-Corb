@@ -1,6 +1,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,6 +34,8 @@ public class Robot extends TimedRobot {
         backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
 
         pdh = new PowerDistribution();
+
+        CameraServer.startAutomaticCapture();
     }
 
     /**
