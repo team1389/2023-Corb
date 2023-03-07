@@ -98,20 +98,20 @@ public class Arm extends SubsystemBase {
         elbowEncoder.setPosition(0);
 
         // Shoulder, elbow, wrist
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.1122 }); // by definition, -0.1122 on
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.38 }); // by definition, -0.1122 on
                                                                                         // absolute encoder
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.209478259086609, -6.790310859680176, -0.102317477557937 }); // TODO
-        positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -15.0, 0.0 }); // TODO
-        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.0, -5.183, -0.069102976727574 }); // TODO
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.209478259086609, -6.790310859680176, 0.003 }); // TODO
+        positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -15.0, 0.27 }); // TODO
+        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.0, -5.183, 0.219102976727574 }); // TODO
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, -27.0 }); // TODO
         positionMap.put(ArmPosition.MidConeBottom, new Double[] { 1.62, 11.96, -3.86 });
         positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.4, -35.78, -57.07 });
         positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.56, 9.14, 0.5 });
         positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.12, -22.62, -5.0 });
-        positionMap.put(ArmPosition.MidCube, new Double[] { 2.05933141708374, -2.868226289749146, 0.109320752733019 });
-        positionMap.put(ArmPosition.HighCube, new Double[] { 3.151823282241821, -6.351974964141846, 0.020493000512325 });
+        positionMap.put(ArmPosition.MidCube, new Double[] { 2.05933141708374, -2.868226289749146, 0.379320752733019 });
+        positionMap.put(ArmPosition.HighCube, new Double[] { 3.151823282241821, -6.351974964141846, 0.290493000512325 });
 
         setArm(ArmPosition.StartingConfig);
         shoulderTarget = positionMap.get(targetPos)[0];
@@ -287,7 +287,7 @@ public class Arm extends SubsystemBase {
 
     // Debugging methods below:
     public void moveShoulder(double power) {
-        power = MathUtil.clamp(power, -0.5, 1);
+        power = MathUtil.clamp(power, -1, 1);
         shoulderLeft.set(power);
         shoulderRight.set(power);
     }

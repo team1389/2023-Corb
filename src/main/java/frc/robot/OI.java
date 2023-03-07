@@ -108,8 +108,10 @@ public class OI {
 
         
         manipRight.whileTrue(new RunIntakeCube(intake));
-        manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
-        manipRightBumper.whileTrue(new RunOuttakeCone(intake));
+        // manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
+        // manipRightBumper.whileTrue(new RunOuttakeCone(intake));
+        manipLeftBumper.whileTrue(new ManualWrist(arm, 0.2));
+        manipRightBumper.whileTrue(new ManualWrist(arm, -0.2));
         manipBButton.whileTrue(new RunIntakeCone(intake));
 
         manipElipsisButton.onTrue(new InstantCommand(()-> arm.resetEncoders()));
@@ -177,10 +179,10 @@ public class OI {
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
         manipLeftTrigger = new JoystickButton(manipController, 13);
         manipRightTrigger = new JoystickButton(manipController, 12);
-        manipUp = new DPadButton(manipController, Direction.UP);
-        manipLeft = new DPadButton(manipController, Direction.LEFT);
-        manipDown = new DPadButton(manipController, Direction.DOWN);
-        manipRight = new DPadButton(manipController, Direction.RIGHT);
+        manipUp = new DPadButton(manipController, Direction.UP).getTrigger();
+        manipLeft = new DPadButton(manipController, Direction.LEFT).getTrigger();
+        manipDown = new DPadButton(manipController, Direction.DOWN).getTrigger();
+        manipRight = new DPadButton(manipController, Direction.RIGHT).getTrigger();
         manipTopRight = new JoystickButton(manipController, 10);
         manipBottomLeft = new JoystickButton(manipController, 14);
         manipBottomRight = new JoystickButton(manipController, 15);

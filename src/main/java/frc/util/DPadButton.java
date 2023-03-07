@@ -3,7 +3,7 @@ package frc.util;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-public class DPadButton extends Trigger {
+public class DPadButton {
 
     XboxController controller;
     Direction direction;
@@ -27,6 +27,10 @@ public class DPadButton extends Trigger {
         int dPadValue = controller.getPOV();
         return (dPadValue == direction.direction) || (dPadValue == (direction.direction + 45) % 360)
                 || (dPadValue == (direction.direction + 315) % 360);
+    }
+
+    public Trigger getTrigger() {
+        return new Trigger(this::get);
     }
 
 }
