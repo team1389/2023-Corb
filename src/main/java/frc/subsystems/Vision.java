@@ -34,9 +34,9 @@ public class Vision extends SubsystemBase {
     new AprilTag(01,
                 new Pose3d(new Pose2d(0.0, FieldConstants.FIELD_WIDTH / 2.0, Rotation2d.fromDegrees(0.0))));
     public List<AprilTag> atList = new ArrayList<AprilTag>(); 
-    // Cam mounted facing left, 0.197 meters behind center, 0.368 meters left of
-    // center, 0.235 meters above center
-    public final Transform3d robotToCamTransformation = new Transform3d(new Translation3d(-0.197, -0.368, 0.235),
+    // Cam mounted facing left, 0.1559 meters behind center, 0.1397 meters left of
+    // center, 0.536 meters above center
+    public final Transform3d robotToCamTransformation = new Transform3d(new Translation3d(-0.1559, -0.1397, 0.535686),
             new Rotation3d(0, 0, 90));
     private PhotonPoseEstimator photonPoseEstimator;
 

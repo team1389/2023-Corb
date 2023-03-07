@@ -70,8 +70,8 @@ public class RobotMap {
         public static final int FR_TURN_PORT = 6;
         public static final int BR_TURN_PORT = 4;
 
-        public static final int TOP_INTAKE_MOTOR = 12; // TODO: Get actual port
-        public static final int BOTTOM_INTAKE_MOTOR = 13;
+        public static final int TOP_INTAKE_MOTOR = 13; // TODO: Get actual port
+        public static final int BOTTOM_INTAKE_MOTOR = 12;
         public static final int WRIST_MOTOR = 14;
 
         // Sometimes encoders are mounted backwards based on robot design, this fixes
