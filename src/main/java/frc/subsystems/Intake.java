@@ -20,6 +20,7 @@ public class Intake extends SubsystemBase{
     private double sensorThreshold = 10;
     private final double intakeSpeed = 0.5;
     private final double outtakeSpeed = 0.5;
+    private int temp=0;
     
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
@@ -31,6 +32,9 @@ public class Intake extends SubsystemBase{
         
         // coneSensorBottom.setEnabled(true);
         // coneSensorTop.setEnabled(true);
+
+        coneSensorBottom.setEnabled(true);
+        coneSensorTop.setEnabled(true);
         cubeSensor.setEnabled(true);
         Ultrasonic.setAutomaticMode(true);
     }
@@ -41,6 +45,15 @@ public class Intake extends SubsystemBase{
         // SmartDashboard.putBoolean("Top Cone Intake", getTopCone());
         SmartDashboard.putBoolean("Cube Intake", getCube());
 
+        if(getBottomCone()==true||getTopCone()==true||getCube()==true){
+            temp++;
+            if(temp>5){
+                stop();
+            }
+        }
+        else{
+            temp=0;
+        }
     }
 
     public void runIntakeCone(){
