@@ -28,19 +28,15 @@ public class Intake extends SubsystemBase{
         coneSensorBottom = new Ultrasonic(ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_PING, ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_RESPONSE);
         coneSensorTop = new Ultrasonic(ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_PING, ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_RESPONSE);
         cubeSensor = new Ultrasonic(ArmConstants.CUBE_INTAKE_SENSOR_PORT_PING, ArmConstants.CUBE_INTAKE_SENSOR_PORT_RESPONSE);
-    }
-
-    @Override
-    public void periodic() {
-        Shuffleboard.getTab("Sensors").add(coneSensorBottom);
-        Shuffleboard.getTab("Sensors").add(coneSensorTop);
-        Shuffleboard.getTab("Sensors").add(cubeSensor);
-
-
+        
         coneSensorBottom.setEnabled(true);
         coneSensorTop.setEnabled(true);
         cubeSensor.setEnabled(true);
         Ultrasonic.setAutomaticMode(true);
+    }
+
+    @Override
+    public void periodic() {
         SmartDashboard.putBoolean("Bottom Cone Intake", getBottomCone());
         SmartDashboard.putBoolean("Top Cone Intake", getTopCone());
         SmartDashboard.putBoolean("Cube Intake", getCube());
