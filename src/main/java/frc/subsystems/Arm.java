@@ -119,6 +119,33 @@ public class Arm extends SubsystemBase {
         wristTarget = positionMap.get(targetPos)[2];
     }
 
+    public double setShoulder(double pos) {
+        var temp = shoulderTarget;
+        shoulderTarget = pos;
+        SmartDashboard.putNumber("Shoulder target", shoulderTarget);
+        return temp;
+    }
+
+    public double setElbow(double pos) {
+        var temp = elbowTarget;
+        elbowTarget = pos;
+        SmartDashboard.putNumber("Elbow target", elbowTarget);
+        return temp;
+    };
+
+    public double setWrist(double pos) {
+        var temp = wristTarget;
+        wristTarget = pos;
+        SmartDashboard.putNumber("Wrist target", wristTarget);
+        return temp;
+    };
+
+    public void setArm(double shoulder, double elbow, double wrist) {
+        setShoulder(shoulder);
+        setElbow(elbow);
+        setWrist(wrist);
+    };
+
     public void setArm(ArmPosition pos) {
         if (this.targetPos == ArmPosition.StartingConfig) {
             lastMovement = Timer.getFPGATimestamp();
@@ -130,13 +157,10 @@ public class Arm extends SubsystemBase {
         elbowSpeed = (positionMap.get(targetPos)[1] - getElbowPos()) / numSteps;
 
         currentStep = 0;
-        shoulderTarget = positionMap.get(targetPos)[0];
-        elbowTarget = positionMap.get(targetPos)[1];
-        wristTarget = positionMap.get(targetPos)[2];
 
-        SmartDashboard.putNumber("Shoulder target", shoulderTarget);
-        SmartDashboard.putNumber("Elbow target", elbowTarget);
-        SmartDashboard.putNumber("Wrist target", wristTarget);
+        setShoulder(positionMap.get(targetPos)[0]);
+        setElbow(positionMap.get(targetPos)[1]);
+        setWrist(positionMap.get(targetPos)[2]);
     }
 
     @Override
@@ -165,8 +189,6 @@ public class Arm extends SubsystemBase {
         // SmartDashboard.putNumber("Shoulder power", shoulderPower);
         // SmartDashboard.putNumber("Elbow power", elbowPower);
         // SmartDashboard.putNumber("Wrist power", wristPower);
-
-    
 
         // SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
         // SmartDashboard.putNumber("last", lastMovement);
@@ -238,7 +260,7 @@ public class Arm extends SubsystemBase {
         double y = Math.sin(getElbowAngle()) * ArmConstants.ELBOW_TO_WRIST;
         double shoulderAngle = getShoulderAngle();
 
-        // Do some trig Ithink this works
+        // Do some trig I think this works
         double xRotated = x * Math.cos(shoulderAngle) - y * Math.sin(shoulderAngle);
         double yRotated = x * Math.sin(shoulderAngle) + y * Math.cos(shoulderAngle);
 
@@ -302,7 +324,6 @@ public class Arm extends SubsystemBase {
 
     public void moveWrist(double power) {
         // power = MathUtil.clamp(power, -1, 1);
-        wristTarget = SmartDashboard.getNumber("Wrist power", power);
         wrist.set(power);
     }
 

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.autos.OneBottomCone;
@@ -59,7 +60,7 @@ public class OI {
     private Trigger manipLeftBumper;
     private Trigger manipRightTrigger;
     private Trigger manipLeftTrigger;
-    
+
     private Trigger manipAButton;
     private Trigger manipBButton;
     private Trigger manipXButton;
@@ -86,6 +87,13 @@ public class OI {
 
         initControllers();
 
+        arm.setDefaultCommand(new ManualArm(
+                arm,
+                () -> getManipLeftY(),
+                () -> getManipRightY()));
+
+        // DRIVE CONTROLLER
+
         // Cool new way to make a drive command by passing in Suppliers for the
         // joysticks
         drivetrain.setDefaultCommand(new TeleOpDrive(
@@ -98,70 +106,72 @@ public class OI {
                 () -> getDriveRightBumper()) // Slow function
         );
 
-        arm.setDefaultCommand(new ManualArm(
-                arm,
-                () -> getManipLeftY(),
-                () -> getManipRightY()));
-
         // Press A button -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
-        manipRight.whileTrue(new RunIntakeCube(intake));
+        // MANIPULATOR CONTROLLER
+
         // manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
         // manipRightBumper.whileTrue(new RunOuttakeCone(intake));
 
-        // manipLeftBumper.whileTrue(new InstantCommand(() -> {
-        //     if (arm.controllerInterrupt) {
-        //         arm.moveWrist(0.55);
-        //     } else {
-        //         arm.wristTarget += 0.05;
-        //         SmartDashboard.putNumber("Wrist target", arm.wristTarget);
-        //     }
-        // }));
-        // manipRightBumper.whileTrue(new InstantCommand(() -> {
-        //     // arm.controllerInterrupt = false;
-        //     if (arm.controllerInterrupt) {
-        //         arm.moveWrist(-0.55);
-        //     } else {
-        //         arm.wristTarget -= 0.05;
-        //         SmartDashboard.putNumber("Wrist target", arm.wristTarget);
-        //     }
-        // }));
-        manipLeftBumper.whileTrue(new ManualWrist(arm, 0.55));
-        manipRightBumper.whileTrue(new ManualWrist(arm, -0.55));
-        manipBButton.whileTrue(new RunIntakeCone(intake));
+        manipLeftBumper.whileTrue(new RunCommand(() -> {
+            if (arm.controllerInterrupt) {
+                arm.moveWrist(0.55);
+            } else {
+                arm.setWrist(arm.wristTarget + 0.05);
+            }
+        }));
+
+        manipRightBumper.whileTrue(new RunCommand(() -> {
+            if (arm.controllerInterrupt) {
+                arm.moveWrist(-0.55);
+            } else {
+                arm.setWrist(arm.wristTarget - 0.05);
+            }
+        }));
+
+        // manipLeftBumper.whileTrue(new ManualWrist(arm, 0.55));
+        // manipRightBumper.whileTrue(new ManualWrist(arm, -0.55));
 
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));
         manipMenuButton.onTrue(new HoldPosition(arm));
 
-        manipDown.onTrue(new 
-        SetArmPosition(arm, ArmPosition.IntakeCube, true));
         manipStadia.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
-        manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeBottom, true));
+
         manipRightTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
         manipRightTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeTop, true));
         manipRightTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeTop, true));
+
+        manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeBottom, true));
         manipLeftTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeBottom, true));
         manipLeftTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeBottom, true));
-        manipLeft.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
-        manipUp.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
 
-        final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
-        final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
-        final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
-        final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
-        final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
-        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
+        manipDown.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
+        manipUp.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
+        manipLeft.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
+
+        // TODO: these are terrible names, perhaps "Backwards" and "Forwards"?
+        manipBButton.whileTrue(new RunIntakeCone(intake));
+        manipRight.whileTrue(new RunIntakeCube(intake));
+
+        // final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake,
+        // autoMap);
+        // final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
+        // final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake,
+        // autoMap);
+        // final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
+        // final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
+        // final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
         // A chooser for autonomous commands
 
-        chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
-        chooser.addOption("One Bottom Cube", oneBottomCube);
-        chooser.addOption("One Top Cone", oneTopCone);
-        chooser.addOption("One Top Cube", oneTopCube);
-        chooser.addOption("Quick Balance", quickBalance);
-        chooser.addOption("Two Top Cube", twoTopCube);
-        SmartDashboard.putData("Auto choices", chooser);
+        // chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
+        // chooser.addOption("One Bottom Cube", oneBottomCube);
+        // chooser.addOption("One Top Cone", oneTopCone);
+        // chooser.addOption("One Top Cube", oneTopCube);
+        // chooser.addOption("Quick Balance", quickBalance);
+        // chooser.addOption("Two Top Cube", twoTopCube);
+        // SmartDashboard.putData("Auto choices", chooser);
     }
 
     /**

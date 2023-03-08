@@ -18,7 +18,8 @@ public class TeleOpDrive extends CommandBase {
     private double desiredAngle; // gyro value from getHeading() the robot wants to point at
 
     public TeleOpDrive(Drivetrain drivetrain,
-            Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction, Supplier<Double> rightY,
+            Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
+            Supplier<Double> rightY,
             Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction) {
         this.drivetrain = drivetrain;
         this.xSpdFunction = xSpdFunction;
@@ -27,13 +28,13 @@ public class TeleOpDrive extends CommandBase {
         this.fieldOrientedFunction = fieldOrientedFunction;
         this.slowFunction = slowFunction;
 
-        // A slew rate limiter caps the rate of change of the inputs, to make the robot drive much smoother
+        // A slew rate limiter caps the rate of change of the inputs, to make the robot
+        // drive much smoother
         this.xLimiter = new SlewRateLimiter(DriveConstants.MAX_LINEAR_ACCEL);
         this.yLimiter = new SlewRateLimiter(DriveConstants.MAX_LINEAR_ACCEL);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.MAX_ANGULAR_ACCEL);
 
         this.desiredAngle = drivetrain.getHeading();
-        
 
         addRequirements(drivetrain);
     }
@@ -46,7 +47,7 @@ public class TeleOpDrive extends CommandBase {
     public void execute() {
         // 0. push desired angle to smart dashboard
         SmartDashboard.putNumber("Desired Angle", desiredAngle);
-        
+
         // 1. Get real-time joystick inputs
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
@@ -61,9 +62,9 @@ public class TeleOpDrive extends CommandBase {
         xSpeed = xLimiter.calculate(xSpeed * DriveConstants.MAX_METERS_PER_SEC);
         ySpeed = yLimiter.calculate(ySpeed * DriveConstants.MAX_METERS_PER_SEC);
         turningSpeed = turningLimiter.calculate(turningSpeed * DriveConstants.MAX_RADIANS_PER_SEC);
-       
+
         // 4. Check right bumper for slow mode
-        if(slowFunction.get()) {
+        if (slowFunction.get()) {
             xSpeed *= 0.65;
             ySpeed *= 0.65;
             turningSpeed *= 0.65;

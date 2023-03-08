@@ -11,7 +11,7 @@ public class AprilTagPoseEstimation extends CommandBase{
     public AprilTagPoseEstimation(Drivetrain drivetrain, Vision vision) {
         this.drivetrain = drivetrain;
         this.vision = vision;
-
+        // TODO: This should not have a drivetrain requirement
         addRequirements(drivetrain, vision);
     }
 
