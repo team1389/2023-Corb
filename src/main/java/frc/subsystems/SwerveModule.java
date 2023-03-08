@@ -80,7 +80,7 @@ public class SwerveModule extends SubsystemBase{
         drivePidController.setFF(1/ModuleConstants.DRIVE_FREE_MAX_SPEED_MPS);
 
 
-        turnPidController.setOutputRange(-0.75, 0.75);
+        turnPidController.setOutputRange(-1, 1);
         drivePidController.setOutputRange(-1, 1);
 
         turnPidController.setPositionPIDWrappingEnabled(true);

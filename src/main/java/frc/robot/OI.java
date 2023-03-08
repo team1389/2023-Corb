@@ -116,24 +116,24 @@ public class OI {
         // manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
         // manipRightBumper.whileTrue(new RunOuttakeCone(intake));
 
-        manipLeftBumper.whileTrue(new RunCommand(() -> {
-            if (arm.controllerInterrupt) {
-                arm.moveWrist(0.55);
-            } else {
-                arm.setWrist(arm.wristTarget + 0.05);
-            }
-        }));
+        // manipLeftBumper.whileTrue(new RunCommand(() -> {
+        //     if (arm.controllerInterrupt) {
+        //         arm.moveWrist(0.55);
+        //     } else {
+        //         arm.setWrist(arm.wristTarget + 0.05);
+        //     }
+        // }));
 
-        manipRightBumper.whileTrue(new RunCommand(() -> {
-            if (arm.controllerInterrupt) {
-                arm.moveWrist(-0.55);
-            } else {
-                arm.setWrist(arm.wristTarget - 0.05);
-            }
-        }));
+        // manipRightBumper.whileTrue(new RunCommand(() -> {
+        //     if (arm.controllerInterrupt) {
+        //         arm.moveWrist(-0.55);
+        //     } else {
+        //         arm.setWrist(arm.wristTarget - 0.05);
+        //     }
+        // }));
 
-        // manipLeftBumper.whileTrue(new ManualWrist(arm, 0.55));
-        // manipRightBumper.whileTrue(new ManualWrist(arm, -0.55));
+        manipLeftBumper.whileTrue(new ManualWrist(arm, 0.4));
+        manipRightBumper.whileTrue(new ManualWrist(arm, -0.4));
 
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));
         manipMenuButton.onTrue(new HoldPosition(arm));

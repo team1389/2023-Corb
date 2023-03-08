@@ -27,7 +27,7 @@ public class RobotMap {
         public static final double TURNING_ROTATIONS_TO_RAD = TURN_GEAR_RATIO * 2 * Math.PI;
         public static final double DRIVE_RPM_TO_METERS_PER_SEC = DRIVE_ROTATIONS_TO_METERS / 60;
         public static final double TURNING_RPM_TO_RAD_PER_SEC = TURNING_ROTATIONS_TO_RAD / 60;
-        public static final double P_TURNING = 0.35; // PID constant
+        public static final double P_TURNING = 0.75; // PID constant
         public static final double I_TURNING = 0.000001; // PID Constant
         public static final double D_TURNING = 0.00025; // PID constant
         public static final double P_DRIVE = 0.5; // PID constant
@@ -93,7 +93,7 @@ public class RobotMap {
 
         // The physical max if motors go full speed
         public static final double MAX_METERS_PER_SEC = 5; // m/s
-        public static final double MAX_RADIANS_PER_SEC = 7; // rad/s
+        public static final double MAX_RADIANS_PER_SEC = 9; // rad/s
 
         public static final double MAX_LINEAR_ACCEL = 7.5; // m/s/s
         public static final double MAX_ANGULAR_ACCEL = 10; // rad/s/s

@@ -62,7 +62,6 @@ public class Drivetrain extends SubsystemBase {
         DriveConstants.BR_TURN_REVERSED,
         DriveConstants.BR_ABS_REVERSED,
         ModuleConstants.BR_ANGLE_OFFSET);
-    // public SwerveModule backRight;
 
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
     public final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.driveKinematics,

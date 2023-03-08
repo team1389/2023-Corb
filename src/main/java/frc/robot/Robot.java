@@ -4,6 +4,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.util.SwerveTelemetry;
@@ -86,7 +87,7 @@ public class Robot extends TimedRobot {
         // SwerveTelemetry frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
         // SwerveTelemetry backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
         // SwerveTelemetry frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
-        // SwerveTelemetry backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
+        SwerveTelemetry backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
         //SendableRegistry.add(frontLeftTelemetry, "Swerve");
 
         //SmartDashboard.putNumber("FL angular", frontLeftTelemetry.get);
@@ -124,7 +125,7 @@ public class Robot extends TimedRobot {
         // SmartDashboard.putNumber("FR angle", Math.toDegrees(frontRightTelemetry.getAngle()));
         // SmartDashboard.putNumber("FR speed", frontRightTelemetry.getSpeed());
 
-        // SmartDashboard.putNumber("BR angle", Math.toDegrees(backRightTelemetry.getAngle()));
+        SmartDashboard.putNumber("BR angle", Math.toDegrees(backRightTelemetry.getAngle()));
         // SmartDashboard.putNumber("BR speed", backRightTelemetry.getSpeed());
 
     }
