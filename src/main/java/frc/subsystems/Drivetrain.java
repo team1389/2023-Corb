@@ -1,5 +1,7 @@
 package frc.subsystems;
 
+import org.opencv.core.Mat;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
@@ -114,7 +116,14 @@ public class Drivetrain extends SubsystemBase {
 
     //Use with vision
     public void updateOdometryLatency(Pose2d measuredPose, double timestamp) {
-        poseEstimator.addVisionMeasurement( measuredPose, timestamp);
+        Pose2d currentPose = getPose();
+        double xDiff = Math.abs(currentPose.getX() - measuredPose.getX());
+        double yiff = Math.abs(currentPose.getY() - measuredPose.getY());
+
+        //Check that measured pose isn't more than 1m away
+        if(Math.hypot(xDiff, yiff) <= 1) {
+            poseEstimator.addVisionMeasurement( measuredPose, timestamp);
+        } 
     }
 
     public void updateFieldPose() {
