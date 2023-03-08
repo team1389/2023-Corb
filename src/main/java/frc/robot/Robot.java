@@ -67,10 +67,10 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         autoCommand = oi.getAutoCommand();
 
-    // schedule the autonomous command (example)
-    if (autoCommand != null) {
-      autoCommand.schedule();
-    }
+        // schedule the autonomous command (example)
+        if (autoCommand != null) {
+            autoCommand.schedule();
+        }
     }
 
 

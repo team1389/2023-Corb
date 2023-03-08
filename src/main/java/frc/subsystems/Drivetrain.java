@@ -9,11 +9,14 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 //import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -167,7 +170,16 @@ public class Drivetrain extends SubsystemBase {
             new InstantCommand(() -> {
             // Reset odometry for the first path you run during auto
             if(isFirstPath){
-                this.resetOdometry(traj.getInitialHolonomicPose());
+                Pose2d currentPose = traj.getInitialHolonomicPose();
+
+                // Mirror over y axis and reverse rotation if red (path mirroring done below)
+                if(DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+                    currentPose = new Pose2d(new Translation2d(
+                        currentPose.getX(),
+                        16.5 - currentPose.getY()), // 0.5 * fieldwidth - y
+                        new Rotation2d().minus(currentPose.getRotation())); // Flip rotation
+                }
+                this.resetOdometry(currentPose);
             }
             }),
             new PPSwerveControllerCommand(
@@ -178,6 +190,7 @@ public class Drivetrain extends SubsystemBase {
                 yController, // Y controller
                 thetaController, // Rotation controller
                 this::setModuleStates, // Module states consumer
+                true,
                 this
             )
         );

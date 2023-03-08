@@ -34,10 +34,10 @@ public class TwoTopCube extends SequentialCommandGroup{
         // do stuff
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCube, false),
-            new RunOuttakeCube(intake),
+            new RunOuttakeCube(intake, 0.75),
             new SetArmPosition(arm, ArmPosition.Low, true),
             new FollowPathWithEvents(path1, pathGroup.get(0).getMarkers(), hmm),
-            new RunOuttakeCube(intake),
+            new RunOuttakeCube(intake, 0.75),
             new FollowPathWithEvents(path2, pathGroup.get(1).getMarkers(), hmm),
             new AutoBalance(drivetrain)
         );

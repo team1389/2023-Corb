@@ -11,8 +11,6 @@ public class RunOuttakeCube extends CommandBase{
 
     public RunOuttakeCube(Intake intake){
         this.intake = intake;
-        timer.reset();
-        timer.start();
 
         addRequirements(intake);
     }
@@ -20,11 +18,15 @@ public class RunOuttakeCube extends CommandBase{
     // timeout in seconds
     public RunOuttakeCube(Intake intake, double timeout){
         this.intake = intake;
-        timer.reset();
-        timer.start();
         this.timeout = timeout;
 
         addRequirements(intake);
+    }
+
+    @Override
+    public void initialize() {
+        timer.reset();
+        timer.start();
     }
 
     @Override

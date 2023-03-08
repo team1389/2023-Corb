@@ -82,8 +82,9 @@ public class OI {
         autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
         autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
         autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighConeTop, true));
-        autoMap.put("arm low", new SetArmPosition(arm, ArmPosition.Low, true));
+        autoMap.put("arm low", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
         autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidConeTop, true));
+        autoMap.put("arm starting", new SetArmPosition(arm, ArmPosition.StartingConfig, true));
 
         initControllers();
 
@@ -154,24 +155,22 @@ public class OI {
         manipBButton.whileTrue(new RunIntakeCone(intake));
         manipRight.whileTrue(new RunIntakeCube(intake));
 
-        // final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake,
-        // autoMap);
-        // final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
-        // final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake,
-        // autoMap);
-        // final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
-        // final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
-        // final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
+        final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
+        final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
+        final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
+        final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
+        final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
+        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
         // A chooser for autonomous commands
 
-        // chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
-        // chooser.addOption("One Bottom Cube", oneBottomCube);
-        // chooser.addOption("One Top Cone", oneTopCone);
-        // chooser.addOption("One Top Cube", oneTopCube);
-        // chooser.addOption("Quick Balance", quickBalance);
-        // chooser.addOption("Two Top Cube", twoTopCube);
-        // SmartDashboard.putData("Auto choices", chooser);
+        chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
+        chooser.addOption("One Bottom Cube", oneBottomCube);
+        chooser.addOption("One Top Cone", oneTopCone);
+        chooser.addOption("One Top Cube", oneTopCube);
+        chooser.addOption("Quick Balance", quickBalance);
+        chooser.addOption("Two Top Cube", twoTopCube);
+        SmartDashboard.putData("Auto choices", chooser);
     }
 
     /**
@@ -264,7 +263,9 @@ public class OI {
         // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
         // return trajCommand;
         // return new AutoBalanceController(drivetrain);
-        return chooser.getSelected();
+        
+        // return chooser.getSelected();
+        return new QuickBalance(drivetrain, arm, intake);
     }
 
 }

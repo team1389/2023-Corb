@@ -30,7 +30,7 @@ public class OneTopCube extends SequentialCommandGroup{
         //score initial cube, pick up game piece, balance
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCube, false),
-            new RunOuttakeCube(intake),
+            new RunOuttakeCube(intake, 0.75),
             new SetArmPosition(arm, ArmPosition.Low, true),
             new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
             new AutoBalance(drivetrain)

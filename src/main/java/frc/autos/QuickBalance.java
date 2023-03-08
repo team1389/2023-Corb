@@ -3,6 +3,7 @@ package frc.autos;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,7 +29,8 @@ public class QuickBalance extends SequentialCommandGroup{
 
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighConeTop, false),
-            new RunOuttakeCube(intake),
+            new RunOuttakeCube(intake, 0.75),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             drivePath, 
             new AutoBalance(drivetrain)
         );
