@@ -60,7 +60,7 @@ public class Arm extends SubsystemBase {
     public double wristTarget;
     private double shoulderSpeed;
     private double elbowSpeed;
-    
+
     // Number of steps to take to get there. Higher is smoother but slower
     private double numSteps = 150;
     private double currentStep = 0;
@@ -92,16 +92,15 @@ public class Arm extends SubsystemBase {
         shoulderRightEncoder = shoulderLeft.getEncoder();
         elbowEncoder = elbow.getEncoder();
 
-
         wristEncoder.setPosition(0);
         shoulderLeftEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
 
         // Shoulder, elbow, wrist
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.38 }); // by definition, -0.1122 on
-                                                                                        // absolute encoder
+        // by shoulder and elbow are by definition, wrist is from the absolute encoder.
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.38 });
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.209478259086609, -6.790310859680176, 0.003 }); // TODO
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.1, -5.25, 0.15 }); // TODO
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -15.0, 0.27 }); // TODO
         positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.0, -5.183, 0.219102976727574 }); // TODO
 
@@ -111,7 +110,8 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.56, 9.14, 0.5 });
         positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.12, -22.62, -5.0 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 2.05933141708374, -2.868226289749146, 0.379320752733019 });
-        positionMap.put(ArmPosition.HighCube, new Double[] { 3.151823282241821, -6.351974964141846, 0.290493000512325 });
+        positionMap.put(ArmPosition.HighCube,
+                new Double[] { 3.151823282241821, -6.351974964141846, 0.290493000512325 });
 
         setArm(ArmPosition.StartingConfig);
         shoulderTarget = positionMap.get(targetPos)[0];
@@ -126,16 +126,18 @@ public class Arm extends SubsystemBase {
 
         targetPos = pos;
 
-        shoulderSpeed = (positionMap.get(targetPos)[0] - getShoulderPos())/numSteps;
-        elbowSpeed = (positionMap.get(targetPos)[1] - getElbowPos())/numSteps;
+        shoulderSpeed = (positionMap.get(targetPos)[0] - getShoulderPos()) / numSteps;
+        elbowSpeed = (positionMap.get(targetPos)[1] - getElbowPos()) / numSteps;
 
         currentStep = 0;
         shoulderTarget = positionMap.get(targetPos)[0];
         elbowTarget = positionMap.get(targetPos)[1];
         wristTarget = positionMap.get(targetPos)[2];
+
+        SmartDashboard.putNumber("Shoulder target", shoulderTarget);
+        SmartDashboard.putNumber("Elbow target", elbowTarget);
+        SmartDashboard.putNumber("Wrist target", wristTarget);
     }
-
-
 
     @Override
     public void periodic() {
@@ -143,12 +145,10 @@ public class Arm extends SubsystemBase {
 
         // Update targets by speed and increment step number
         // if(currentStep < numSteps) {
-        //     shoulderTarget += shoulderSpeed;
-        //     elbowTarget += elbowSpeed;
-        //     currentStep ++;
+        // shoulderTarget += shoulderSpeed;
+        // elbowTarget += elbowSpeed;
+        // currentStep ++;
         // }
-
-        
 
         if (!controllerInterrupt) {
             // wait time to let elbow drop
@@ -166,9 +166,7 @@ public class Arm extends SubsystemBase {
         // SmartDashboard.putNumber("Elbow power", elbowPower);
         // SmartDashboard.putNumber("Wrist power", wristPower);
 
-        SmartDashboard.putNumber("Shoulder target", shoulderTarget);
-        SmartDashboard.putNumber("Elbow target", elbowTarget);
-        SmartDashboard.putNumber("Wrist target", wristTarget);
+    
 
         // SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
         // SmartDashboard.putNumber("last", lastMovement);
@@ -207,10 +205,11 @@ public class Arm extends SubsystemBase {
 
         // String length (meters)
         double length = elbowEncoder.getPosition() * ArmConstants.ELBOW_ENCODER_TO_METERS;
-        
+
         // Law of cosines
-        double cosAngle = (length*length) - (ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.SHOULDER_TO_ELBOW) - (ArmConstants.ELBOW_TO_STRING*ArmConstants.ELBOW_TO_STRING);
-        cosAngle = cosAngle/((-2) * ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.ELBOW_TO_STRING);
+        double cosAngle = (length * length) - (ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.SHOULDER_TO_ELBOW)
+                - (ArmConstants.ELBOW_TO_STRING * ArmConstants.ELBOW_TO_STRING);
+        cosAngle = cosAngle / ((-2) * ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.ELBOW_TO_STRING);
 
         return Math.acos(cosAngle);
     }
@@ -218,8 +217,9 @@ public class Arm extends SubsystemBase {
     // Get length given angle (radians)
     public double getElbowLength(double angle) {
         // Law of cosines again
-        double temp = (ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.SHOULDER_TO_ELBOW) + (ArmConstants.ELBOW_TO_STRING*ArmConstants.ELBOW_TO_STRING);
-        temp = temp - (2*ArmConstants.SHOULDER_TO_ELBOW*ArmConstants.ELBOW_TO_STRING*Math.cos(angle));
+        double temp = (ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.SHOULDER_TO_ELBOW)
+                + (ArmConstants.ELBOW_TO_STRING * ArmConstants.ELBOW_TO_STRING);
+        temp = temp - (2 * ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.ELBOW_TO_STRING * Math.cos(angle));
         return Math.sqrt(temp);
     }
 
@@ -228,7 +228,7 @@ public class Arm extends SubsystemBase {
         double x = Math.sin(getShoulderAngle()) * ArmConstants.SHOULDER_TO_ELBOW;
         double y = -Math.cos(getShoulderAngle()) * ArmConstants.SHOULDER_TO_ELBOW;
 
-        return new double[]{x, y};
+        return new double[] { x, y };
     }
 
     // Returns (x, y) position of wrist joint relative to shoulder
@@ -238,11 +238,11 @@ public class Arm extends SubsystemBase {
         double y = Math.sin(getElbowAngle()) * ArmConstants.ELBOW_TO_WRIST;
         double shoulderAngle = getShoulderAngle();
 
-        // Do some trig  Ithink this works
-        double xRotated = x*Math.cos(shoulderAngle) - y*Math.sin(shoulderAngle);
-        double yRotated = x*Math.sin(shoulderAngle) + y*Math.cos(shoulderAngle);
+        // Do some trig Ithink this works
+        double xRotated = x * Math.cos(shoulderAngle) - y * Math.sin(shoulderAngle);
+        double yRotated = x * Math.sin(shoulderAngle) + y * Math.cos(shoulderAngle);
 
-        return new double[]{elbowPos[0] + xRotated, elbowPos[1] + yRotated};
+        return new double[] { elbowPos[0] + xRotated, elbowPos[1] + yRotated };
     }
 
     // Returns target (x, y) for wrist based on target angles
@@ -252,18 +252,20 @@ public class Arm extends SubsystemBase {
         double elbowY = -Math.cos(shoulderAngle) * ArmConstants.SHOULDER_TO_ELBOW;
         double x = -Math.cos(elbowAngle) * ArmConstants.ELBOW_TO_WRIST;
         double y = Math.sin(elbowAngle) * ArmConstants.ELBOW_TO_WRIST;
-        double xRotated = x*Math.cos(shoulderAngle) - y*Math.sin(shoulderAngle);
-        double yRotated = x*Math.sin(shoulderAngle) + y*Math.cos(shoulderAngle);
+        double xRotated = x * Math.cos(shoulderAngle) - y * Math.sin(shoulderAngle);
+        double yRotated = x * Math.sin(shoulderAngle) + y * Math.cos(shoulderAngle);
 
-        return new double[]{elbowX + xRotated, elbowY + yRotated};
+        return new double[] { elbowX + xRotated, elbowY + yRotated };
     }
 
-    // Returns gradient component for a joint given vector from joint to tip and vector from tip to target
+    // Returns gradient component for a joint given vector from joint to tip and
+    // vector from tip to target
     public double getGradient(double[] jointToTip, double[] tipToTarget) {
         // First get vector by which turning joint will move tip
-        // Do this by crossing joint to tip with axis of rotation, (0,0,1) for both joints in this case 
-        double[] movementVector = cross(jointToTip, new double[]{0, 0, 1});
-        
+        // Do this by crossing joint to tip with axis of rotation, (0,0,1) for both
+        // joints in this case
+        double[] movementVector = cross(jointToTip, new double[] { 0, 0, 1 });
+
         // Then dot this movement with the desired direction of motion
         return dot(movementVector, tipToTarget);
     }
@@ -271,19 +273,18 @@ public class Arm extends SubsystemBase {
     // Vector methods
     // Only for 2d vectors
     public double dot(double[] v1, double[] v2) {
-        return v1[0]*v2[0] + v1[1]*v2[1];
+        return v1[0] * v2[0] + v1[1] * v2[1];
     }
 
-    //Only for 3d vectors
+    // Only for 3d vectors
     public double[] cross(double[] v1, double[] v2) {
         double[] toReturn = new double[3];
-        toReturn[0] = v1[1]*v2[2] - v1[2]*v2[1];
-        toReturn[1] = v1[0]*v2[2] - v1[2]*v2[0];
-        toReturn[2] = v1[0]*v2[1] - v1[1]*v2[0];
+        toReturn[0] = v1[1] * v2[2] - v1[2] * v2[1];
+        toReturn[1] = v1[0] * v2[2] - v1[2] * v2[0];
+        toReturn[2] = v1[0] * v2[1] - v1[1] * v2[0];
 
         return toReturn;
     }
-
 
     // Debugging methods below:
     public void moveShoulder(double power) {
@@ -296,11 +297,12 @@ public class Arm extends SubsystemBase {
         if (positionMap.get(targetPos).length > 3) {
             power = (getElbowPos() < positionMap.get(targetPos)[3] ? 0 : power);
         }
-        elbow.set(MathUtil.clamp(power, -0.2, 0.6));
+        elbow.set(MathUtil.clamp(power, -0.3, 0.3));
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.8, 0.8);
+        // power = MathUtil.clamp(power, -1, 1);
+        wristTarget = SmartDashboard.getNumber("Wrist power", power);
         wrist.set(power);
     }
 
