@@ -87,6 +87,7 @@ public class TeleOpDrive extends CommandBase {
         SmartDashboard.putNumber("FL target", moduleStates[1].angle.getDegrees());
         SmartDashboard.putNumber("BR target", moduleStates[2].angle.getDegrees());
         SmartDashboard.putNumber("BL target", moduleStates[3].angle.getDegrees());
+        SmartDashboard.putBoolean("Field relative", fieldOrientedFunction.get());
 
         // 7. Output all module states to wheels
         drivetrain.setModuleStates(moduleStates);
