@@ -38,7 +38,7 @@ public class AutoBalance extends CommandBase {
         
 
         if(16>Math.abs(Math.toDegrees(slopeAngle))){
-            queue.addElement(slopeAngle);
+            queue.add(slopeAngle);
 
             if(2.5>Math.abs(Math.toDegrees(slopeAngle))){
                 drivetrain.stopModules();

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
 import frc.robot.RobotMap.ModuleConstants;
+import frc.util.SizeLimitedQueue;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -14,13 +15,21 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
-    public CANSparkMax bottomRoller;
-    public CANSparkMax topRoller;
-    private Ultrasonic cubeSensor, coneSensorBottom, coneSensorTop;
-    private double sensorThreshold = 10;
     private final double intakeSpeed = 0.5;
     private final double outtakeSpeed = 0.5;
+    private final double cubeResistance = 2;
+    private final double coneResistance = 2;
+    
+    private CANSparkMax bottomRoller;
+    private CANSparkMax topRoller;
+    private Ultrasonic cubeSensor, coneSensorBottom, coneSensorTop;
+    private double sensorThreshold = 10;
+
+
     private int temp = 0;
+    SizeLimitedQueue topSizeLimitedQueue = new SizeLimitedQueue(5);
+    SizeLimitedQueue bottomSizeLimitedQueue = new SizeLimitedQueue(5);
+    
 
     public Intake() {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
@@ -44,10 +53,12 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         // SmartDashboard.putBoolean("Bottom Cone Intake", getBottomCone());
         // SmartDashboard.putBoolean("Top Cone Intake", getTopCone());
-        SmartDashboard.putBoolean("Cube Intake", getCube());
-        SmartDashboard.putNumber("Cube distane", cubeSensor.getRangeInches());
+        SmartDashboard.putBoolean("Cube Intake", hasCube());
 
-        if (getBottomCone() == true || getTopCone() == true || getCube() == true) {
+        topSizeLimitedQueue.add(Math.abs(topRoller.getEncoder().getVelocity()));
+        bottomSizeLimitedQueue.add(Math.abs(bottomRoller.getEncoder().getVelocity()));
+        
+        if (hasBottomCone() == true || hasTopCone() == true || hasCube() == true) {
             temp++;
             // if (temp > 5) {
                 // stop();
@@ -55,6 +66,8 @@ public class Intake extends SubsystemBase {
         } else {
             temp = 0;
         }
+
+
     }
 
     public void runIntakeCone() {
@@ -77,19 +90,16 @@ public class Intake extends SubsystemBase {
         topRoller.set(outtakeSpeed);
     }
 
-    public boolean getCube() {
-        return cubeSensor.getRangeInches() < 13 && cubeSensor.getRangeInches() > 1;
+    public boolean hasCube() {
+        return topSizeLimitedQueue.getAverageDerivative() + bottomSizeLimitedQueue.getAverageDerivative() < -cubeResistance;
     }
 
-    public boolean getBottomCone() {
-        // return
-        // coneSensorBottom.getRangeInches()<22&&coneSensorBottom.getRangeInches()>1;
-        return false;
+    public boolean hasBottomCone() {
+        return topSizeLimitedQueue.getAverageDerivative() + bottomSizeLimitedQueue.getAverageDerivative() < -coneResistance;
     }
 
-    public boolean getTopCone() {
-        // return coneSensorTop.getRangeInches()<22&&coneSensorTop.getRangeInches()>1;
-        return false;
+    public boolean hasTopCone() {
+        return topSizeLimitedQueue.getAverageDerivative() + bottomSizeLimitedQueue.getAverageDerivative() < -coneResistance;
     }
 
     public void stop() {
