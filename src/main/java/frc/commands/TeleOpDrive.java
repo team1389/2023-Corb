@@ -13,21 +13,23 @@ public class TeleOpDrive extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
-    private final Supplier<Boolean> fieldOrientedFunction, slowFunction;
+    private final Supplier<Boolean> fieldOrientedFunction, slowFunction, holdXFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private double desiredAngle; // gyro value from getHeading() the robot wants to point at
     private boolean holdingX = false;
+    private boolean lastHoldButton = false;
 
     public TeleOpDrive(Drivetrain drivetrain,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
             Supplier<Double> rightY,
-            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction) {
+            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction, Supplier<Boolean> holdXFunction) {
         this.drivetrain = drivetrain;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
         this.turningSpdFunction = turningSpdFunction;
         this.fieldOrientedFunction = fieldOrientedFunction;
         this.slowFunction = slowFunction;
+        this.holdXFunction = holdXFunction;
 
         // A slew rate limiter caps the rate of change of the inputs, to make the robot
         // drive much smoother
@@ -53,6 +55,7 @@ public class TeleOpDrive extends CommandBase {
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
         double turningSpeed = turningSpdFunction.get();
+        boolean holdButton = holdXFunction.get();
 
         // 2. Apply deadband
         xSpeed = Math.abs(xSpeed) > 0.07 ? xSpeed : 0.0;
@@ -81,6 +84,12 @@ public class TeleOpDrive extends CommandBase {
             // Relative to robot
             chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
         }
+
+        // 5.5 Figure out if we should hold X
+        if (!lastHoldButton && holdButton) {
+            holdingX = !holdingX; // If the button was up and now it's down, toggle holding X
+        }
+        lastHoldButton = holdButton;
 
         // 6. Convert chassis speeds to individual module states
         SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);

@@ -111,7 +111,8 @@ public class OI {
                 () -> getDriveRightX(),
                 () -> getDriveRightY(),
                 () -> getDriveLeftBumper(), // By default be in field oriented
-                () -> !getDriveRightBumper()) // Slow function
+                () -> !getDriveRightBumper(), // Slow function
+                () -> driveXButton.getAsBoolean()) // Hold x position
         );
 
         // Press A button -> zero gyro heading
