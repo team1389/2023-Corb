@@ -31,7 +31,7 @@ public class Arm extends SubsystemBase {
     private PIDController pidElbow;
     private PIDController pidWrist;
 
-    public boolean controllerInterrupt = true;
+    public boolean controllerInterrupt = false;
 
     private double lastMovement;
 

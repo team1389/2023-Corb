@@ -130,9 +130,9 @@ public class SwerveModule extends SubsystemBase{
         return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition() - angularOffset));
     }
 
-    public void setDesiredState(SwerveModuleState state) {
+    public void setDesiredState(SwerveModuleState state, boolean deadzone) {
         // If the speed is 0 (basically if the driver isn't touching joystick) don't snap motors to 0 degrees
-        if (Math.abs(state.speedMetersPerSecond) < 0.05) {
+        if (Math.abs(state.speedMetersPerSecond) < 0.05 && deadzone) {
             stop();
             return;
         }

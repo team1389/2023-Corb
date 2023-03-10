@@ -115,10 +115,10 @@ public class Drivetrain extends SubsystemBase {
 
     // To stop sliding
     public void setX() {
-        frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-        frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-        backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-        backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), false);
+        frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), false);
+        backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), false);
+        backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), false);
     }
 
     //Use with vision
@@ -166,10 +166,10 @@ public class Drivetrain extends SubsystemBase {
         // Normalize to within robot max speed
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.MAX_METERS_PER_SEC);
         
-        frontRight.setDesiredState(desiredStates[0]);
-        frontLeft.setDesiredState(desiredStates[1]);
-        backRight.setDesiredState(desiredStates[2]);
-        backLeft.setDesiredState(desiredStates[3]);
+        frontRight.setDesiredState(desiredStates[0], true);
+        frontLeft.setDesiredState(desiredStates[1], true);
+        backRight.setDesiredState(desiredStates[2], true);
+        backLeft.setDesiredState(desiredStates[3], true);
         
     }
 
