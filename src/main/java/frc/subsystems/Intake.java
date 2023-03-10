@@ -14,8 +14,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
-    private CANSparkMax bottomRoller;
-    private CANSparkMax topRoller;
+    public CANSparkMax bottomRoller;
+    public CANSparkMax topRoller;
     private Ultrasonic cubeSensor, coneSensorBottom, coneSensorTop;
     private double sensorThreshold = 10;
     private final double intakeSpeed = 0.5;
@@ -45,12 +45,13 @@ public class Intake extends SubsystemBase {
         // SmartDashboard.putBoolean("Bottom Cone Intake", getBottomCone());
         // SmartDashboard.putBoolean("Top Cone Intake", getTopCone());
         SmartDashboard.putBoolean("Cube Intake", getCube());
+        SmartDashboard.putNumber("Cube distane", cubeSensor.getRangeInches());
 
         if (getBottomCone() == true || getTopCone() == true || getCube() == true) {
             temp++;
-            if (temp > 5) {
-                stop();
-            }
+            // if (temp > 5) {
+                // stop();
+            // }
         } else {
             temp = 0;
         }
@@ -77,7 +78,7 @@ public class Intake extends SubsystemBase {
     }
 
     public boolean getCube() {
-        return cubeSensor.getRangeInches() < 22 && cubeSensor.getRangeInches() > 1;
+        return cubeSensor.getRangeInches() < 13 && cubeSensor.getRangeInches() > 1;
     }
 
     public boolean getBottomCone() {

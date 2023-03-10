@@ -96,7 +96,7 @@ public class RobotMap {
         public static final double MAX_RADIANS_PER_SEC = 9; // rad/s
 
         public static final double MAX_LINEAR_ACCEL = 7.5; // m/s/s
-        public static final double MAX_ANGULAR_ACCEL = 10; // rad/s/s
+        public static final double MAX_ANGULAR_ACCEL = 14; // rad/s/s
 
     }
 
@@ -121,20 +121,20 @@ public class RobotMap {
         public static final double WRIST_CONVERSION_FACTOR = 360; // rotations to degrees
         public static final double SHOULDER_DEADZONE = 0.1;
         public static final double ELBOW_DEADZONE = 0.1;
-        public static final double WRIST_DEADZONE = 0.1;
+        public static final double WRIST_DEADZONE = 0.05;
 
         //echo 6, response 7
         //echo 3, response 4
         //echo 0, response 1
 
-        public static final int BOTTOM_CONE_INTAKE_SENSOR_PORT_PING = 6;
-        public static final int BOTTOM_CONE_INTAKE_SENSOR_PORT_RESPONSE = 7;
+        public static final int BOTTOM_CONE_INTAKE_SENSOR_PORT_PING = 1;
+        public static final int BOTTOM_CONE_INTAKE_SENSOR_PORT_RESPONSE = 0;
 
-        public static final int TOP_CONE_INTAKE_SENSOR_PORT_PING = 4;
-        public static final int TOP_CONE_INTAKE_SENSOR_PORT_RESPONSE = 3;
+        public static final int TOP_CONE_INTAKE_SENSOR_PORT_PING = 6;
+        public static final int TOP_CONE_INTAKE_SENSOR_PORT_RESPONSE = 5;
 
-        public static final int CUBE_INTAKE_SENSOR_PORT_PING = 1;
-        public static final int CUBE_INTAKE_SENSOR_PORT_RESPONSE = 0;
+        public static final int CUBE_INTAKE_SENSOR_PORT_PING = 6;
+        public static final int CUBE_INTAKE_SENSOR_PORT_RESPONSE = 5;
 
 
         public static final int SHOULDER_MOTOR_LEFT = 11;

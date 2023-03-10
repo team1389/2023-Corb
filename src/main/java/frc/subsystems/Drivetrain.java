@@ -113,6 +113,14 @@ public class Drivetrain extends SubsystemBase {
         poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
     }
 
+    // To stop sliding
+    public void setX() {
+        frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+        backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+        backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    }
+
     //Use with vision
     public void updateOdometryLatency(Pose2d measuredPose, double timestamp) {
         Pose2d currentPose = getPose();
@@ -184,7 +192,7 @@ public class Drivetrain extends SubsystemBase {
                 if(DriverStation.getAlliance() == DriverStation.Alliance.Red) {
                     currentPose = new Pose2d(new Translation2d(
                         currentPose.getX(),
-                        16.5 - currentPose.getY()), // 0.5 * fieldwidth - y
+                        8-currentPose.getY()), // fieldwidth - y
                         new Rotation2d().minus(currentPose.getRotation())); // Flip rotation
                 }
                 this.resetOdometry(currentPose);

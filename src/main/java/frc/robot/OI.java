@@ -49,6 +49,7 @@ public class OI {
     private GenericHID driveController;
     private Trigger driveRightBumper, driveLeftBumper;
     private Trigger driveAButton;
+    private Trigger driveXButton;
 
     private XboxController manipController;
     private Trigger manipEllipsisButton;
@@ -82,7 +83,7 @@ public class OI {
         autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
         autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
         autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighConeTop, true));
-        autoMap.put("arm low", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
+        autoMap.put("arm cube intake", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
         autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidConeTop, true));
         autoMap.put("arm starting", new SetArmPosition(arm, ArmPosition.StartingConfig, true));
 
@@ -103,12 +104,15 @@ public class OI {
                 () -> getDriveLeftX(),
                 () -> getDriveRightX(),
                 () -> getDriveRightY(),
-                () -> !getDriveLeftBumper(), // By default be in field oriented
-                () -> getDriveRightBumper()) // Slow function
+                () -> getDriveLeftBumper(), // By default be in field oriented
+                () -> !getDriveRightBumper()) // Slow function
         );
 
         // Press A button -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
+
+        // Press X button -> set X to not slide
+        driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
         
         // MANIPULATOR CONTROLLER
@@ -182,6 +186,7 @@ public class OI {
         manipController = new XboxController(1);
 
         driveAButton = new JoystickButton(driveController, 1);
+        driveXButton = new JoystickButton(driveController, 3);
         driveRightBumper = new JoystickButton(driveController, 6);
 
         manipEllipsisButton = new JoystickButton(manipController, 9);
@@ -266,7 +271,7 @@ public class OI {
         // return new AutoBalanceController(drivetrain);
         
         // return chooser.getSelected();
-        return new QuickBalance(drivetrain, arm, intake);
+        return new TwoTopCube(drivetrain, arm, intake, autoMap);
     }
 
 }

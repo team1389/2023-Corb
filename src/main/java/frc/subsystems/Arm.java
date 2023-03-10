@@ -105,11 +105,11 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -1.85, 0.1 }); // TODO
         positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.667, -6.08, 0.1164 }); // TODO
 
-        positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, -27.0 }); // TODO
+        positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.MidConeBottom, new Double[] { 2.24, -2.8, 0.249 });
-        positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.4, -35.78, -57.07 });
+        positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.1, -5.0, 0.2 });
         positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.347, -2.8, 0.249 });
-        positionMap.put(ArmPosition.HighConeTop, new Double[] { 2.8, -5.8, 0.21 });
+        positionMap.put(ArmPosition.HighConeTop, new Double[] { 2.94, -5.8, 0.21 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 1.347, -2.8, 0.2 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 2.8, -6.0, 0.15 });
 

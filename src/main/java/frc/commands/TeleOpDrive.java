@@ -65,9 +65,9 @@ public class TeleOpDrive extends CommandBase {
 
         // 4. Check right bumper for slow mode
         if (slowFunction.get()) {
-            xSpeed *= 0.65;
-            ySpeed *= 0.65;
-            turningSpeed *= 0.65;
+            xSpeed *= 0.25;
+            ySpeed *= 0.25;
+            turningSpeed *= 0.25;
         }
 
         // 5. Construct desired chassis speeds
@@ -88,6 +88,8 @@ public class TeleOpDrive extends CommandBase {
         SmartDashboard.putNumber("BR target", moduleStates[2].angle.getDegrees());
         SmartDashboard.putNumber("BL target", moduleStates[3].angle.getDegrees());
         SmartDashboard.putBoolean("Field relative", fieldOrientedFunction.get());
+        SmartDashboard.putBoolean("Slow mode", slowFunction.get());
+
 
         // 7. Output all module states to wheels
         drivetrain.setModuleStates(moduleStates);

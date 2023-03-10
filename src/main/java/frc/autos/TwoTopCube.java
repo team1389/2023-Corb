@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
+import frc.commands.RunOuttakeCone;
 import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.robot.RobotMap.AutoConstants;
@@ -27,19 +28,30 @@ public class TwoTopCube extends SequentialCommandGroup{
             AutoConstants.AUTO_MAX_METERS_PER_SEC,
             AutoConstants.AUTO_MAX_MPSS)
         );
+        PathPlannerTrajectory driveUpTraj = PathPlanner.loadPath("Drive Up", new PathConstraints(
+            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
+            AutoConstants.AUTO_MAX_MPSS));
 
         Command path1 = drivetrain.followTrajectoryCommand(pathGroup.get(0), true);
-        Command path2 = drivetrain.followTrajectoryCommand(pathGroup.get(1), false);
+        Command path2 = drivetrain.followTrajectoryCommand(pathGroup.get(1), true);
+        Command driveUp = drivetrain.followTrajectoryCommand(driveUpTraj, true);
+        Command driveUp2 = drivetrain.followTrajectoryCommand(driveUpTraj, true);
+
 
         // do stuff
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCube, false),
-            new RunOuttakeCube(intake, 0.75),
-            new SetArmPosition(arm, ArmPosition.Low, true),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, false, 1),
+            new SetArmPosition(arm, ArmPosition.HighConeTop, false, 2.2),
+            driveUp,
+            new RunOuttakeCone(intake, 0.5),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             new FollowPathWithEvents(path1, pathGroup.get(0).getMarkers(), hmm),
-            new RunOuttakeCube(intake, 0.75),
-            new FollowPathWithEvents(path2, pathGroup.get(1).getMarkers(), hmm),
-            new AutoBalance(drivetrain)
+            new SetArmPosition(arm, ArmPosition.HighConeTop, false, 2.2),
+            driveUp2,
+            new RunOuttakeCone(intake, 0.5),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
+            new FollowPathWithEvents(path2, pathGroup.get(1).getMarkers(), hmm)
+           // new AutoBalance(drivetrain)
         );
 
     }
