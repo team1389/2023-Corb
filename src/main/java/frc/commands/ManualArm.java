@@ -10,13 +10,17 @@ import frc.subsystems.Arm.ArmPosition;
 public class ManualArm extends CommandBase {
     Arm arm;
     Supplier<Double> shoulderFunction, elbowFunction;
+    Supplier<Boolean> downWrist, upWrist, interrupt;
     double targetShoulder = 0;
     double targetElbow = 0;
 
-    public ManualArm(Arm arm, Supplier<Double> shoulderFunction, Supplier<Double> elbowFunction) {
+    public ManualArm(Arm arm, Supplier<Double> shoulderFunction, Supplier<Double> elbowFunction, Supplier<Boolean> upWrist, Supplier<Boolean> downWrist, Supplier<Boolean> interrupt) {
         this.arm = arm;
         this.shoulderFunction = shoulderFunction;
         this.elbowFunction = elbowFunction;
+        this.downWrist = downWrist;
+        this.upWrist = upWrist;
+        this.interrupt = interrupt;
 
         addRequirements(arm);
     }
@@ -24,15 +28,24 @@ public class ManualArm extends CommandBase {
     @Override
     public void execute() {
 
-        var shoulder = shoulderFunction.get();
-        var elbow = elbowFunction.get();
-        if (Math.abs(shoulder) > 0.05 || Math.abs(elbow) > 0.05) {
+        double shoulder = shoulderFunction.get();
+        double elbow = elbowFunction.get();
+
+        if ((Math.abs(shoulder) > 0.05 || Math.abs(elbow) > 0.05 || upWrist.get() || downWrist.get())
+            && interrupt.get()) {
+
             arm.controllerInterrupt = true;
         }
 
         if (arm.controllerInterrupt) {
             arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
             arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
+            if (upWrist.get()) {
+                arm.moveWrist(0.4);
+            }
+            if (downWrist.get()) {
+                arm.moveWrist(-0.4);
+            }
         }
     }
 

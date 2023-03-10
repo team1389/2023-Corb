@@ -16,6 +16,7 @@ public class TeleOpDrive extends CommandBase {
     private final Supplier<Boolean> fieldOrientedFunction, slowFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private double desiredAngle; // gyro value from getHeading() the robot wants to point at
+    private boolean holdingX = false;
 
     public TeleOpDrive(Drivetrain drivetrain,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
@@ -89,11 +90,16 @@ public class TeleOpDrive extends CommandBase {
         SmartDashboard.putNumber("BL target", moduleStates[3].angle.getDegrees());
         SmartDashboard.putBoolean("Field relative", fieldOrientedFunction.get());
         SmartDashboard.putBoolean("Slow mode", slowFunction.get());
+        SmartDashboard.putBoolean("Holding X", holdingX);
 
 
         // 7. Output all module states to wheels
-        drivetrain.setModuleStates(moduleStates);
-    }
+        if(!holdingX) { 
+            drivetrain.setModuleStates(moduleStates);
+        } else {
+            drivetrain.setX();
+        }
+    }   
 
     @Override
     public void end(boolean interrupted) {

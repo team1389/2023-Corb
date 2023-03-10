@@ -90,9 +90,15 @@ public class OI {
         initControllers();
 
         arm.setDefaultCommand(new ManualArm(
-                arm,
-                () -> getManipLeftY(),
-                () -> getManipRightY()));
+            arm,
+            () -> getManipLeftY(),
+            () -> getManipRightY(),
+            () -> manipLeftBumper.getAsBoolean(),
+            () -> manipRightBumper.getAsBoolean(),
+            () -> manipMenuButton.getAsBoolean()
+            )
+        
+        );
 
         // DRIVE CONTROLLER
 
@@ -114,33 +120,11 @@ public class OI {
         // Press X button -> set X to not slide
         driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
-        
         // MANIPULATOR CONTROLLER
-
-        // manipLeftBumper.whileTrue(new RunOuttakeCube(intake));
-        // manipRightBumper.whileTrue(new RunOuttakeCone(intake));
-
-        // manipLeftBumper.whileTrue(new RunCommand(() -> {
-        //     if (arm.controllerInterrupt) {
-        //         arm.moveWrist(0.55);
-        //     } else {
-        //         arm.setWrist(arm.wristTarget + 0.05);
-        //     }
-        // }));
-
-        // manipRightBumper.whileTrue(new RunCommand(() -> {
-        //     if (arm.controllerInterrupt) {
-        //         arm.moveWrist(-0.55);
-        //     } else {
-        //         arm.setWrist(arm.wristTarget - 0.05);
-        //     }
-        // }));
-
-        manipLeftBumper.whileTrue(new ManualWrist(arm, 0.4));
-        manipRightBumper.whileTrue(new ManualWrist(arm, -0.4));
+        // manipLeftBumper.whileTrue(new ManualWrist(arm, 0.4));
+        // manipRightBumper.whileTrue(new ManualWrist(arm, -0.4));
 
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));
-        manipMenuButton.onTrue(new HoldPosition(arm));
 
         manipStadia.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
 
@@ -271,7 +255,7 @@ public class OI {
         // return new AutoBalanceController(drivetrain);
         
         // return chooser.getSelected();
-        return new TwoTopCube(drivetrain, arm, intake, autoMap);
+        return new OneBottomCube(drivetrain, arm, intake, autoMap);
     }
 
 }
