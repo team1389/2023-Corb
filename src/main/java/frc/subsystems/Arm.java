@@ -341,7 +341,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.3, 0.3);
+        power = MathUtil.clamp(power, -0.6, 0.3);
         wrist.set(power);
     }
 
