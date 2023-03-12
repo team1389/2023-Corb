@@ -22,7 +22,7 @@ public class AutoBalance extends CommandBase {
     public void execute() {
         double pitch = Math.toRadians(drivetrain.getPitch());
         double roll = Math.toRadians(drivetrain.getRoll());
-        double maxSpeed = 0.4;
+        double maxSpeed = 0.35;
         double tempSpeed;
 
         // Use formula to find angle robot should drive at
@@ -37,25 +37,18 @@ public class AutoBalance extends CommandBase {
         SmartDashboard.putNumber("Roll", drivetrain.getRoll());
         
 
-        if(16>Math.abs(Math.toDegrees(slopeAngle))){
-            queue.add(slopeAngle);
-
-            if(2.5>Math.abs(Math.toDegrees(slopeAngle))){
-                drivetrain.stopModules();
-            }
-            else if(10>Math.abs(Math.toDegrees(slopeAngle))){
-
-                if(queue.length() >= 20) {
-                    maxSpeed += 0.0025*queue.getSum();
-                }
-            }
-        }
-        if(2.5<Math.abs(Math.toDegrees(slopeAngle))){
-            tempSpeed = Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
+        if(Math.abs(Math.toDegrees(slopeAngle)) < 12){
+            
+            drivetrain.stopModules();
+            
+            
+        } else {
+            tempSpeed = maxSpeed;//Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
             SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
             drivetrain.setModuleStates(moduleStates);
         }
+        
     }
     
 

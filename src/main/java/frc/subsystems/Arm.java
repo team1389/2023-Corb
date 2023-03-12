@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
@@ -49,7 +50,7 @@ public class Arm extends SubsystemBase {
         MidConeBottom,
         HighConeBottom,
         MidCube,
-        HighCube
+        HighCube, IntakeConeFeeder
     }
 
     public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[]>();
@@ -103,13 +104,14 @@ public class Arm extends SubsystemBase {
 
         positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.1, -5.35, 0.18 }); // TODO
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -1.85, 0.1 }); // TODO
-        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.667, -6.08, 0.1164 }); // TODO
+        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.667, -6.2, 0.0964 }); // TODO
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.MidConeBottom, new Double[] { 2.24, -2.8, 0.249 });
         positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.1, -5.0, 0.2 });
         positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.347, -2.8, 0.249 });
-        positionMap.put(ArmPosition.HighConeTop, new Double[] { 2.94, -5.8, 0.21 });
+        positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.04, -5.8, 0.21 });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 3.04, -5.8, 0.31 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 1.347, -2.8, 0.2 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 2.8, -6.0, 0.15 });
 
@@ -202,6 +204,9 @@ public class Arm extends SubsystemBase {
 
         // SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
         // SmartDashboard.putNumber("last", lastMovement);
+        
+        SmartDashboard.putNumber("meow", wrist.getBusVoltage());
+        SmartDashboard.putNumber("meow2", wrist.getOutputCurrent());
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
         SmartDashboard.putNumber("Elbow position", getElbowPos());
@@ -341,7 +346,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.6, 0.3);
+        power = MathUtil.clamp(power, -0.4, 0.4);
         wrist.set(power);
     }
 
@@ -359,6 +364,5 @@ public class Arm extends SubsystemBase {
         shoulderLeftEncoder.setPosition(0);
         shoulderRightEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
-        wristEncoder.setPosition(0);
     }
 }

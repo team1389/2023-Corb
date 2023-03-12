@@ -48,11 +48,12 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
 
-        // double voltage = pdh.getVoltage();
-        // SmartDashboard.putNumber("Voltage", voltage);
+        double voltage = pdh.getVoltage();
+        SmartDashboard.putNumber("Voltage", voltage);
 
-        // SmartDashboard.putNumber("FR Drive Current", pdh.getCurrent(17));
-        // SmartDashboard.putNumber("FL Drive Current", pdh.getCurrent(10));
+        SmartDashboard.putNumber("wrsit 2 Current", pdh.getCurrent(2));
+        SmartDashboard.putNumber("wrist 3 Current", pdh.getCurrent(3));
+        SmartDashboard.putNumber("wrist 4 Current", pdh.getCurrent(4));
         // SmartDashboard.putNumber("BR Drive Current", pdh.getCurrent(1));
         // SmartDashboard.putNumber("BL Drive Current", pdh.getCurrent(9));
         // SmartDashboard.putNumber("FR Turn Current", pdh.getCurrent(18));
@@ -80,6 +81,14 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    // if (autoCommand != null) {
+    //     autoCommand.cancel();
+    //   }
+    
     }
 
     @Override
@@ -101,17 +110,12 @@ public class Robot extends TimedRobot {
         oi.drivetrain.backLeft.resetEncoders();
         oi.drivetrain.frontRight.resetEncoders();
         oi.drivetrain.backRight.resetEncoders();
+        oi.drivetrain.setAngleAdjustment(180);
 
         oi.arm.controllerInterrupt = true;
-
-        // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (autoCommand != null) {
-        autoCommand.cancel();
-      }
     }
+
+        
 
     @Override
     public void teleopPeriodic() {

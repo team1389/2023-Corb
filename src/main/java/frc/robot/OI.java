@@ -18,10 +18,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.autos.DriveBack;
 import frc.autos.OneBottomCone;
 import frc.autos.OneBottomCube;
-import frc.autos.OneTopCone;
+import frc.autos.OutAndScoreNoBump;
 import frc.autos.OneTopCube;
+import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
 import frc.autos.TwoTopCube;
 import frc.commands.HoldPosition;
@@ -126,8 +128,8 @@ public class OI {
         // manipRightBumper.whileTrue(new ManualWrist(arm, -0.4));
 
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));
-
         manipStadia.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
+        manipFullscreen.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
 
         manipRightTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
         manipRightTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeTop, true));
@@ -146,20 +148,25 @@ public class OI {
         manipRight.whileTrue(new RunIntakeCube(intake));
 
         final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
-        final Command oneTopCone = new OneTopCone(drivetrain, arm, intake, autoMap);
         final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
         final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
         final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
+        final Command driveBack = new DriveBack(drivetrain, arm, intake);
+        final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake);
+        final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
+
+
+
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
         // A chooser for autonomous commands
 
-        chooser.setDefaultOption("One Bottom Cone", oneBottomCone);
         chooser.addOption("One Bottom Cube", oneBottomCube);
-        chooser.addOption("One Top Cone", oneTopCone);
-        chooser.addOption("One Top Cube", oneTopCube);
         chooser.addOption("Quick Balance", quickBalance);
-        chooser.addOption("Two Top Cube", twoTopCube);
+        chooser.addOption("Drive Back", driveBack);
+        chooser.addOption("Out and Balance no bump", outAndScoreNoBump);
+        chooser.addOption("Out and Balance bump", outAndScoreBump);
+
         SmartDashboard.putData("Auto choices", chooser);
     }
 
@@ -255,8 +262,8 @@ public class OI {
         // return trajCommand;
         // return new AutoBalanceController(drivetrain);
         
-        // return chooser.getSelected();
-        return new OneBottomCube(drivetrain, arm, intake, autoMap);
+        return chooser.getSelected();
+        //return new QuickBalance(drivetrain, arm, intake);
     }
 
 }

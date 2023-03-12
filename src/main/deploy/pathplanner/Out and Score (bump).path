@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.7,
-        "y": 0.41840482257477024
+        "x": 1.6898897854735226,
+        "y": 0.6941716374535951
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.764429443449636,
-        "y": 0.8748464472017916
+        "x": 2.6898897854735244,
+        "y": 0.6941716374535951
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -24,18 +24,18 @@
     },
     {
       "anchorPoint": {
-        "x": 6.530072846622563,
-        "y": 0.9033740487409814
+        "x": 5.7693368055775265,
+        "y": 0.7702452415580985
       },
       "prevControl": {
-        "x": 5.6143838662985885,
-        "y": 0.5014863886751006
+        "x": 4.769528983920806,
+        "y": 0.7898493164925449
       },
       "nextControl": {
-        "x": 6.663592210255089,
-        "y": 0.9619744969027321
+        "x": 6.739275257909946,
+        "y": 0.7512268405319715
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -49,15 +49,15 @@
     },
     {
       "anchorPoint": {
-        "x": 3.677312692703679,
-        "y": 2.282208123135108
+        "x": 3.819950700399623,
+        "y": 2.5294473364747443
       },
       "prevControl": {
-        "x": 5.189275574280688,
-        "y": 2.4438645318571783
+        "x": 5.037128366071684,
+        "y": 2.4343553313441153
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -70,30 +70,5 @@
       }
     }
   ],
-  "markers": [
-    {
-      "position": 0.7757575757575899,
-      "names": [
-        "start intake"
-      ]
-    },
-    {
-      "position": 1.066666666666668,
-      "names": [
-        "stop intake"
-      ]
-    },
-    {
-      "position": 0.23030303030300314,
-      "names": [
-        "arm cube intake"
-      ]
-    },
-    {
-      "position": 1.393939393939387,
-      "names": [
-        "arm starting"
-      ]
-    }
-  ]
+  "markers": []
 }

@@ -41,10 +41,10 @@ public class ManualArm extends CommandBase {
             arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
             arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
             if (upWrist.get()) {
-                arm.moveWrist(0.4);
+                arm.moveWrist(1);
             }
             if (downWrist.get()) {
-                arm.moveWrist(-0.4);
+                arm.moveWrist(-1);
             }
             if(!upWrist.get() && !downWrist.get()) {
                 arm.moveWrist(0);

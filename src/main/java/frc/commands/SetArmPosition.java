@@ -1,6 +1,7 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.subsystems.Arm;
 import frc.subsystems.Arm.ArmPosition;
@@ -32,6 +33,11 @@ public class SetArmPosition extends CommandBase {
         arm.setArm(target);
         timer.reset();
         timer.start();
+    }
+
+    @Override
+    public void execute() {
+        SmartDashboard.putNumber("timer",timer.get());
     }
 
     @Override

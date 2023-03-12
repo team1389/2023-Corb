@@ -7,7 +7,6 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.commands.AutoBalance;
 import frc.commands.RunOuttakeCone;
 import frc.commands.RunOuttakeCube;
@@ -19,12 +18,12 @@ import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 
-public class QuickBalance extends SequentialCommandGroup{
+public class DriveBack extends SequentialCommandGroup{
    
-    public QuickBalance(Drivetrain drivetrain, Arm arm, Intake intake){
+    public DriveBack(Drivetrain drivetrain, Arm arm, Intake intake){
         addRequirements(drivetrain, arm, intake);
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Quick Balance", new PathConstraints(
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Drive Back", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
             AutoConstants.AUTO_MAX_MPSS));
 
@@ -36,7 +35,6 @@ public class QuickBalance extends SequentialCommandGroup{
         Command driveUp = drivetrain.followTrajectoryCommand(driveUpTraj, true);
 
         addCommands(
-            //new SetArmPosition(arm, ArmPosition.StartingConfig, false, 2),
             new TimeArm(arm),
             new SetArmPosition(arm, ArmPosition.MidConeTop, false, 2.2),
             driveUp,

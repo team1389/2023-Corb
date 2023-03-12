@@ -85,7 +85,14 @@ public class Drivetrain extends SubsystemBase {
     
     public void zeroHeading() {
         gyro.reset();
+        gyro.setAngleAdjustment(0);
     }
+
+    public void setAngleAdjustment(double angle) {
+        gyro.setAngleAdjustment(angle);   
+    }
+
+
 
     // Returns degrees from -180 to 180
     public double getHeading() {
