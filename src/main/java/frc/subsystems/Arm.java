@@ -9,9 +9,11 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -62,6 +64,7 @@ public class Arm extends SubsystemBase {
     public double wristTarget;
     private double shoulderSpeed;
     private double elbowSpeed;
+    private SparkMaxAbsoluteEncoder absElbowEncoder;
     private double absWristOffset = -0.005; // From 0.38
 
     // Number of steps to take to get there. Higher is smoother but slower
@@ -69,6 +72,7 @@ public class Arm extends SubsystemBase {
     private double currentStep = 0;
 
     public Arm() {
+        
         shoulderLeft = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_LEFT, MotorType.kBrushless);
         shoulderRight = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_RIGHT, MotorType.kBrushless);
 
@@ -116,6 +120,9 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.MidCube, new Double[] { 1.347, -2.8, 0.20 + absWristOffset });
         positionMap.put(ArmPosition.HighCube, new Double[] { 2.8, -6.0, 0.150 + absWristOffset });
         positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
+        
+
+        absElbowEncoder = elbow.getAbsoluteEncoder(Type.kDutyCycle);
 
         setArm(ArmPosition.StartingConfig);
     }
@@ -365,6 +372,9 @@ public class Arm extends SubsystemBase {
         shoulderRightEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
     }
-
-
+    
+    //between 0 and 1, never is negative. Switched to the A value
+    public double getNewElbowEncoderPos(){
+        return absElbowEncoder.getPosition();
+    }
 }

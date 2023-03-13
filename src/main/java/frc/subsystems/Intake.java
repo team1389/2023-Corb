@@ -22,11 +22,9 @@ public class Intake extends SubsystemBase {
     
     private CANSparkMax bottomRoller;
     private CANSparkMax topRoller;
-    private Ultrasonic cubeSensor, coneSensorBottom, coneSensorTop;
-    private double sensorThreshold = 10;
+    private CANSparkMax rollerMotor;
 
 
-    private int temp = 0;
     SizeLimitedQueue topSizeLimitedQueue = new SizeLimitedQueue(5);
     SizeLimitedQueue bottomSizeLimitedQueue = new SizeLimitedQueue(5);
     
@@ -35,39 +33,18 @@ public class Intake extends SubsystemBase {
         bottomRoller = new CANSparkMax(DriveConstants.BOTTOM_INTAKE_MOTOR, MotorType.kBrushless);
         topRoller = new CANSparkMax(DriveConstants.TOP_INTAKE_MOTOR, MotorType.kBrushless);
 
-        // coneSensorBottom = new
-        // Ultrasonic(ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_PING,
-        // ArmConstants.BOTTOM_CONE_INTAKE_SENSOR_PORT_RESPONSE);
-        // coneSensorTop = new Ultrasonic(ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_PING,
-        // ArmConstants.TOP_CONE_INTAKE_SENSOR_PORT_RESPONSE);
-        cubeSensor = new Ultrasonic(ArmConstants.CUBE_INTAKE_SENSOR_PORT_PING,
-                ArmConstants.CUBE_INTAKE_SENSOR_PORT_RESPONSE);
-
-        // coneSensorBottom.setEnabled(true);
-        // coneSensorTop.setEnabled(true);
-        cubeSensor.setEnabled(true);
-        Ultrasonic.setAutomaticMode(true);
+        //for new intake
+        rollerMotor = new CANSparkMax(DriveConstants.PLACEHOLDER_PORT, MotorType.kBrushless);
     }
 
-    @Override
-    public void periodic() {
-        // SmartDashboard.putBoolean("Bottom Cone Intake", getBottomCone());
-        // SmartDashboard.putBoolean("Top Cone Intake", getTopCone());
-        SmartDashboard.putBoolean("Cube Intake", hasCube());
+    //intake
+    public void corbEat() {
+        rollerMotor.set(intakeSpeed);
+    }
 
-        topSizeLimitedQueue.add(Math.abs(topRoller.getEncoder().getVelocity()));
-        bottomSizeLimitedQueue.add(Math.abs(bottomRoller.getEncoder().getVelocity()));
-        
-        if (hasBottomCone() == true || hasTopCone() == true || hasCube() == true) {
-            temp++;
-            // if (temp > 5) {
-                // stop();
-            // }
-        } else {
-            temp = 0;
-        }
-
-
+    //outtake
+    public void corbFire() {
+        rollerMotor.set(outtakeSpeed);
     }
 
     public void runIntakeCone() {
