@@ -85,7 +85,7 @@ public class TeleOpDrive extends CommandBase {
             chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
         }
 
-        // 5.5 Figure out if we should hold X
+        // 5.5 Figure out if we should hold X position
         if (!lastHoldButton && holdButton) {
             holdingX = !holdingX; // If the button was up and now it's down, toggle holding X
         }

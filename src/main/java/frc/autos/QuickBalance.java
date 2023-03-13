@@ -3,14 +3,10 @@ package frc.autos;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.commands.AutoBalance;
 import frc.commands.RunOuttakeCone;
-import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.commands.TimeArm;
 import frc.robot.RobotMap.AutoConstants;

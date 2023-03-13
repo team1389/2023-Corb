@@ -41,7 +41,6 @@ public class RunIntakeCone extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // this works i tihnk
         return timeout == -1 ^ timer.get() > timeout;
     }
 

@@ -1,26 +1,19 @@
 package frc.subsystems;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
@@ -36,7 +29,7 @@ public class Arm extends SubsystemBase {
 
     private double lastMovement;
 
-    private RelativeEncoder wristEncoder, shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
+    private RelativeEncoder shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
     private DutyCycleEncoder wristAbsoluteEncoder = new DutyCycleEncoder(8);
 
     public enum ArmPosition {
@@ -90,17 +83,15 @@ public class Arm extends SubsystemBase {
         pidWrist = new PIDController(RobotMap.ArmConstants.WRIST_P, RobotMap.ArmConstants.WRIST_I,
                 RobotMap.ArmConstants.WRIST_D);
 
-        wristEncoder = wrist.getEncoder();
         shoulderLeftEncoder = shoulderLeft.getEncoder();
         shoulderRightEncoder = shoulderLeft.getEncoder();
         elbowEncoder = elbow.getEncoder();
 
-        //wristEncoder.setPosition(0);
         shoulderLeftEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
 
         // Shoulder, elbow, wrist
-        // by shoulder and elbow are by definition, wrist is from the absolute encoder.
+        // Shoulder and elbow are relative to start, wrist is absolute
         positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.38 + absWristOffset });
 
         positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.1, -5.35, 0.180 + absWristOffset }); 
@@ -160,7 +151,6 @@ public class Arm extends SubsystemBase {
 
         currentStep = 0;
 
-        // setShoulder(positionMap.get(targetPos)[0]);
         setElbow(positionMap.get(targetPos)[1]);
         setWrist(positionMap.get(targetPos)[2]);
     }
@@ -202,9 +192,6 @@ public class Arm extends SubsystemBase {
         // SmartDashboard.putNumber("Elbow power", elbowPower);
         // SmartDashboard.putNumber("Wrist power", wristPower);
 
-        // SmartDashboard.putNumber("Tree", Timer.getFPGATimestamp());
-        // SmartDashboard.putNumber("last", lastMovement);
-        
         SmartDashboard.putNumber("meow", wrist.getBusVoltage());
         SmartDashboard.putNumber("meow2", wrist.getOutputCurrent());
 

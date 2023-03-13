@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.autos.DriveBack;
@@ -27,16 +26,11 @@ import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
 import frc.autos.QuickBalanceHigher;
 import frc.autos.TwoTopCube;
-import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
-import frc.commands.ManualWrist;
 import frc.commands.RunIntakeCone;
 import frc.commands.RunIntakeCube;
-import frc.commands.RunOuttakeCone;
-import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.commands.TeleOpDrive;
-import frc.robot.RobotMap.AutoConstants;
 import frc.subsystems.Arm;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
@@ -74,9 +68,6 @@ public class OI {
     private Trigger manipLeft;
     private Trigger manipDown;
     private Trigger manipRight;
-    // private Trigger manipTopRight;
-    // private Trigger manipBottomLeft;
-    // private Trigger manipBottomRight;
 
     SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -124,10 +115,9 @@ public class OI {
         // Press X button -> set X to not slide
         driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
-        // MANIPULATOR CONTROLLER
-        // manipLeftBumper.whileTrue(new ManualWrist(arm, 0.4));
-        // manipRightBumper.whileTrue(new ManualWrist(arm, -0.4));
 
+
+        // MANIPULATOR CONTROLLER
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));
         manipStadia.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         manipFullscreen.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
@@ -144,7 +134,6 @@ public class OI {
         manipUp.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
         manipLeft.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
 
-        // TODO: these are terrible names, perhaps "Backwards" and "Forwards"?
         manipBButton.whileTrue(new RunIntakeCone(intake));
         manipRight.whileTrue(new RunIntakeCube(intake));
 
@@ -161,8 +150,8 @@ public class OI {
 
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
-        // A chooser for autonomous commands
 
+        // Add options
         chooser.addOption("One Bottom Cube", oneBottomCube);
         chooser.addOption("Quick Balance", quickBalance);
         chooser.addOption("Drive Back", driveBack);
@@ -253,20 +242,9 @@ public class OI {
         return !manipController.getRawButton(6);
     }
 
-    // Return autocommand
+    // Return auto command
     public Command getAutoCommand() {
-        // PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path", new
-        // PathConstraints(
-        // AutoConstants.AUTO_MAX_METERS_PER_SEC,
-        // AutoConstants.AUTO_MAX_MPSS)
-        // );
-
-        // Command trajCommand = drivetrain.followTrajectoryCommand(trajectory, true);
-        // return trajCommand;
-        // return new AutoBalanceController(drivetrain);
-        
         return chooser.getSelected();
-        //return new QuickBalance(drivetrain, arm, intake);
     }
 
 }
