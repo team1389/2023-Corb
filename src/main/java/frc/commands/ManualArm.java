@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.subsystems.Arm;
-import frc.subsystems.Arm.ArmPosition;
 
 public class ManualArm extends CommandBase {
     Arm arm;
@@ -31,6 +30,7 @@ public class ManualArm extends CommandBase {
         double shoulder = shoulderFunction.get();
         double elbow = elbowFunction.get();
 
+        // Check whether to interrupt PID loops 
         if ((Math.abs(shoulder) > 0.05 || Math.abs(elbow) > 0.05 || upWrist.get() || downWrist.get())
             && interrupt.get()) {
 
@@ -38,15 +38,17 @@ public class ManualArm extends CommandBase {
         }
 
         if (arm.controllerInterrupt) {
+            // Cube speeds for easier control
             arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
             arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
+
             if (upWrist.get()) {
                 arm.moveWrist(1);
             }
-            if (downWrist.get()) {
+            else if (downWrist.get()) {
                 arm.moveWrist(-1);
             }
-            if(!upWrist.get() && !downWrist.get()) {
+            else if(!upWrist.get() && !downWrist.get()) {
                 arm.moveWrist(0);
             }
         }

@@ -15,7 +15,7 @@ public class RunOuttakeCone extends CommandBase {
         addRequirements(intake);
     }
 
-    // timeout in seconds
+    // Timeout in seconds
     public RunOuttakeCone(Intake intake, double timeout) {
         this.intake = intake;
         this.timeout = timeout;
@@ -41,7 +41,6 @@ public class RunOuttakeCone extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // this works i tihnk
         return timeout == -1 ^ timer.get() > timeout;
     }
 

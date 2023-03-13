@@ -3,12 +3,8 @@ package frc.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
-import frc.robot.RobotMap.ModuleConstants;
 import frc.util.SizeLimitedQueue;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;

@@ -6,14 +6,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap.DriveConstants;
 import frc.subsystems.Drivetrain;
-import frc.util.SizeLimitedQueue;
 
 public class AutoBalance extends CommandBase {
     private final Drivetrain drivetrain;
-    private final SizeLimitedQueue queue;
+
     public AutoBalance(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        queue = new SizeLimitedQueue(100);
 
         addRequirements(drivetrain);
     }
@@ -22,8 +20,7 @@ public class AutoBalance extends CommandBase {
     public void execute() {
         double pitch = Math.toRadians(drivetrain.getPitch());
         double roll = Math.toRadians(drivetrain.getRoll());
-        double maxSpeed = 0.4;
-        double tempSpeed;
+        double speed = 0.4;
 
         // Use formula to find angle robot should drive at
         double targetAngle = Math.asin(Math.sin(roll)/(Math.sqrt((Math.pow(Math.sin(pitch),2))+(Math.pow(Math.sin(roll),2)))));
@@ -43,8 +40,7 @@ public class AutoBalance extends CommandBase {
             
             
         } else {
-            tempSpeed = maxSpeed;//Math.min((Math.toDegrees(slopeAngle)/15)*maxSpeed, maxSpeed);
-            ChassisSpeeds chassisSpeeds = new ChassisSpeeds(tempSpeed*Math.cos(targetAngle), tempSpeed*Math.sin(targetAngle), 0); 
+            ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speed*Math.cos(targetAngle), speed*Math.sin(targetAngle), 0); 
             SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
             drivetrain.setModuleStates(moduleStates);
         }

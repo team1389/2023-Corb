@@ -46,7 +46,6 @@ public class SwerveModule extends SubsystemBase{
         driveMotor.setInverted(driveMotorReversed);
         turnMotor.setInverted(turningMotorReversed);
 
-
         driveEncoder = driveMotor.getEncoder();
 
         turnEncoder = turnMotor.getAbsoluteEncoder(Type.kDutyCycle);
