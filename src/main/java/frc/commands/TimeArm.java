@@ -13,7 +13,7 @@ public class TimeArm extends CommandBase {
     Supplier<Boolean> downWrist, upWrist, interrupt;
     double targetShoulder = 0;
     double targetElbow = 0;
-    double timeout = 1;
+    double timeout = 0.5;
     Timer timer = new Timer();
 
     public TimeArm(Arm arm) {

@@ -25,6 +25,7 @@ import frc.autos.OutAndScoreNoBump;
 import frc.autos.OneTopCube;
 import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
+import frc.autos.QuickBalanceHigher;
 import frc.autos.TwoTopCube;
 import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
@@ -154,6 +155,7 @@ public class OI {
         final Command driveBack = new DriveBack(drivetrain, arm, intake);
         final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake);
         final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
+        final Command quickBalanceHigher = new QuickBalanceHigher(drivetrain, arm, intake);
 
 
 
@@ -166,6 +168,7 @@ public class OI {
         chooser.addOption("Drive Back", driveBack);
         chooser.addOption("Out and Balance no bump", outAndScoreNoBump);
         chooser.addOption("Out and Balance bump", outAndScoreBump);
+        chooser.addOption("Quick Balance Higher Mid Cone", quickBalanceHigher);
 
         SmartDashboard.putData("Auto choices", chooser);
     }

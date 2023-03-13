@@ -1,16 +1,16 @@
 package frc.autos;
-import java.util.HashMap;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.commands.AutoBalance;
 import frc.commands.RunOuttakeCone;
+import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
 import frc.commands.TimeArm;
 import frc.robot.RobotMap.AutoConstants;
@@ -18,13 +18,13 @@ import frc.subsystems.Arm;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
-public class OutAndScoreNoBump extends SequentialCommandGroup{
-    
-    public OutAndScoreNoBump(Drivetrain drivetrain, Arm arm, Intake intake){
-        
+
+public class QuickBalanceHigher extends SequentialCommandGroup{
+   
+    public QuickBalanceHigher(Drivetrain drivetrain, Arm arm, Intake intake){
         addRequirements(drivetrain, arm, intake);
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Out and Score (no bump)", new PathConstraints(
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Quick Balance", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
             AutoConstants.AUTO_MAX_MPSS));
 
@@ -38,12 +38,14 @@ public class OutAndScoreNoBump extends SequentialCommandGroup{
         addCommands(
             //new SetArmPosition(arm, ArmPosition.StartingConfig, false, 2),
             new TimeArm(arm),
-            new SetArmPosition(arm, ArmPosition.MidConeTop, false, 1.5),
+            new SetArmPosition(arm, ArmPosition.AboveMidConeTop, false, 2.2),
             driveUp,
+            new SetArmPosition(arm, ArmPosition.MidConeTop, false,0.8),
             new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             drivePath,
             new AutoBalance(drivetrain)
         );
+        
     }
 }

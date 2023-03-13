@@ -50,18 +50,19 @@ public class Arm extends SubsystemBase {
         MidConeBottom,
         HighConeBottom,
         MidCube,
-        HighCube, IntakeConeFeeder
+        HighCube, IntakeConeFeeder, AboveMidConeTop
     }
 
     public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[]>();
 
-    public ArmPosition targetPos;
+    public ArmPosition targetPos = ArmPosition.StartingConfig;
     public ArmPosition lastPose;
     public double shoulderTarget;
     public double elbowTarget;
     public double wristTarget;
     private double shoulderSpeed;
     private double elbowSpeed;
+    private double absWristOffset = -0.005; // From 0.38
 
     // Number of steps to take to get there. Higher is smoother but slower
     private double numSteps = 80;
@@ -94,31 +95,29 @@ public class Arm extends SubsystemBase {
         shoulderRightEncoder = shoulderLeft.getEncoder();
         elbowEncoder = elbow.getEncoder();
 
-        wristEncoder.setPosition(0);
+        //wristEncoder.setPosition(0);
         shoulderLeftEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
 
         // Shoulder, elbow, wrist
         // by shoulder and elbow are by definition, wrist is from the absolute encoder.
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.38 });
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 0.0, 0.38 + absWristOffset });
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.1, -5.35, 0.18 }); // TODO
-        positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -1.85, 0.1 }); // TODO
-        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.667, -6.2, 0.0964 }); // TODO
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.1, -5.35, 0.180 + absWristOffset }); 
+        positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -1.85, 0.10 + absWristOffset }); 
+        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.667, -6.2, 0.09640 + absWristOffset }); 
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
-        positionMap.put(ArmPosition.MidConeBottom, new Double[] { 2.24, -2.8, 0.249 });
-        positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.1, -5.0, 0.2 });
-        positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.347, -2.8, 0.249 });
-        positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.04, -5.8, 0.21 });
-        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 3.04, -5.8, 0.31 });
-        positionMap.put(ArmPosition.MidCube, new Double[] { 1.347, -2.8, 0.2 });
-        positionMap.put(ArmPosition.HighCube, new Double[] { 2.8, -6.0, 0.15 });
+        positionMap.put(ArmPosition.MidConeBottom, new Double[] { 2.24, -2.8, 0.2490 + absWristOffset });
+        positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.1, -5.0, 0.20 + absWristOffset });
+        positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.347, -2.8, 0.2490 + absWristOffset });
+        positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.04, -5.8, 0.210 + absWristOffset });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 3.04, -5.8, 0.310 + absWristOffset });
+        positionMap.put(ArmPosition.MidCube, new Double[] { 1.347, -2.8, 0.20 + absWristOffset });
+        positionMap.put(ArmPosition.HighCube, new Double[] { 2.8, -6.0, 0.150 + absWristOffset });
+        positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
 
         setArm(ArmPosition.StartingConfig);
-        shoulderTarget = positionMap.get(targetPos)[0];
-        elbowTarget = positionMap.get(targetPos)[1];
-        wristTarget = positionMap.get(targetPos)[2];
     }
 
     public double setShoulder(double pos) {
@@ -149,9 +148,10 @@ public class Arm extends SubsystemBase {
     };
 
     public void setArm(ArmPosition pos) {
-        if (this.targetPos == ArmPosition.StartingConfig) {
+        if (this.targetPos == ArmPosition.StartingConfig && pos != ArmPosition.StartingConfig) {
             lastMovement = Timer.getFPGATimestamp();
         }
+
         lastPose = targetPos;
         targetPos = pos;
 
@@ -365,4 +365,6 @@ public class Arm extends SubsystemBase {
         shoulderRightEncoder.setPosition(0);
         elbowEncoder.setPosition(0);
     }
+
+
 }
