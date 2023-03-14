@@ -32,8 +32,7 @@ public class Arm extends SubsystemBase {
 
     private double lastMovement;
 
-    private RelativeEncoder shoulderLeftEncoder, shoulderRightEncoder, elbowEncoder;
-    private DutyCycleEncoder wristAbsoluteEncoder = new DutyCycleEncoder(8);
+    private RelativeEncoder shoulderLeftEncoder, shoulderRightEncoder;
 
     public enum ArmPosition {
         StartingConfig,
@@ -59,6 +58,7 @@ public class Arm extends SubsystemBase {
     private double shoulderSpeed;
     private double elbowSpeed;
     private SparkMaxAbsoluteEncoder absElbowEncoder;
+    private SparkMaxAbsoluteEncoder absWristEncoder;
     private double absWristOffset = -0.005; // From 0.38
 
     // Number of steps to take to get there. Higher is smoother but slower
@@ -90,10 +90,10 @@ public class Arm extends SubsystemBase {
 
         shoulderLeftEncoder = shoulderLeft.getEncoder();
         shoulderRightEncoder = shoulderLeft.getEncoder();
-        elbowEncoder = elbow.getEncoder();
+        absElbowEncoder = elbow.getAbsoluteEncoder(Type.kDutyCycle);
+        absWristEncoder = wrist.getAbsoluteEncoder(Type.kDutyCycle);
 
         shoulderLeftEncoder.setPosition(0);
-        elbowEncoder.setPosition(0);
 
         // Shoulder, elbow, wrist
         // Shoulder and elbow are relative to start, wrist is absolute
@@ -113,8 +113,6 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.HighCube, new Double[] { 2.8, -6.0, 0.150 + absWristOffset });
         positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
         
-
-        absElbowEncoder = elbow.getAbsoluteEncoder(Type.kDutyCycle);
 
         setArm(ArmPosition.StartingConfig);
     }
@@ -222,7 +220,7 @@ public class Arm extends SubsystemBase {
     } 
 
     public double getWristPos() {
-        return wristAbsoluteEncoder.getDistance();
+        return absWristEncoder.getPosition();
     }
 
     // Returns encoder count
@@ -232,7 +230,7 @@ public class Arm extends SubsystemBase {
 
     // Returns encoder count
     public double getElbowPos() {
-        return elbowEncoder.getPosition();
+        return absElbowEncoder.getPosition();
     }
 
     // Returns shoulder angle (rad)
@@ -244,7 +242,7 @@ public class Arm extends SubsystemBase {
     public double getElbowAngle() {
 
         // String length (meters)
-        double length = elbowEncoder.getPosition() * ArmConstants.ELBOW_ENCODER_TO_METERS;
+        double length = absElbowEncoder.getPosition() * ArmConstants.ELBOW_ENCODER_TO_METERS;
 
         // Law of cosines
         double cosAngle = (length * length) - (ArmConstants.SHOULDER_TO_ELBOW * ArmConstants.SHOULDER_TO_ELBOW)
@@ -358,11 +356,5 @@ public class Arm extends SubsystemBase {
     public void resetEncoders() {
         shoulderLeftEncoder.setPosition(0);
         shoulderRightEncoder.setPosition(0);
-        elbowEncoder.setPosition(0);
-    }
-    
-    //between 0 and 1, never is negative. Switched to the A value
-    public double getNewElbowEncoderPos(){
-        return absElbowEncoder.getPosition();
     }
 }
