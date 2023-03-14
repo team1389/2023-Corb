@@ -10,15 +10,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Intake extends SubsystemBase {
     private final double intakeSpeed = 0.5;
     private final double outtakeSpeed = 0.5;
-
-
     private CANSparkMax rollerMotor;
-
-    
 
     public Intake() {
         //for new intake
-        rollerMotor = new CANSparkMax(DriveConstants.PLACEHOLDER_PORT, MotorType.kBrushless);
+        rollerMotor = new CANSparkMax(DriveConstants.ROLLER_MOTOR_PORT, MotorType.kBrushless);
     }
 
     public void runIntakeCone() {

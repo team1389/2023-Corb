@@ -60,7 +60,7 @@ public class RobotMap {
                 new Translation2d(-ROBOT_LENGTH / 2, ROBOT_WIDTH / 2));
 
         // FL is front left, BR is back right, etc.
-        public static final int PLACEHOLDER_PORT = 100;
+        public static final int ROLLER_MOTOR_PORT = 0; //TODO: change
 
         public static final int FL_DRIVE_PORT = 9;
         public static final int BL_DRIVE_PORT = 3;
