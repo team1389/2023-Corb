@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -26,7 +28,7 @@ import frc.robot.RobotMap.DriveConstants;
 public class Arm extends SubsystemBase {
     private CANSparkMax shoulderLeft, shoulderRight, elbow, wrist;
 
-    private PIDController pidShoulder;
+    private SparkMaxPIDController pidShoulder;
     private PIDController pidElbow;
     private PIDController pidWrist;
 
@@ -83,8 +85,12 @@ public class Arm extends SubsystemBase {
         shoulderLeft.setInverted(false);
         shoulderRight.setInverted(false);
 
-        pidShoulder = new PIDController(RobotMap.ArmConstants.SHOULDER_P, RobotMap.ArmConstants.SHOULDER_I,
-                RobotMap.ArmConstants.SHOULDER_D);
+        pidShoulder = shoulderLeft.getPIDController();
+        pidShoulder.setP(RobotMap.ArmConstants.SHOULDER_P);
+        pidShoulder.setI(RobotMap.ArmConstants.SHOULDER_I);
+        pidShoulder.setD(RobotMap.ArmConstants.SHOULDER_D);
+
+
         pidElbow = new PIDController(RobotMap.ArmConstants.ELBOW_P, RobotMap.ArmConstants.ELBOW_I,
                 RobotMap.ArmConstants.ELBOW_D);
         pidWrist = new PIDController(RobotMap.ArmConstants.WRIST_P, RobotMap.ArmConstants.WRIST_I,
@@ -99,6 +105,9 @@ public class Arm extends SubsystemBase {
         absWristEncoder = wrist.getAbsoluteEncoder(Type.kDutyCycle);
 
         shoulderLeftEncoder.setPosition(0);
+
+        pidShoulder.setFeedbackDevice(shoulderLeftEncoder);
+
         // absElbowEncoder.setInverted(true);
 
         // Shoulder, elbow, wrist
@@ -161,6 +170,7 @@ public class Arm extends SubsystemBase {
         elbowSpeed = (positionMap.get(targetPos)[1] - elbowTarget);
 
 
+        setShoulder(positionMap.get(targetPos)[0]);
         setElbow(positionMap.get(targetPos)[1]);
         setWrist(positionMap.get(targetPos)[2]);
     }
@@ -172,8 +182,9 @@ public class Arm extends SubsystemBase {
 
 
         if (!controllerInterrupt) {             
-            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
-            moveShoulder(shoulderPower);
+            // shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
+            // moveShoulder(shoulderPower);
+            pidShoulder.setReference(shoulderTarget, com.revrobotics.CANSparkMax.ControlType.kPosition);
 
             wristPower = pidWrist.calculate(getWristPos(), wristTarget);
             // moveWrist(wristPower);
