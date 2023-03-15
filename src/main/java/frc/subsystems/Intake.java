@@ -3,9 +3,10 @@ package frc.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.DriveConstants;
 
-
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 public class Intake extends SubsystemBase {
     private final double intakeSpeed = 0.5;
@@ -36,4 +37,8 @@ public class Intake extends SubsystemBase {
     public void stop() {
         rollerMotor.set(0);
     }
-}
+
+    public SparkMaxAbsoluteEncoder getElbowEncoder() {
+        return rollerMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    }
+} 
