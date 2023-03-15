@@ -26,6 +26,8 @@ import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
 import frc.autos.QuickBalanceHigher;
 import frc.autos.TwoTopCube;
+import frc.commands.AdjustElbowTarget;
+import frc.commands.AdjustShoulderTarget;
 import frc.commands.ManualArm;
 import frc.commands.RunIntakeCone;
 import frc.commands.RunIntakeCube;
@@ -74,6 +76,13 @@ public class OI {
     private HashMap<String, Command> autoMap = new HashMap<String, Command>();
 
     public OI() {
+        //Harry's Witchcraft arm tuning idea
+        SmartDashboard.putData("Shoulder up 0.05 Command", new AdjustShoulderTarget(arm, true, 0.05));
+        SmartDashboard.putData("Shoulder down 0.05 Command", new AdjustShoulderTarget(arm, false, 0.05));
+
+        SmartDashboard.putData("Elbow up 0.05 Command", new AdjustElbowTarget(arm, true, 0.05));
+        SmartDashboard.putData("Elbow down 0.05 Command", new AdjustElbowTarget(arm, false, 0.05));
+
         autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
         autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
         autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighConeTop, true));
