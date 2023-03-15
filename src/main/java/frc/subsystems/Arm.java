@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.commands.AdjustElbowTarget;
+import frc.commands.AdjustShoulderTarget;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
@@ -211,8 +213,17 @@ public class Arm extends SubsystemBase {
         // getShoulderPos());
         elbowTarget = SmartDashboard.getNumber("Elbow target", getElbowPos());
         wristTarget = SmartDashboard.getNumber("Wrist target", getWristPos());
+        double shoulderVal = 0, elbowVal = 0;
 
-    }
+        shoulderVal = SmartDashboard.getNumber("Shoulder Change Margin", shoulderVal);
+        elbowVal = SmartDashboard.getNumber("Elbow Change Margin", elbowVal);
+
+        SmartDashboard.putData("Shoulder up Command", new AdjustShoulderTarget(this, true, shoulderVal));
+        SmartDashboard.putData("Shoulder down Command", new AdjustShoulderTarget(this, false, shoulderVal));
+
+        SmartDashboard.putData("Elbow up Command", new AdjustElbowTarget(this, true, elbowVal));
+        SmartDashboard.putData("Elbow down Command", new AdjustElbowTarget(this, false, elbowVal));
+    } 
 
     public double getWristPos() {
         return wristEncoder.getPosition();

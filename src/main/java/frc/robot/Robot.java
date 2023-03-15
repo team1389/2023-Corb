@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
         backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
 
         pdh = new PowerDistribution();
-
         CameraServer.startAutomaticCapture();
     }
 
@@ -54,6 +53,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("wrsit 2 Current", pdh.getCurrent(2));
         SmartDashboard.putNumber("wrist 3 Current", pdh.getCurrent(3));
         SmartDashboard.putNumber("wrist 4 Current", pdh.getCurrent(4));
+        
+
+
         // SmartDashboard.putNumber("BR Drive Current", pdh.getCurrent(1));
         // SmartDashboard.putNumber("BL Drive Current", pdh.getCurrent(9));
         // SmartDashboard.putNumber("FR Turn Current", pdh.getCurrent(18));
@@ -63,7 +65,6 @@ public class Robot extends TimedRobot {
         // SmartDashboard.putNumber("Total Current", pdh.getTotalCurrent());
 
     }
-
 
     @Override
     public void autonomousInit() {
