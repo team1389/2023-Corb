@@ -60,7 +60,7 @@ public class RobotMap {
                 new Translation2d(-ROBOT_LENGTH / 2, ROBOT_WIDTH / 2));
 
         // FL is front left, BR is back right, etc.
-        public static final int ROLLER_MOTOR_PORT = 14;
+        public static final int ROLLER_MOTOR_PORT = 12;
 
         public static final int FL_DRIVE_PORT = 9;
         public static final int BL_DRIVE_PORT = 3;
@@ -72,7 +72,7 @@ public class RobotMap {
         public static final int FR_TURN_PORT = 6;
         public static final int BR_TURN_PORT = 4;
 
-        public static final int WRIST_MOTOR = 12; 
+        public static final int WRIST_MOTOR = 14; 
 
         // Sometimes encoders are mounted backwards based on robot design, this fixes
         // that although it's not a thing on stargazer

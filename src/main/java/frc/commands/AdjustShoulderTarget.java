@@ -26,4 +26,9 @@ public class AdjustShoulderTarget extends CommandBase{
         //should be last
         arm.controllerInterrupt=false;
     }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
 }

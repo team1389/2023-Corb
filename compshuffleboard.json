@@ -1261,7 +1261,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul"
+              "Y-axis/Unit": "ul",
+              "Visible data/SmartDashboard/wrist 4 Current": true
             }
           },
           "5,1": {
@@ -1559,7 +1560,7 @@
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
-              "Controls/Rotation": "QUARTER_CW",
+              "Controls/Rotation": "QUARTER_CCW",
               "compression": -1.0,
               "fps": -1,
               "imageWidth": 0,

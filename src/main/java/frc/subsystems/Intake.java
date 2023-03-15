@@ -9,13 +9,15 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 public class Intake extends SubsystemBase {
-    private final double intakeSpeed = 0.5;
-    private final double outtakeSpeed = 0.5;
+    private final double intakeSpeed = 1;
+    private final double outtakeSpeed = 1;
     private CANSparkMax rollerMotor;
 
     public Intake() {
         //for new intake
         rollerMotor = new CANSparkMax(DriveConstants.ROLLER_MOTOR_PORT, MotorType.kBrushless);
+        rollerMotor.setSmartCurrentLimit(20);
+        rollerMotor.burnFlash();
     }
 
     public void runIntakeCone() {
@@ -38,7 +40,4 @@ public class Intake extends SubsystemBase {
         rollerMotor.set(0);
     }
 
-    public SparkMaxAbsoluteEncoder getElbowEncoder() {
-        return rollerMotor.getAbsoluteEncoder(Type.kDutyCycle);
-    }
 } 

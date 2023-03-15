@@ -28,6 +28,7 @@ import frc.autos.QuickBalanceHigher;
 import frc.autos.TwoTopCube;
 import frc.commands.AdjustElbowTarget;
 import frc.commands.AdjustShoulderTarget;
+import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
 import frc.commands.RunIntakeCone;
 import frc.commands.RunIntakeCube;
@@ -43,7 +44,7 @@ public class OI {
     public final Drivetrain drivetrain = new Drivetrain();
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
-    public final Arm arm = new Arm(intake.getElbowEncoder());
+    public final Arm arm = new Arm();
 
 
     private GenericHID driveController;
@@ -78,7 +79,7 @@ public class OI {
 
     public OI() {
         //Harry's Witchcraft arm tuning idea
-        double shoulderVal=0,elbowVal=0;
+        double shoulderVal = 0, elbowVal = 0;
         SmartDashboard.getNumber("Shoulder Change Margin", shoulderVal);
         SmartDashboard.getNumber("Elbow Change Margin", elbowVal);
 
@@ -135,7 +136,8 @@ public class OI {
         // MANIPULATOR CONTROLLER
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));
         manipStadia.onTrue(new SetArmPosition(arm, ArmPosition.StartingConfig, true));
-        manipFullscreen.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
+        // manipFullscreen.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
+        manipFullscreen.onTrue(new HoldPosition(arm));
 
         manipRightTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
         manipRightTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeTop, true));
