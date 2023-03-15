@@ -8,7 +8,7 @@ public class AdjustElbowTarget extends CommandBase{
     private boolean inc;
     private double val;
 
-    public AdjustElbowTarget(Arm arm, boolean increasing,double val) {
+    public AdjustElbowTarget(Arm arm, boolean increasing, double val) {
         this.arm=arm;
         inc = increasing;
         this.val = val;
@@ -27,8 +27,8 @@ public class AdjustElbowTarget extends CommandBase{
         arm.controllerInterrupt=false;
     }
 
-    @Override
-    public boolean isFinished(){
-        return true;
-    }
+    // @Override
+    // public boolean isFinished(){
+    //     return true;
+    // }
 }

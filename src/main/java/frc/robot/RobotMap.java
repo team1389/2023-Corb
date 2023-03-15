@@ -141,28 +141,34 @@ public class RobotMap {
         public static final int SHOULDER_MOTOR_RIGHT = 15;
         public static final int ELBOW_MOTOR = 10;
 
-        public static final double SHOULDER_P = 1.15;
-        public static final double SHOULDER_I = 0.1;
+        public static final double SHOULDER_P = 0.13;
+        public static final double SHOULDER_I = 0.01;
         public static final double SHOULDER_D = 0;
-        public static final double ELBOW_P = 0.4;
-        public static final double ELBOW_I = 0;
+        public static final double SHOULDER_F = 0;
+
+        public static final double ELBOW_P = 0.5;
+        public static final double ELBOW_I = 0.00;
         public static final double ELBOW_D = 0;
+        public static final double ELBOW_F = 0.0;
+
         public static final double WRIST_P = 4.368;
         public static final double WRIST_I = 0;
         public static final double WRIST_D = 0;
+    
+        public static final double SHOULDER_START_ANGLE = Math.toRadians(15);
 
         // All in meters:
         public static final double SHOULDER_TO_ELBOW = 1;
         public static final double ELBOW_TO_WRIST = 1;
         public static final double ELBOW_TO_STRING = 1;
 
-        public static final double SHOULDER_ENCODER_TO_RAD = 1;
+        public static final double SHOULDER_ENCODER_TO_RAD = 0.053108;
         public static final double ELBOW_ENCODER_TO_METERS = 1;
     }
 
     public static final class FieldConstants {
         public static final double FIELD_WIDTH = 8.2296;
-        public static final double FIELD_LENGTH = 16.4592;;
+        public static final double FIELD_LENGTH = 16.4592;
 
     }
 }

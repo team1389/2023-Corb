@@ -8,7 +8,7 @@ public class AdjustShoulderTarget extends CommandBase{
     private boolean inc;
     private double val;
 
-    public AdjustShoulderTarget(Arm arm, boolean increasing,double val) {
+    public AdjustShoulderTarget(Arm arm, boolean increasing, double val) {
         this.arm=arm;
         inc = increasing;
         this.val = val;
@@ -27,8 +27,8 @@ public class AdjustShoulderTarget extends CommandBase{
         arm.controllerInterrupt=false;
     }
 
-    @Override
-    public boolean isFinished() {
-        return true;
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     return true;
+    // }
 }

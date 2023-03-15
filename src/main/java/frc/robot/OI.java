@@ -79,11 +79,15 @@ public class OI {
 
     public OI() {
         //Harry's Witchcraft arm tuning idea
-        double shoulderVal = 0, elbowVal = 0;
+        double shoulderVal = 0.05, elbowVal = 0.05;
         SmartDashboard.getNumber("Shoulder Change Margin", shoulderVal);
         SmartDashboard.getNumber("Elbow Change Margin", elbowVal);
 
-       
+        SmartDashboard.putData("Shoulder up Command", new AdjustElbowTarget(arm, true, shoulderVal));
+        SmartDashboard.putData("Shoulder down Command", new AdjustShoulderTarget(arm, false, shoulderVal));
+
+        SmartDashboard.putData("Elbow up Command", new AdjustElbowTarget(arm, true, elbowVal));
+        SmartDashboard.putData("Elbow down Command", new AdjustElbowTarget(arm, false, elbowVal));
 
         //automap
         autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));

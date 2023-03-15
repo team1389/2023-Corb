@@ -5,6 +5,7 @@ import frc.robot.RobotMap.DriveConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
@@ -16,8 +17,10 @@ public class Intake extends SubsystemBase {
     public Intake() {
         //for new intake
         rollerMotor = new CANSparkMax(DriveConstants.ROLLER_MOTOR_PORT, MotorType.kBrushless);
-        rollerMotor.setSmartCurrentLimit(20);
+        rollerMotor.setIdleMode(IdleMode.kBrake);
+        rollerMotor.setSmartCurrentLimit(40);
         rollerMotor.burnFlash();
+
     }
 
     public void runIntakeCone() {

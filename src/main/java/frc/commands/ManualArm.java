@@ -13,7 +13,8 @@ public class ManualArm extends CommandBase {
     double targetShoulder = 0;
     double targetElbow = 0;
 
-    public ManualArm(Arm arm, Supplier<Double> shoulderFunction, Supplier<Double> elbowFunction, Supplier<Boolean> upWrist, Supplier<Boolean> downWrist, Supplier<Boolean> interrupt) {
+    public ManualArm(Arm arm, Supplier<Double> shoulderFunction, Supplier<Double> elbowFunction,
+            Supplier<Boolean> upWrist, Supplier<Boolean> downWrist, Supplier<Boolean> interrupt) {
         this.arm = arm;
         this.shoulderFunction = shoulderFunction;
         this.elbowFunction = elbowFunction;
@@ -29,28 +30,29 @@ public class ManualArm extends CommandBase {
 
         double shoulder = shoulderFunction.get();
         double elbow = elbowFunction.get();
-
-        // Check whether to interrupt PID loops 
-        if ((Math.abs(shoulder) > 0.05 || Math.abs(elbow) > 0.05 || upWrist.get() || downWrist.get())
-            && interrupt.get()) {
-
+        // Check whether to interrupt PID loops
+        if (interrupt.get()) {
             arm.controllerInterrupt = true;
         }
 
+        var sho = shoulder * shoulder * shoulder;
+        double elb = elbow * elbow * elbow;
         if (arm.controllerInterrupt) {
             // Cube speeds for easier control
-            arm.moveShoulder(MathUtil.clamp(shoulder * shoulder * shoulder, -1, 1));
-            arm.moveElbow(MathUtil.clamp(elbow * elbow * elbow, -1, 1));
+            arm.moveShoulder(MathUtil.clamp(sho, -1, 1));
+
+            arm.moveElbow(MathUtil.clamp(elb, -1, 1));
 
             if (upWrist.get()) {
                 arm.moveWrist(1);
-            }
-            else if (downWrist.get()) {
+            } else if (downWrist.get()) {
                 arm.moveWrist(-1);
-            }
-            else if(!upWrist.get() && !downWrist.get()) {
+            } else if (!upWrist.get() && !downWrist.get()) {
                 arm.moveWrist(0);
             }
+        } else {
+            arm.setShoulder(arm.shoulderTarget + sho * 0.025*7);
+            arm.setElbow(arm.elbowTarget + elb * 0.0225);
         }
     }
 
