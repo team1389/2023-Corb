@@ -41,9 +41,10 @@ import frc.subsystems.Arm.ArmPosition;
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
-    public final Arm arm = new Arm();
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
+    public final Arm arm = new Arm(intake.getElbowEncoder());
+
 
     private GenericHID driveController;
     private Trigger driveRightBumper, driveLeftBumper;

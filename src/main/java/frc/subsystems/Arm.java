@@ -65,7 +65,7 @@ public class Arm extends SubsystemBase {
     private double numSteps = 80;
     private double currentStep = 0;
 
-    public Arm() {
+    public Arm(SparkMaxAbsoluteEncoder elbowEncoder) {
         
         shoulderLeft = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_LEFT, MotorType.kBrushless);
         shoulderRight = new CANSparkMax(ArmConstants.SHOULDER_MOTOR_RIGHT, MotorType.kBrushless);
@@ -90,7 +90,7 @@ public class Arm extends SubsystemBase {
 
         shoulderLeftEncoder = shoulderLeft.getEncoder();
         shoulderRightEncoder = shoulderLeft.getEncoder();
-        absElbowEncoder = elbow.getAbsoluteEncoder(Type.kDutyCycle);
+        absElbowEncoder = elbowEncoder;
         absWristEncoder = wrist.getAbsoluteEncoder(Type.kDutyCycle);
 
         shoulderLeftEncoder.setPosition(0);
