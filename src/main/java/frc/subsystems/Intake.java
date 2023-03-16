@@ -35,6 +35,10 @@ public class Intake extends SubsystemBase {
         rollerMotor.set(outtakeSpeed);
     }
 
+    public void shootCube() {
+        rollerMotor.set(-1);
+    }
+
     public void runOuttakeCone() {
         rollerMotor.set(-outtakeSpeed);
     }

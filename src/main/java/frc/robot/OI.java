@@ -90,11 +90,11 @@ public class OI {
         SmartDashboard.putData("Elbow down Command", new AdjustElbowTarget(arm, false, elbowVal));
 
         //automap
-        autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
+        autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCone()));
         autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
-        autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighConeTop, true));
+        autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
         autoMap.put("arm cube intake", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
-        autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidConeTop, true));
+        autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
         autoMap.put("arm starting", new SetArmPosition(arm, ArmPosition.StartingConfig, true));
 
         initControllers();
@@ -139,20 +139,23 @@ public class OI {
         // manipFullscreen.onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
         manipFullscreen.onTrue(new HoldPosition(arm));
 
-        manipRightTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeTop, true));
-        manipRightTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeTop, true));
-        manipRightTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeTop, true));
+
+        manipAButton.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCone, true));
+        manipXButton.onTrue(new SetArmPosition(arm, ArmPosition.MidCone, true));
+        manipYButton.onTrue(new SetArmPosition(arm, ArmPosition.HighCone, true));
+
+        manipRightTrigger.onTrue(new InstantCommand(() -> intake.shootCube()));
+        manipRightTrigger.onFalse(new InstantCommand(() -> intake.stop()));
 
         manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
-        manipLeftTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeBottom, true));
-        manipLeftTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeBottom, true));
+       
 
         manipDown.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
         manipUp.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
         manipLeft.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
 
-        manipBButton.whileTrue(new RunIntakeCone(intake));
-        manipRight.whileTrue(new RunIntakeCube(intake));
+        manipBButton.whileTrue(new RunIntakeCube(intake));
+        manipRight.whileTrue(new RunIntakeCone(intake));
 
         final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
         final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
@@ -162,9 +165,6 @@ public class OI {
         final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake);
         final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
         final Command quickBalanceHigher = new QuickBalanceHigher(drivetrain, arm, intake);
-
-
-
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
 
 
@@ -172,6 +172,8 @@ public class OI {
         chooser.addOption("One Bottom Cube", oneBottomCube);
         chooser.addOption("Quick Balance", quickBalance);
         chooser.addOption("Drive Back", driveBack);
+        chooser.addOption("Score cube, pickup, score cube", twoTopCube);
+
         chooser.addOption("Out and Balance no bump", outAndScoreNoBump);
         chooser.addOption("Out and Balance bump", outAndScoreBump);
         chooser.addOption("Quick Balance Higher Mid Cone", quickBalanceHigher);

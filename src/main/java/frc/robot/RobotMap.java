@@ -102,12 +102,12 @@ public class RobotMap {
 
     public static final class AutoConstants {
         // For now keep auto speeds 1/3 of teleop
-        public static final double AUTO_MAX_METERS_PER_SEC = DriveConstants.MAX_METERS_PER_SEC / 1.25;
-        public static final double AUTO_MAX_RADIANS_PER_SEC = DriveConstants.MAX_RADIANS_PER_SEC / 1.25;
+        public static final double AUTO_MAX_METERS_PER_SEC = DriveConstants.MAX_METERS_PER_SEC / 2;
+        public static final double AUTO_MAX_RADIANS_PER_SEC = DriveConstants.MAX_RADIANS_PER_SEC / 2;
         public static final double AUTO_MAX_MPSS = 2;
         public static final double AUTO_MAX_ANGULAR_ACCEL = 5;
-        public static final double P_AUTO_X = 3.9;
-        public static final double P_AUTO_Y = 3.9;
+        public static final double P_AUTO_X = 4;
+        public static final double P_AUTO_Y = 4;
         public static final double I_AUTO_X = 0.05;
         public static final double I_AUTO_Y = 0.05;
         public static final double P_AUTO_THETA = 3.675764653;

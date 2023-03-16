@@ -31,7 +31,7 @@ public class RunOuttakeCube extends CommandBase{
 
     @Override
     public void execute(){
-        intake.runOuttakeCube();
+        intake.shootCube();
     }
 
     @Override

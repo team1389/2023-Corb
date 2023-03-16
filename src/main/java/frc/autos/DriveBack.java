@@ -33,7 +33,7 @@ public class DriveBack extends SequentialCommandGroup{
 
         addCommands(
             new TimeArm(arm),
-            new SetArmPosition(arm, ArmPosition.MidConeTop, false, 2.2),
+            new SetArmPosition(arm, ArmPosition.MidCone, false, 2.2),
             driveUp,
             new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),

@@ -36,7 +36,7 @@ public class QuickBalanceHigher extends SequentialCommandGroup{
             new TimeArm(arm),
             new SetArmPosition(arm, ArmPosition.AboveMidConeTop, false, 2.2),
             driveUp,
-            new SetArmPosition(arm, ArmPosition.MidConeTop, false,0.8),
+            new SetArmPosition(arm, ArmPosition.MidCone, false,0.8),
             new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             drivePath,

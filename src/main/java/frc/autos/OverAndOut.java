@@ -34,7 +34,7 @@ public class OverAndOut extends SequentialCommandGroup{
         addCommands(
             //new SetArmPosition(arm, ArmPosition.StartingConfig, false, 2),
             new TimeArm(arm),
-            new SetArmPosition(arm, ArmPosition.MidConeTop, false, 2.2),
+            new SetArmPosition(arm, ArmPosition.MidCone, false, 2.2),
             driveUp,
             new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),

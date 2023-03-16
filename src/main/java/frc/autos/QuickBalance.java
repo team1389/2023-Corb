@@ -33,14 +33,11 @@ public class QuickBalance extends SequentialCommandGroup{
         Command driveUp = drivetrain.followTrajectoryCommand(driveUpTraj, true);
 
         addCommands(
-            //new SetArmPosition(arm, ArmPosition.StartingConfig, false, 2),
-            // new TimeArm(arm),
-            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.3),
-            // driveUp,
+            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.0),
             new RunOuttakeCube(intake, 0.5),
-            new SetArmPosition(arm, ArmPosition.StartingConfig, true)
-            // drivePath,
-            // new AutoBalance(drivetrain)
+            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
+            drivePath,
+            new AutoBalance(drivetrain)
         );
         
     }

@@ -33,7 +33,7 @@ public class OutAndScoreNoBump extends SequentialCommandGroup{
         addCommands(
             //new SetArmPosition(arm, ArmPosition.StartingConfig, false, 2),
             new TimeArm(arm),
-            new SetArmPosition(arm, ArmPosition.MidConeTop, false, 1.5),
+            new SetArmPosition(arm, ArmPosition.MidCone, false, 1.5),
             driveUp,
             new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
