@@ -28,7 +28,7 @@ import frc.robot.RobotMap.DriveConstants;
 public class Arm extends SubsystemBase {
     private CANSparkMax shoulderLeft, shoulderRight, elbow, wrist;
 
-    private SparkMaxPIDController pidShoulder;
+    private PIDController  pidShoulder;
     private PIDController pidElbow;
     private PIDController pidWrist;
 
@@ -85,10 +85,8 @@ public class Arm extends SubsystemBase {
         shoulderLeft.setInverted(false);
         shoulderRight.setInverted(false);
 
-        pidShoulder = shoulderLeft.getPIDController();
-        pidShoulder.setP(RobotMap.ArmConstants.SHOULDER_P);
-        pidShoulder.setI(RobotMap.ArmConstants.SHOULDER_I);
-        pidShoulder.setD(RobotMap.ArmConstants.SHOULDER_D);
+        pidShoulder = new PIDController(RobotMap.ArmConstants.SHOULDER_P, RobotMap.ArmConstants.SHOULDER_I,
+        RobotMap.ArmConstants.SHOULDER_D);
 
 
         pidElbow = new PIDController(RobotMap.ArmConstants.ELBOW_P, RobotMap.ArmConstants.ELBOW_I,
@@ -106,7 +104,7 @@ public class Arm extends SubsystemBase {
 
         shoulderLeftEncoder.setPosition(0);
 
-        pidShoulder.setFeedbackDevice(shoulderLeftEncoder);
+        // pidShoulder.setFeedbackDevice(shoulderLeftEncoder);
 
         // absElbowEncoder.setInverted(true);
 
@@ -182,14 +180,14 @@ public class Arm extends SubsystemBase {
 
 
         if (!controllerInterrupt) {             
-            // shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
-            // moveShoulder(shoulderPower);
-            pidShoulder.setReference(shoulderTarget, com.revrobotics.CANSparkMax.ControlType.kPosition);
+            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
+            moveShoulder(shoulderPower);
+            // pidShoulder.setReference(shoulderTarget, com.revrobotics.CANSparkMax.ControlType.kPosition);
 
             wristPower = pidWrist.calculate(getWristPos(), wristTarget);
             // moveWrist(wristPower);
 
-            elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget) + (Math.cos(elbowAngle) * ArmConstants.ELBOW_F);
+            elbowPower =  (Math.cos(elbowAngle) * ArmConstants.ELBOW_F) + pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
         }
 
@@ -341,7 +339,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.15, 0.15);
+        power = MathUtil.clamp(power, -0.2, 0.2);
         wrist.set(power);
     }
 

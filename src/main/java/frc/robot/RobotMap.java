@@ -149,7 +149,7 @@ public class RobotMap {
         public static final double ELBOW_P = 0.5;
         public static final double ELBOW_I = 0.00;
         public static final double ELBOW_D = 0;
-        public static final double ELBOW_F = 0.0;
+        public static final double ELBOW_F = 0.03;
 
         public static final double WRIST_P = 4.368;
         public static final double WRIST_I = 0;

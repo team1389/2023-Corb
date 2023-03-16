@@ -44,9 +44,9 @@ public class ManualArm extends CommandBase {
             arm.moveElbow(MathUtil.clamp(elb, -1, 1));
 
             if (upWrist.get()) {
-                arm.moveWrist(1);
+                arm.moveWrist(0.2);
             } else if (downWrist.get()) {
-                arm.moveWrist(-1);
+                arm.moveWrist(-0.2);
             } else if (!upWrist.get() && !downWrist.get()) {
                 arm.moveWrist(0);
             }
