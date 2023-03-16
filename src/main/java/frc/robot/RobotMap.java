@@ -102,8 +102,8 @@ public class RobotMap {
 
     public static final class AutoConstants {
         // For now keep auto speeds 1/3 of teleop
-        public static final double AUTO_MAX_METERS_PER_SEC = DriveConstants.MAX_METERS_PER_SEC / 2;
-        public static final double AUTO_MAX_RADIANS_PER_SEC = DriveConstants.MAX_RADIANS_PER_SEC / 2;
+        public static final double AUTO_MAX_METERS_PER_SEC = DriveConstants.MAX_METERS_PER_SEC / 1.25;
+        public static final double AUTO_MAX_RADIANS_PER_SEC = DriveConstants.MAX_RADIANS_PER_SEC / 1.25;
         public static final double AUTO_MAX_MPSS = 2;
         public static final double AUTO_MAX_ANGULAR_ACCEL = 5;
         public static final double P_AUTO_X = 3.9;
@@ -144,14 +144,14 @@ public class RobotMap {
         public static final double SHOULDER_P = 0.13;
         public static final double SHOULDER_I = 0.01;
         public static final double SHOULDER_D = 0;
-        public static final double SHOULDER_F = 0;
+        public static final double SHOULDER_F = 0.03;
 
-        public static final double ELBOW_P = 0.5;
-        public static final double ELBOW_I = 0.00;
-        public static final double ELBOW_D = 0;
-        public static final double ELBOW_F = 0.03;
+        public static final double ELBOW_P = 0.7;
+        public static final double ELBOW_I = 0.001;
+        public static final double ELBOW_D = 0.01;
+        public static final double ELBOW_F = 0.09;
 
-        public static final double WRIST_P = 4.368;
+        public static final double WRIST_P = 0.55;
         public static final double WRIST_I = 0;
         public static final double WRIST_D = 0;
     

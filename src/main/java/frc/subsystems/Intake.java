@@ -10,8 +10,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 public class Intake extends SubsystemBase {
-    private final double intakeSpeed = 1;
-    private final double outtakeSpeed = 1;
+    private final double intakeSpeed = 0.5;
+    private final double outtakeSpeed = 0.5;
     private CANSparkMax rollerMotor;
 
     public Intake() {

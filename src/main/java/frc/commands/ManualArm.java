@@ -35,8 +35,8 @@ public class ManualArm extends CommandBase {
             arm.controllerInterrupt = true;
         }
 
-        var sho = shoulder * shoulder * shoulder;
-        double elb = elbow * elbow * elbow;
+        var sho = shoulder;
+        double elb = elbow;
         if (arm.controllerInterrupt) {
             // Cube speeds for easier control
             arm.moveShoulder(MathUtil.clamp(sho, -1, 1));
@@ -53,6 +53,12 @@ public class ManualArm extends CommandBase {
         } else {
             arm.setShoulder(arm.shoulderTarget + sho * 0.025*7);
             arm.setElbow(arm.elbowTarget + elb * 0.0225);
+            if (upWrist.get()) {
+                arm.setWrist(MathUtil.clamp(arm.wristTarget + 0.0225, 0, 0.9));
+            } else if (downWrist.get()) {
+                arm.setWrist(MathUtil.clamp(arm.wristTarget - 0.0225, 0, 0.9));
+            } 
+
         }
     }
 

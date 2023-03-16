@@ -110,18 +110,18 @@ public class Arm extends SubsystemBase {
 
         // Shoulder, elbow, wrist
         // Shoulder and elbow are relative to start, wrist is absolute
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI, 0.38 + absWristOffset });
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI, 0.0 });
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 4.862, 0.180 + absWristOffset });
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 4.862, 0.0 });
         positionMap.put(ArmPosition.IntakeConeBottom, new Double[] { 0.0, -1.85, 0.10 + absWristOffset });
-        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.667, -6.2, 0.09640 + absWristOffset });
+        positionMap.put(ArmPosition.IntakeConeTop, new Double[] { 0.0, 4.90, 0.45 });
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.MidConeBottom, new Double[] { 2.24, -2.8, 0.2490 + absWristOffset });
         positionMap.put(ArmPosition.HighConeBottom, new Double[] { 3.1, -5.0, 0.20 + absWristOffset });
         positionMap.put(ArmPosition.MidConeTop, new Double[] { 1.347, -2.8, 0.2490 + absWristOffset });
         positionMap.put(ArmPosition.HighConeTop, new Double[] { 3.04, -5.8, 0.210 + absWristOffset });
-        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 3.04, -5.8, 0.310 + absWristOffset });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 13.589, 4.56, 0.405 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 5.87, 0.20 + absWristOffset });
         positionMap.put(ArmPosition.HighCube, new Double[] { 2.8, -6.0, 0.150 + absWristOffset });
         positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
@@ -180,14 +180,14 @@ public class Arm extends SubsystemBase {
 
 
         if (!controllerInterrupt) {             
-            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget);
+            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget) + ArmConstants.SHOULDER_F;
             moveShoulder(shoulderPower);
             // pidShoulder.setReference(shoulderTarget, com.revrobotics.CANSparkMax.ControlType.kPosition);
 
             wristPower = pidWrist.calculate(getWristPos(), wristTarget);
-            // moveWrist(wristPower);
+            moveWrist(wristPower);
 
-            elbowPower =  (Math.cos(elbowAngle) * ArmConstants.ELBOW_F) + pidElbow.calculate(getElbowPos(), elbowTarget);
+            elbowPower = ArmConstants.ELBOW_F + pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
         }
 
@@ -335,11 +335,11 @@ public class Arm extends SubsystemBase {
     }
 
     public void moveElbow(double power) {
-        elbow.set(MathUtil.clamp(power, -0.12, 0.2));
+        elbow.set(MathUtil.clamp(power, -0.08, 0.3));
     }
 
     public void moveWrist(double power) {
-        power = MathUtil.clamp(power, -0.2, 0.2);
+        power = MathUtil.clamp(power, -0.3, 0.3);
         wrist.set(power);
     }
 
@@ -356,5 +356,6 @@ public class Arm extends SubsystemBase {
     public void resetEncoders() {
         shoulderLeftEncoder.setPosition(0);
         shoulderRightEncoder.setPosition(0);
+        wristEncoder.setPosition(0);
     }
 }

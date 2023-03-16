@@ -143,7 +143,7 @@ public class OI {
         manipRightTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeTop, true));
         manipRightTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeTop, true));
 
-        manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeBottom, true));
+        manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
         manipLeftTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeBottom, true));
         manipLeftTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.HighConeBottom, true));
 
