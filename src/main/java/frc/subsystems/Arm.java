@@ -187,20 +187,20 @@ public class Arm extends SubsystemBase {
             moveElbow(elbowPower);
         }
 
-        SmartDashboard.putNumber("Wrist power", wristPower);
-        SmartDashboard.putNumber("Elbow power", elbowPower);
-        SmartDashboard.putNumber("Shoulder power", shoulderPower);
+        // SmartDashboard.putNumber("Wrist power", wristPower);
+        // SmartDashboard.putNumber("Elbow power", elbowPower);
+        // SmartDashboard.putNumber("Shoulder power", shoulderPower);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
         SmartDashboard.putNumber("Elbow position", getElbowPos());
-        SmartDashboard.putNumber("Elbow FF", (Math.cos(elbowAngle) * ArmConstants.ELBOW_F));
+        // SmartDashboard.putNumber("Elbow FF", (Math.cos(elbowAngle) * ArmConstants.ELBOW_F));
 
         SmartDashboard.putNumber("Wrist position", getWristPos());
 
-        SmartDashboard.putNumber("Shoulder speed", shoulderSpeed);
-        SmartDashboard.putNumber("Shoulder target", shoulderTarget);
-        SmartDashboard.putNumber("Elbow angle", elbowAngle);
-        SmartDashboard.putNumber("Shoulder angle", getShoulderAngle());
+        // SmartDashboard.putNumber("Shoulder speed", shoulderSpeed);
+        // SmartDashboard.putNumber("Shoulder target", shoulderTarget);
+        // SmartDashboard.putNumber("Elbow angle", elbowAngle);
+        // SmartDashboard.putNumber("Shoulder angle", getShoulderAngle());
 
 
         // SmartDashboard.putNumber("Elbow speed", elbowSpeed);
