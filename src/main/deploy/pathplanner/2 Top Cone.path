@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.6708713844473966,
-        "y": 4.412269038061208
+        "x": 1.6928156933236946,
+        "y": 4.990176476079449
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.348595073258523,
-        "y": 5.092948989316782
+        "x": 3.5655592678706727,
+        "y": 5.058691484904338
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -24,20 +24,20 @@
     },
     {
       "anchorPoint": {
-        "x": 5.997842081154248,
-        "y": 4.579086423130112
+        "x": 6.066357089979137,
+        "y": 4.624763095680038
       },
       "prevControl": {
-        "x": 4.953854598918425,
-        "y": 4.771399906699868
+        "x": 5.072823836782647,
+        "y": 4.624763095680038
       },
       "nextControl": {
-        "x": 6.431770470378548,
-        "y": 4.499152246167741
+        "x": 6.774345514502995,
+        "y": 4.624763095680038
       },
       "holonomicAngle": 0,
       "isReversal": false,
-      "velOverride": 0.3,
+      "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -53,16 +53,16 @@
         "y": 4.601924759405074
       },
       "prevControl": {
-        "x": 6.831441355190402,
-        "y": 4.601924759405074
+        "x": 6.648734664990697,
+        "y": 4.613343927542556
       },
       "nextControl": {
-        "x": 6.5117046473409195,
-        "y": 4.601924759405074
+        "x": 6.648734664990697,
+        "y": 4.613343927542556
       },
       "holonomicAngle": 0,
-      "isReversal": false,
-      "velOverride": 0.2,
+      "isReversal": true,
+      "velOverride": 0.1,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -78,8 +78,8 @@
         "y": 4.659020600092482
       },
       "prevControl": {
-        "x": 3.660788320227113,
-        "y": 5.883165936372359
+        "x": 3.7254276217954145,
+        "y": 5.858033254528048
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -97,25 +97,31 @@
   ],
   "markers": [
     {
-      "position": 0.8727272727272479,
+      "position": 0.13090909090908348,
+      "names": [
+        "arm starting"
+      ]
+    },
+    {
+      "position": 0.763636363636351,
+      "names": [
+        "arm intake"
+      ]
+    },
+    {
+      "position": 1.1127272727272524,
       "names": [
         "start intake"
       ]
     },
     {
-      "position": 2.0509090909089887,
+      "position": 2.225454545454488,
       "names": [
-        "stop intake"
+        "event"
       ]
     },
     {
-      "position": 0.5090909090909006,
-      "names": [
-        "arm cube intake"
-      ]
-    },
-    {
-      "position": 2.116363636363575,
+      "position": 2.3345454545454345,
       "names": [
         "arm starting"
       ]

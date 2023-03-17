@@ -24,15 +24,15 @@ public class Intake extends SubsystemBase {
     }
 
     public void runIntakeCone() {
-        rollerMotor.set(intakeSpeed);
-    }
-
-    public void runIntakeCube() {
         rollerMotor.set(-intakeSpeed);
     }
 
+    public void runIntakeCube() {
+        rollerMotor.set(intakeSpeed);
+    }
+
     public void runOuttakeCube() {
-        rollerMotor.set(outtakeSpeed);
+        rollerMotor.set(-outtakeSpeed);
     }
 
     public void shootCube() {
@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void runOuttakeCone() {
-        rollerMotor.set(-outtakeSpeed);
+        rollerMotor.set(outtakeSpeed);
     }
 
     public void stop() {
