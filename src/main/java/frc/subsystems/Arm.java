@@ -4,23 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.commands.AdjustElbowTarget;
-import frc.commands.AdjustShoulderTarget;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.ArmConstants;
 import frc.robot.RobotMap.DriveConstants;
@@ -115,7 +109,7 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.MidCone, new Double[] { 16.9, 4.278, 0.4725 });
         positionMap.put(ArmPosition.HighCone, new Double[] { 23.3, 3.605, 0.315 });
-        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 13.589, 4.56, 0.405 });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 13.589, 4.3816, 0.2925 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 5.87, 0.0 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 11.226, 5.178, 0.0 });
         positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
@@ -187,9 +181,9 @@ public class Arm extends SubsystemBase {
             moveElbow(elbowPower);
         }
 
-        // SmartDashboard.putNumber("Wrist power", wristPower);
-        // SmartDashboard.putNumber("Elbow power", elbowPower);
-        // SmartDashboard.putNumber("Shoulder power", shoulderPower);
+        SmartDashboard.putNumber("Wrist power", wristPower);
+        SmartDashboard.putNumber("Elbow power", elbowPower);
+        SmartDashboard.putNumber("Shoulder power", shoulderPower);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
         SmartDashboard.putNumber("Elbow position", getElbowPos());
@@ -204,6 +198,7 @@ public class Arm extends SubsystemBase {
 
 
         // SmartDashboard.putNumber("Elbow speed", elbowSpeed);
+
 
         // shoulderTarget = SmartDashboard.getNumber("Shoulder target",
         // getShoulderPos());
