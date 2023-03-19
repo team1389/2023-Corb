@@ -21,12 +21,15 @@ import frc.autos.DriveBack;
 import frc.autos.OneBottomCone;
 import frc.autos.OneBottomCube;
 import frc.autos.OutAndScoreNoBump;
+import frc.autos.OverAndOut;
 import frc.autos.OneTopCube;
 import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
+import frc.autos.QuickBalanceCone;
 import frc.autos.QuickBalanceHigher;
 import frc.autos.TwoTopCone;
 import frc.autos.TwoTopCube;
+import frc.autos.TwoTopCubeBalance;
 import frc.commands.AdjustElbowTarget;
 import frc.commands.AdjustShoulderTarget;
 import frc.commands.HoldPosition;
@@ -161,26 +164,32 @@ public class OI {
         final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
         final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
         final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
-        final Command quickBalance = new QuickBalance(drivetrain, arm, intake);
+        final Command quickBalanceCube = new QuickBalance(drivetrain, arm, intake);
+        final Command quickBalanceCone = new QuickBalanceCone(drivetrain, arm, intake, autoMap);
+        final Command overAndOut = new OverAndOut(drivetrain, arm, intake);
+
+
         final Command driveBack = new DriveBack(drivetrain, arm, intake);
         final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake);
         final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
         final Command quickBalanceHigher = new QuickBalanceHigher(drivetrain, arm, intake);
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
         final Command twoTopCone = new TwoTopCone(drivetrain, arm, intake, autoMap);
+        final Command twoTopCubeBalance = new TwoTopCubeBalance(drivetrain, arm, intake, autoMap);
 
 
 
         // Add options
-        chooser.addOption("One Bottom Cube", oneBottomCube);
-        chooser.addOption("Quick Balance", quickBalance);
-        chooser.addOption("Drive Back", driveBack);
-        chooser.addOption("Score cube, pickup, score cube", twoTopCube);
-        chooser.addOption("Score cube, pickup, score cube", twoTopCone);
+        chooser.addOption("Quick Balance Cube", quickBalanceCube);
+        chooser.addOption("Quick Balance Cone", quickBalanceCone);
 
-        chooser.addOption("Out and Balance no bump", outAndScoreNoBump);
-        chooser.addOption("Out and Balance bump", outAndScoreBump);
-        chooser.addOption("Quick Balance Higher Mid Cone", quickBalanceHigher);
+        chooser.addOption("Drive Back", driveBack);
+        chooser.addOption("Cube, over charge station, balance", overAndOut);
+        chooser.addOption("Cube, pickup, cube", twoTopCube);
+        chooser.addOption("Cone, pickup, cube", twoTopCone);
+        chooser.addOption("Cube, pickup, cube, balance", twoTopCubeBalance);
+
+        chooser.addOption("Cube, out, balance", outAndScoreNoBump);
 
         SmartDashboard.putData("Auto choices", chooser);
     }

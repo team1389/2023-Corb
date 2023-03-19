@@ -69,8 +69,8 @@ public class TeleOpDrive extends CommandBase {
 
         // 4. Check right bumper for slow mode
         if (slowFunction.get()) {
-            xSpeed *= 0.25;
-            ySpeed *= 0.25;
+            xSpeed *= 0.375;
+            ySpeed *= 0.375;
             turningSpeed *= 0.25;
         }
 

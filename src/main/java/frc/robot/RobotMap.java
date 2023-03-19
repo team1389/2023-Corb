@@ -92,11 +92,11 @@ public class RobotMap {
         public static final boolean BR_ABS_REVERSED = true;
 
         // The physical max if motors go full speed
-        public static final double MAX_METERS_PER_SEC = 5; // m/s
+        public static final double MAX_METERS_PER_SEC = 6; // m/s
         public static final double MAX_RADIANS_PER_SEC = 9; // rad/s
 
         public static final double MAX_LINEAR_ACCEL = 7.5; // m/s/s
-        public static final double MAX_ANGULAR_ACCEL = 14; // rad/s/s
+        public static final double MAX_ANGULAR_ACCEL = 12; // rad/s/s
 
     }
 
@@ -146,9 +146,9 @@ public class RobotMap {
         public static final double SHOULDER_D = 0;
         public static final double SHOULDER_F = 0.03;
 
-        public static final double ELBOW_P = 0.7;
-        public static final double ELBOW_I = 0.001;
-        public static final double ELBOW_D = 0.01;
+        public static final double ELBOW_P = 0.66;
+        public static final double ELBOW_I = 0.0001;
+        public static final double ELBOW_D = 0.1;
         public static final double ELBOW_F = 0.09;
 
         public static final double WRIST_P = 0.55;

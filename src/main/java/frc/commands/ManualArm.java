@@ -54,9 +54,9 @@ public class ManualArm extends CommandBase {
             arm.setShoulder(arm.shoulderTarget + sho * 0.025*7);
             arm.setElbow(arm.elbowTarget + elb * 0.0225);
             if (upWrist.get()) {
-                arm.setWrist(MathUtil.clamp(arm.wristTarget + 0.0225, 0, 0.9));
+                arm.setWrist(MathUtil.clamp(arm.wristTarget + 0.0225, 0, 0.585));
             } else if (downWrist.get()) {
-                arm.setWrist(MathUtil.clamp(arm.wristTarget - 0.0225, 0, 0.9));
+                arm.setWrist(MathUtil.clamp(arm.wristTarget - 0.0225, 0, 0.585));
             } 
 
         }

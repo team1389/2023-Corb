@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
+import frc.commands.BreakZiptie;
 import frc.commands.RunOuttakeCone;
 import frc.commands.RunOuttakeCube;
 import frc.commands.SetArmPosition;
@@ -22,8 +23,8 @@ public class QuickBalance extends SequentialCommandGroup{
         addRequirements(drivetrain, arm, intake);
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("Quick Balance", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS));
+            AutoConstants.AUTO_MAX_METERS_PER_SEC-0.75, 
+            AutoConstants.AUTO_MAX_MPSS-0.5));
 
         PathPlannerTrajectory driveUpTraj = PathPlanner.loadPath("Drive Up", new PathConstraints(
                 AutoConstants.AUTO_MAX_METERS_PER_SEC, 
@@ -33,7 +34,7 @@ public class QuickBalance extends SequentialCommandGroup{
         Command driveUp = drivetrain.followTrajectoryCommand(driveUpTraj, true);
 
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
+            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.9),
             new RunOuttakeCube(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             drivePath,

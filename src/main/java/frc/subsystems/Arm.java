@@ -104,12 +104,12 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI, 0.0 });
 
         positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 4.7808, 0.0 });
-        positionMap.put(ArmPosition.IntakeCone, new Double[] { 0.0, 4.90, 0.45 });
+        positionMap.put(ArmPosition.IntakeCone, new Double[] { 0.0, 4.90, 0.0 });
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.MidCone, new Double[] { 16.9, 4.278, 0.4725 });
-        positionMap.put(ArmPosition.HighCone, new Double[] { 23.3, 3.605, 0.315 });
-        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 13.589, 4.3816, 0.2925 });
+        positionMap.put(ArmPosition.HighCone, new Double[] { 24.6, 3.628, 0.4275 });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 16.556, 4.211, 0.2025 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 5.87, 0.0 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 11.226, 5.178, 0.0 });
         positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
@@ -130,6 +130,8 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Elbow target", elbowTarget);
         return temp;
     };
+
+    
 
     public double setWrist(double pos) {
         var temp = wristTarget;
@@ -320,13 +322,17 @@ public class Arm extends SubsystemBase {
 
     // Debugging methods below:
     public void moveShoulder(double power) {
-        power = MathUtil.clamp(power, -0.15, 0.45);
+        power = MathUtil.clamp(power, -0.25, 0.45);
         shoulderLeft.set(power);
         shoulderRight.set(power);
     }
 
     public void moveElbow(double power) {
         elbow.set(MathUtil.clamp(power, -0.15, 0.3));
+    }
+
+    public void breakZiptie() {
+        elbow.set(-0.5);
     }
 
     public void moveWrist(double power) {

@@ -23,7 +23,7 @@ public class TwoTopCube extends SequentialCommandGroup{
     public TwoTopCube(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
         
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("2 Top Cube", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
+            AutoConstants.AUTO_MAX_METERS_PER_SEC-0.9, 
             AutoConstants.AUTO_MAX_MPSS)
         );
 

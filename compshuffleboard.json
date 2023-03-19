@@ -146,7 +146,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "10,2": {
+          "10,3": {
             "size": [
               4,
               1
@@ -166,8 +166,8 @@
             ],
             "content": {
               "_type": "Camera Stream",
-              "_source0": "camera_server://photonvision_Port_1181_MJPEG_Server",
-              "_title": "photonvision_Port_1181_MJPEG_Server",
+              "_source0": "camera_server://photonvision_Port_1182_MJPEG_Server",
+              "_title": "photonvision_Port_1182_MJPEG_Server",
               "_glyph": 148,
               "_showGlyph": false,
               "Crosshair/Show crosshair": true,
@@ -182,12 +182,78 @@
           }
         }
       }
+    },
+    {
+      "title": "Drive",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/BL speed",
+              "_title": "SmartDashboard/BL speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/BR speed",
+              "_title": "SmartDashboard/BR speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FL speed",
+              "_title": "SmartDashboard/FL speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FR speed",
+              "_title": "SmartDashboard/FR speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
-    "x": -6.400000095367432,
-    "y": 0.0,
-    "width": 1280.0,
-    "height": 726.4000244140625
+    "x": -7.333333492279053,
+    "y": -7.333333492279053,
+    "width": 1294.6666259765625,
+    "height": 814.6666870117188
   }
 }
