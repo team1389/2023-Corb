@@ -1,7 +1,11 @@
 package frc.autos;
+import java.util.HashMap;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.AutoBalance;
@@ -17,7 +21,7 @@ import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 public class OutAndScoreNoBump extends SequentialCommandGroup{
     
-    public OutAndScoreNoBump(Drivetrain drivetrain, Arm arm, Intake intake){
+    public OutAndScoreNoBump(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
         
         addRequirements(drivetrain, arm, intake);
 
@@ -31,7 +35,9 @@ public class OutAndScoreNoBump extends SequentialCommandGroup{
             new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
             new RunOuttakeCube(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
-            drivePath,
+            new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
+            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
+            new RunOuttakeCube(intake, 0.5),
             new AutoBalance(drivetrain)
         );
     }

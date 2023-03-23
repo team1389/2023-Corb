@@ -172,7 +172,7 @@ public class OI {
 
 
         final Command driveBack = new DriveBack(drivetrain, arm, intake);
-        final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake);
+        final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake, autoMap);
         final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
         final Command quickBalanceHigher = new QuickBalanceHigher(drivetrain, arm, intake);
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
