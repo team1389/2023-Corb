@@ -166,6 +166,11 @@ public class RobotMap {
         public static final double ELBOW_ENCODER_TO_METERS = 1;
     }
 
+    public static final class LightConstants {
+        public static final int LED_PORT = 9;
+        public static final int ledCount = 30;
+    }
+
     public static final class FieldConstants {
         public static final double FIELD_WIDTH = 8.2296;
         public static final double FIELD_LENGTH = 16.4592;

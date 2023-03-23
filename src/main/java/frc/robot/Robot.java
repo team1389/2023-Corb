@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
 
         pdh = new PowerDistribution();
         CameraServer.startAutomaticCapture();
+
+        oi.lights.setColor(255, 0, 0);
     }
 
     /**

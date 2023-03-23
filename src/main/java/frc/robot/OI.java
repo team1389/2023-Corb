@@ -41,6 +41,7 @@ import frc.commands.TeleOpDrive;
 import frc.subsystems.Arm;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
+import frc.subsystems.Lights;
 import frc.subsystems.Arm.ArmPosition;
 
 public class OI {
@@ -49,6 +50,7 @@ public class OI {
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
     public final Arm arm = new Arm();
+    public final Lights lights = new Lights();
 
 
     private GenericHID driveController;
