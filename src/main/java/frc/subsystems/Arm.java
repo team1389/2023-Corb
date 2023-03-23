@@ -57,6 +57,8 @@ public class Arm extends SubsystemBase {
     private SparkMaxAbsoluteEncoder absElbowEncoder;
     private SparkMaxAbsoluteEncoder absWristEncoder;
     private double absWristOffset = -0.005; // From 0.38
+    DigitalInput limitSwitch = new DigitalInput(0);
+
 
     // Number of steps to take to get there. Higher is smoother but slower
 
@@ -142,11 +144,12 @@ public class Arm extends SubsystemBase {
 
     public void setArm(double shoulder, double elbow, double wrist) {
         setShoulder(shoulder);
-        setElbow(elbow);
+        setElbow(elbow);;
         setWrist(wrist);
     };
 
     public void setArm(ArmPosition pos) {
+        passPos=pos;
         if (pos == ArmPosition.StartingConfig && targetPos != ArmPosition.StartingConfig) {
             lastMovement = Timer.getFPGATimestamp();
         }
@@ -157,23 +160,29 @@ public class Arm extends SubsystemBase {
         shoulderSpeed = (positionMap.get(targetPos)[0] - shoulderTarget);
         elbowSpeed = (positionMap.get(targetPos)[1] - elbowTarget);
 
+        // setShoulder(positionMap.get(targetPos)[0]);
+        // setElbow(positionMap.get(targetPos)[1]);
+        // setWrist(positionMap.get(targetPos)[2]);
 
-        setShoulder(positionMap.get(targetPos)[0]);
-        setElbow(positionMap.get(targetPos)[1]);
+        if(pos == ArmPosition.StartingConfig){
+            setElbow(positionMap.get(targetPos)[1]);
+        }
+        else{
+            setShoulder(positionMap.get(targetPos)[0]);
+        }
         setWrist(positionMap.get(targetPos)[2]);
     }
 
     @Override
     public void periodic() {
+        
         double shoulderPower = 0, wristPower = 0, elbowPower = 0;
         double elbowAngle = (Math.PI/2) - ((Math.PI*2) - getElbowPos() + Math.toRadians(10) - getShoulderAngle());
 
-
         if (!controllerInterrupt) {             
-            if(Timer.getFPGATimestamp() > lastMovement + 0.4) {
-                shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget) + ArmConstants.SHOULDER_F;
-                moveShoulder(shoulderPower);
-            }
+            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget) + ArmConstants.SHOULDER_F;
+            moveShoulder(shoulderPower);
+            
             // pidShoulder.setReference(shoulderTarget, com.revrobotics.CANSparkMax.ControlType.kPosition);
 
             wristPower = pidWrist.calculate(getWristPos(), wristTarget);
@@ -181,7 +190,18 @@ public class Arm extends SubsystemBase {
 
             elbowPower = ArmConstants.ELBOW_F + pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
+
+            if(getElbowPos()<positionMap.get(targetPos)[1]+0.5 && getElbowPos()>positionMap.get(targetPos)[1]-0.5){
+                setShoulder(positionMap.get(targetPos)[0]);
+            }
+            if(getShoulderPos()<positionMap.get(targetPos)[0]+0.5 && getShoulderPos()>positionMap.get(targetPos)[0]-0.5){
+                setElbow(positionMap.get(targetPos)[1]); 
+            }
+
         }
+
+        
+    }
 
         SmartDashboard.putNumber("Wrist power", wristPower);
         SmartDashboard.putNumber("Elbow power", elbowPower);
@@ -354,5 +374,9 @@ public class Arm extends SubsystemBase {
         shoulderLeftEncoder.setPosition(0);
         shoulderRightEncoder.setPosition(0);
         wristEncoder.setPosition(0);
+    }
+
+    public boolean getLimitSwitch(){
+        limitSwitch.get();
     }
 }
