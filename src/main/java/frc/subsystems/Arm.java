@@ -12,6 +12,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -149,7 +150,6 @@ public class Arm extends SubsystemBase {
     };
 
     public void setArm(ArmPosition pos) {
-        passPos=pos;
         if (pos == ArmPosition.StartingConfig && targetPos != ArmPosition.StartingConfig) {
             lastMovement = Timer.getFPGATimestamp();
         }
@@ -201,7 +201,7 @@ public class Arm extends SubsystemBase {
         }
 
         
-    }
+    
 
         SmartDashboard.putNumber("Wrist power", wristPower);
         SmartDashboard.putNumber("Elbow power", elbowPower);
@@ -232,7 +232,7 @@ public class Arm extends SubsystemBase {
         elbowVal = SmartDashboard.getNumber("Elbow Change Margin", elbowVal);
 
         
-    } 
+    }
 
     public double getWristPos() {
         return wristEncoder.getPosition();
@@ -377,6 +377,6 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean getLimitSwitch(){
-        limitSwitch.get();
+        return limitSwitch.get();
     }
 }
