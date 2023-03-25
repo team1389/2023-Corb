@@ -155,7 +155,7 @@ public class RobotMap {
         public static final double WRIST_I = 0;
         public static final double WRIST_D = 0;
     
-        public static final double SHOULDER_START_ANGLE = Math.toRadians(15);
+        public static final double SHOULDER_START_ANGLE = Math.toRadians(22);
 
         // All in meters:
         public static final double SHOULDER_TO_ELBOW = 1;
