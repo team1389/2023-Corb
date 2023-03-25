@@ -56,7 +56,6 @@ public class Arm extends SubsystemBase {
     private double shoulderSpeed;
     private double elbowSpeed;
     private SparkMaxAbsoluteEncoder absElbowEncoder;
-    private SparkMaxAbsoluteEncoder absWristEncoder;
     private double absWristOffset = -0.005; // From 0.38
     DigitalInput limitSwitch = new DigitalInput(0);
 
@@ -94,7 +93,6 @@ public class Arm extends SubsystemBase {
         shoulderRightEncoder = shoulderLeft.getEncoder();
         wristEncoder = wrist.getEncoder();
         absElbowEncoder = wrist.getAbsoluteEncoder(Type.kDutyCycle);
-        absWristEncoder = wrist.getAbsoluteEncoder(Type.kDutyCycle);
 
         shoulderLeftEncoder.setPosition(0);
 
@@ -160,16 +158,16 @@ public class Arm extends SubsystemBase {
         shoulderSpeed = (positionMap.get(targetPos)[0] - shoulderTarget);
         elbowSpeed = (positionMap.get(targetPos)[1] - elbowTarget);
 
-        // setShoulder(positionMap.get(targetPos)[0]);
-        // setElbow(positionMap.get(targetPos)[1]);
+        setShoulder(positionMap.get(targetPos)[0]);
+        setElbow(positionMap.get(targetPos)[1]);
         // setWrist(positionMap.get(targetPos)[2]);
 
-        if(pos == ArmPosition.StartingConfig){
-            setElbow(positionMap.get(targetPos)[1]);
-        }
-        else{
-            setShoulder(positionMap.get(targetPos)[0]);
-        }
+        // if(pos == ArmPosition.StartingConfig){
+        //     setElbow(positionMap.get(targetPos)[1]);
+        // }
+        // else{
+        //     setShoulder(positionMap.get(targetPos)[0]);
+        // }
         setWrist(positionMap.get(targetPos)[2]);
     }
 
@@ -179,24 +177,26 @@ public class Arm extends SubsystemBase {
         double shoulderPower = 0, wristPower = 0, elbowPower = 0;
         double elbowAngle = (Math.PI/2) - ((Math.PI*2) - getElbowPos() + Math.toRadians(10) - getShoulderAngle());
 
+        SmartDashboard.putNumber("elbow angle", elbowAngle);
+
         if (!controllerInterrupt) {             
-            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget) + ArmConstants.SHOULDER_F;
-            moveShoulder(shoulderPower);
+            shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget) + getShoulderFF();
+           moveShoulder(shoulderPower);
             
             // pidShoulder.setReference(shoulderTarget, com.revrobotics.CANSparkMax.ControlType.kPosition);
 
             wristPower = pidWrist.calculate(getWristPos(), wristTarget);
-            moveWrist(wristPower);
+           moveWrist(wristPower);
 
-            elbowPower = ArmConstants.ELBOW_F + pidElbow.calculate(getElbowPos(), elbowTarget);
+            elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget) + getElbowFF(elbowAngle);
             moveElbow(elbowPower);
 
-            if(getElbowPos()<positionMap.get(targetPos)[1]+0.5 && getElbowPos()>positionMap.get(targetPos)[1]-0.5){
-                setShoulder(positionMap.get(targetPos)[0]);
-            }
-            if(getShoulderPos()<positionMap.get(targetPos)[0]+0.5 && getShoulderPos()>positionMap.get(targetPos)[0]-0.5){
-                setElbow(positionMap.get(targetPos)[1]); 
-            }
+            // if(getElbowPos()<positionMap.get(targetPos)[1]+0.5 && getElbowPos()>positionMap.get(targetPos)[1]-0.5){
+            //     setShoulder(positionMap.get(targetPos)[0]);
+            // }
+            // if(getShoulderPos()<positionMap.get(targetPos)[0]+0.5 && getShoulderPos()>positionMap.get(targetPos)[0]-0.5){
+            //     setElbow(positionMap.get(targetPos)[1]); 
+            // }
 
         }
 
@@ -205,6 +205,8 @@ public class Arm extends SubsystemBase {
 
         SmartDashboard.putNumber("Wrist power", wristPower);
         SmartDashboard.putNumber("Elbow power", elbowPower);
+        SmartDashboard.putNumber("ElbowF FF", getElbowFF(elbowAngle));
+
         SmartDashboard.putNumber("Shoulder power", shoulderPower);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
@@ -232,6 +234,15 @@ public class Arm extends SubsystemBase {
         elbowVal = SmartDashboard.getNumber("Elbow Change Margin", elbowVal);
 
         
+    }
+
+    public double getShoulderFF() {
+        double shoulderPos = getShoulderPos();
+        return (shoulderPos * 0.00296222) + 0.0237827;
+    }
+
+    public double getElbowFF(double angle) {
+        return (double)(0.0927611 * Math.cos(angle));
     }
 
     public double getWristPos() {
@@ -340,15 +351,14 @@ public class Arm extends SubsystemBase {
         return toReturn;
     }
 
-    // Debugging methods below:
     public void moveShoulder(double power) {
         power = MathUtil.clamp(power, -0.25, 0.45);
-        shoulderLeft.set(power);
-        shoulderRight.set(power);
+        shoulderLeft.setVoltage(power * 12);
+        shoulderRight.setVoltage(power * 12);
     }
 
     public void moveElbow(double power) {
-        elbow.set(MathUtil.clamp(power, -0.15, 0.3));
+        elbow.setVoltage(MathUtil.clamp(power, -0.15, 0.3) * 12);
     }
 
     public void breakZiptie() {
