@@ -6,6 +6,7 @@ import java.util.Map;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
@@ -16,6 +17,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -71,9 +73,9 @@ public class Arm extends SubsystemBase {
     private double elbowSpeed;
     private SparkMaxAbsoluteEncoder absElbowEncoder;
     private double absWristOffset = -0.005; // From 0.38
-    DigitalInput elbowLimitSwitch = new DigitalInput(0);
-    DigitalInput shoulderLimitSwitch = new DigitalInput(1);
-    DigitalInput wristLimitSwitch;
+    // DigitalInput elbowLimitSwitch = new DigitalInput(0);
+    // DigitalInput shoulderLimitSwitch = new DigitalInput(1);
+    SparkMaxLimitSwitch wristLimitSwitch;
 
 
 
@@ -106,6 +108,8 @@ public class Arm extends SubsystemBase {
         absElbowEncoder = wrist.getAbsoluteEncoder(Type.kDutyCycle);
 
         shoulderLeftEncoder.setPosition(0);
+
+       // wristLimitSwitch = wrist.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 
         // pidShoulder.setFeedbackDevice(shoulderLeftEncoder);
 
@@ -374,12 +378,22 @@ public class Arm extends SubsystemBase {
     }
 
     public void moveShoulder(double power) {
+        // if(getShoulderLimitSwitch()){
+        //     shoulderLeftEncoder.setPosition(0);
+        //     shoulderRightEncoder.setPosition(0);
+        //     if(power<0){
+        //         return;
+        //     }
+        // }
         power = MathUtil.clamp(power, -0.25, 0.45);
         shoulderLeft.setVoltage(power * 12);
         shoulderRight.setVoltage(power * 12);
     }
 
     public void moveElbow(double power) {
+        // if(getElbowLimitSwitch() && power>0){
+        //     return;
+        // }
         elbow.setVoltage(MathUtil.clamp(power, -0.5, 0.5) * 12);
     }
 
@@ -388,6 +402,12 @@ public class Arm extends SubsystemBase {
     }
 
     public void moveWrist(double power) {
+        // if(getWristLimitSwitch()){
+        //     wristEncoder.setPosition(0);
+        //     if(power<0){
+        //         return;
+        //     }
+        // }
         power = MathUtil.clamp(power, -0.3, 0.3);
         wrist.set(power);
     }
@@ -408,15 +428,15 @@ public class Arm extends SubsystemBase {
         wristEncoder.setPosition(0);
     }
 
-    public boolean getElbowLimitSwitch(){
-        return elbowLimitSwitch.get();
-    }
+    // public boolean getElbowLimitSwitch(){
+    //     return elbowLimitSwitch.get();
+    // }
 
-    public boolean getShoulderLimitSwitch(){
-        return shoulderLimitSwitch.get();
-    }
+    // public boolean getShoulderLimitSwitch(){
+    //     return shoulderLimitSwitch.get();
+    // }
 
-    public boolean getWristLimitSwitch(){
-        return wristLimitSwitch.get();
-    }
+    // public boolean getWristLimitSwitch(){
+    //     return wristLimitSwitch.get();
+    // }
 }
