@@ -71,7 +71,10 @@ public class Arm extends SubsystemBase {
     private double elbowSpeed;
     private SparkMaxAbsoluteEncoder absElbowEncoder;
     private double absWristOffset = -0.005; // From 0.38
-    DigitalInput limitSwitch = new DigitalInput(0);
+    DigitalInput elbowLimitSwitch = new DigitalInput(0);
+    DigitalInput shoulderLimitSwitch = new DigitalInput(1);
+    DigitalInput wristLimitSwitch;
+
 
 
     // Number of steps to take to get there. Higher is smoother but slower
@@ -405,7 +408,15 @@ public class Arm extends SubsystemBase {
         wristEncoder.setPosition(0);
     }
 
-    public boolean getLimitSwitch(){
-        return limitSwitch.get();
+    public boolean getElbowLimitSwitch(){
+        return elbowLimitSwitch.get();
+    }
+
+    public boolean getShoulderLimitSwitch(){
+        return shoulderLimitSwitch.get();
+    }
+
+    public boolean getWristLimitSwitch(){
+        return wristLimitSwitch.get();
     }
 }

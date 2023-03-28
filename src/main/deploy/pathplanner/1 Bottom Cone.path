@@ -74,13 +74,13 @@
     {
       "position": 0.7878787878787901,
       "names": [
-        "event"
+        "start intake"
       ]
     },
     {
       "position": 1.3575757575758307,
       "names": [
-        "event"
+        "stop intake"
       ]
     }
   ]
