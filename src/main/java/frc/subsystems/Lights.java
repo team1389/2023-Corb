@@ -29,7 +29,7 @@ public class Lights extends SubsystemBase {
          ledStrip.setData(ledBuffer);
     }
 
-    private void rainbow() {
+    public void rainbow() {
         var firstPixelHue = 0;
 
         // For every pixel

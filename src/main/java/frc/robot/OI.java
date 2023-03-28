@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -37,6 +38,7 @@ import frc.commands.TeleOpDrive;
 import frc.subsystems.Arm;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
+import frc.subsystems.Lights;
 import frc.subsystems.Arm.ArmPosition;
 
 public class OI {
@@ -45,12 +47,15 @@ public class OI {
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
     public final Arm arm = new Arm();
+    public final Lights light = new Lights();
 
 
     private GenericHID driveController;
     private Trigger driveRightBumper, driveLeftBumper;
     private Trigger driveAButton;
     private Trigger driveXButton;
+    private Trigger driveBButton;
+    private Trigger driveYButton;
 
     private XboxController manipController;
     private Trigger manipEllipsisButton;
@@ -131,6 +136,8 @@ public class OI {
         // Press X button -> set X to not slide
         driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
+        driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
+        driveYButton.onTrue(new InstantCommand(() -> light.rainbow()));
 
 
         // MANIPULATOR CONTROLLER
@@ -156,6 +163,8 @@ public class OI {
 
         manipBButton.whileTrue(new RunIntakeCone(intake));
         manipRight.whileTrue(new RunIntakeCube(intake));
+
+
 
         final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
         final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
