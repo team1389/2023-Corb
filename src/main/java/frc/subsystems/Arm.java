@@ -31,17 +31,17 @@ public class Arm extends SubsystemBase {
     // private PIDController pidElbow;
     private PIDController pidWrist;
 
-    private final TrapezoidProfile.Constraints shoulderConstraints =
-      new TrapezoidProfile.Constraints(30, 15);
+    private final TrapezoidProfile.Constraints backShoulderConstraints =
+      new TrapezoidProfile.Constraints(70, 50);
     private final ProfiledPIDController pidShoulder =
       new ProfiledPIDController(RobotMap.ArmConstants.SHOULDER_P, RobotMap.ArmConstants.SHOULDER_I,
-      RobotMap.ArmConstants.SHOULDER_D, shoulderConstraints);
+      RobotMap.ArmConstants.SHOULDER_D, backShoulderConstraints);
 
-    private final TrapezoidProfile.Constraints elbowConstraints =
-      new TrapezoidProfile.Constraints(3, 1.12);
+    private final TrapezoidProfile.Constraints backElbowConstraints =
+      new TrapezoidProfile.Constraints(15, 9.3);
     private final ProfiledPIDController pidElbow =
       new ProfiledPIDController(RobotMap.ArmConstants.ELBOW_P, RobotMap.ArmConstants.ELBOW_I,
-      RobotMap.ArmConstants.ELBOW_D, elbowConstraints);
+      RobotMap.ArmConstants.ELBOW_D, backElbowConstraints);
     
     public boolean controllerInterrupt = false;
 
@@ -117,14 +117,14 @@ public class Arm extends SubsystemBase {
 
         // Shoulder, elbow, wrist
         // Shoulder and elbow are relative to start, wrist is absolute
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI, 0.0 });
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI - 1.04, 0.0 });
 
         positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 4.7808, 0.0 });
         positionMap.put(ArmPosition.IntakeCone, new Double[] { 0.0, 4.90, 0.0 });
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.MidCone, new Double[] { 16.9, 4.278, 0.4725 });
-        positionMap.put(ArmPosition.HighCone, new Double[] { 60.129, 3.16, 0.0 });
+        positionMap.put(ArmPosition.HighCone, new Double[] { 56.626, 2.93, 0.0 });
         positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 16.556, 4.211, 0.2025 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 5.87, 0.0 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 11.226, 5.178, 0.0 });
@@ -174,16 +174,11 @@ public class Arm extends SubsystemBase {
         elbowSpeed = (positionMap.get(targetPos)[1] - elbowTarget);
 
         setShoulder(positionMap.get(targetPos)[0]);
-        setElbow(positionMap.get(targetPos)[1]);
-        // setWrist(positionMap.get(targetPos)[2]);
-
-        // if(pos == ArmPosition.StartingConfig){
-        //     setElbow(positionMap.get(targetPos)[1]);
-        // }
-        // else{
-        //     setShoulder(positionMap.get(targetPos)[0]);
-        // }
         setWrist(positionMap.get(targetPos)[2]);
+
+        if(pos != ArmPosition.HighCone){
+            setElbow(positionMap.get(targetPos)[1]);
+        }
     }
 
     @Override
@@ -206,15 +201,14 @@ public class Arm extends SubsystemBase {
             wristPower = pidWrist.calculate(getWristPos(), wristTarget);
            moveWrist(wristPower);
 
-            elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget) + getElbowFF(elbowAngle);
+            elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget);
+            moveElbow(elbowPower);
+
 
             if(targetPos == ArmPosition.HighCone) {
-                if(getShoulderPos() > 22) {
-                    moveElbow(elbowPower);
+                if(getShoulderPos() > 15 && elbowTarget == positionMap.get(ArmPosition.StartingConfig)[1]) {
+                    setElbow(positionMap.get(ArmPosition.HighCone)[1]);
                 }
-            }
-            else {
-                moveElbow(elbowPower);
             }
 
             // if(getElbowPos()<positionMap.get(targetPos)[1]+0.5 && getElbowPos()>positionMap.get(targetPos)[1]-0.5){
@@ -385,7 +379,7 @@ public class Arm extends SubsystemBase {
         //         return;
         //     }
         // }
-        power = MathUtil.clamp(power, -0.25, 0.45);
+        power = MathUtil.clamp(power, -0.6, 0.6);
         shoulderLeft.setVoltage(power * 12);
         shoulderRight.setVoltage(power * 12);
     }
@@ -394,7 +388,11 @@ public class Arm extends SubsystemBase {
         // if(getElbowLimitSwitch() && power>0){
         //     return;
         // }
-        elbow.setVoltage(MathUtil.clamp(power, -0.5, 0.5) * 12);
+        if(getElbowPos() > 5.24 && power > 0) {
+            elbow.setVoltage(-0 * 12);
+            return;
+        }
+        elbow.setVoltage(MathUtil.clamp(power, -0.6, 0.6) * 12);
     }
 
     public void breakZiptie() {

@@ -64,12 +64,12 @@ public class RobotMap {
 
         public static final int FL_DRIVE_PORT = 9;
         public static final int BL_DRIVE_PORT = 3;
-        public static final int FR_DRIVE_PORT = 7;
+        public static final int FR_DRIVE_PORT = 6;
         public static final int BR_DRIVE_PORT = 5;
 
         public static final int FL_TURN_PORT = 8;
         public static final int BL_TURN_PORT = 2;
-        public static final int FR_TURN_PORT = 6;
+        public static final int FR_TURN_PORT = 7;
         public static final int BR_TURN_PORT = 4;
 
         public static final int WRIST_MOTOR = 14; 
@@ -146,7 +146,7 @@ public class RobotMap {
         public static final double SHOULDER_D = 0;
         public static final double SHOULDER_F = 0.03;
 
-        public static final double ELBOW_P = 0.16;
+        public static final double ELBOW_P = 0.36;
         public static final double ELBOW_I = 0.0001;
         public static final double ELBOW_D = 0.0;
         public static final double ELBOW_F = 0.0;
