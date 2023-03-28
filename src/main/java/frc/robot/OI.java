@@ -2,9 +2,6 @@ package frc.robot;
 
 import java.util.HashMap;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
 
 import frc.util.DPadButton;
 import frc.util.DPadButton.Direction;

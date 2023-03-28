@@ -17,7 +17,7 @@ public class RobotMap {
     public static final class ModuleConstants {
         // Note: these are for the drive and turning motors
         public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
-        public static final double DRIVE_GEAR_RATIO = 1 / 5.08;
+        public static final double DRIVE_GEAR_RATIO = 1 / 4.71; // 14T pinion
         public static final double TURN_GEAR_RATIO = 1 / (1); // this should be 1 this is correct
 
         public static final double FREE_MOTOR_SPEED_RPS = 5676 / 60; // RPM/60
