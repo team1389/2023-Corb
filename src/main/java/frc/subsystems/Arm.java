@@ -40,7 +40,7 @@ public class Arm extends SubsystemBase {
     private final ProfiledPIDController pidElbow =
       new ProfiledPIDController(RobotMap.ArmConstants.ELBOW_P, RobotMap.ArmConstants.ELBOW_I,
       RobotMap.ArmConstants.ELBOW_D, elbowConstraints);
-
+    
     public boolean controllerInterrupt = false;
 
     private double lastMovement;

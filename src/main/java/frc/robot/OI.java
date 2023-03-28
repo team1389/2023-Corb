@@ -26,7 +26,6 @@ import frc.autos.OneTopCube;
 import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
 import frc.autos.QuickBalanceCone;
-import frc.autos.QuickBalanceHigher;
 import frc.autos.TwoTopCone;
 import frc.autos.TwoTopCube;
 import frc.autos.TwoTopCubeBalance;
@@ -174,7 +173,6 @@ public class OI {
         final Command driveBack = new DriveBack(drivetrain, arm, intake);
         final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake, autoMap);
         final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
-        final Command quickBalanceHigher = new QuickBalanceHigher(drivetrain, arm, intake);
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
         final Command twoTopCone = new TwoTopCone(drivetrain, arm, intake, autoMap);
         final Command twoTopCubeBalance = new TwoTopCubeBalance(drivetrain, arm, intake, autoMap);
