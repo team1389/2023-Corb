@@ -92,7 +92,7 @@ public class RobotMap {
         public static final boolean BR_ABS_REVERSED = true;
 
         // The physical max if motors go full speed
-        public static final double MAX_METERS_PER_SEC = 6; // m/s
+        public static final double MAX_METERS_PER_SEC = 8; // m/s
         public static final double MAX_RADIANS_PER_SEC = 9; // rad/s
 
         public static final double MAX_LINEAR_ACCEL = 7.5; // m/s/s
@@ -167,8 +167,8 @@ public class RobotMap {
     }
 
     public static final class LightConstants {
-        public static final int LEFT_LED_PORT = 9;
-        public static final int RIGHT_LED_PORT = 10;
+        public static final int LEFT_LED_PORT = 8;
+        public static final int RIGHT_LED_PORT = 9; 
         public static final int leftCount = 30;
         public static final int rightCount = 30;
 

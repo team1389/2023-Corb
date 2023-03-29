@@ -30,22 +30,16 @@ public class QuickBalanceCone extends SequentialCommandGroup{
             AutoConstants.AUTO_MAX_METERS_PER_SEC-0.75, 
             AutoConstants.AUTO_MAX_MPSS-0.5));
 
-        List<PathPlannerTrajectory> trajectories = PathPlanner.loadPathGroup("Quick Balance Cone", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC-0.75, 
-            AutoConstants.AUTO_MAX_MPSS-0.5)
-        );
+        Command drivePath = drivetrain.followTrajectoryCommand(trajectory, true);
 
-        Command drivePath = drivetrain.followTrajectoryCommand(trajectories.get(0), true);
-        Command drivePath2 = drivetrain.followTrajectoryCommand(trajectories.get(1), false);
 
 
 
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCone, false, 3.1),
+            new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
             new RunOuttakeCone(intake, 0.5),
-            drivePath,
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
-            drivePath2,
+            drivePath,
             new AutoBalance(drivetrain)
         );
         

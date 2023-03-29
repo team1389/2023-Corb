@@ -32,8 +32,9 @@ public class TwoTopCone extends SequentialCommandGroup{
 
         // do stuff
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCone, false, 3.5),
+            new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
             new RunOuttakeCone(intake, 0.5),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.8),
             new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
             new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
             new RunOuttakeCube(intake, 0.5)

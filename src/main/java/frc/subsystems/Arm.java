@@ -59,13 +59,14 @@ public class Arm extends SubsystemBase {
         MidCube,
         HighCube,
         IntakeConeFeeder,
-        AboveMidConeTop
+        AboveMidConeTop,
+        MidConeBack
     }
 
     public Map<ArmPosition, Double[]> positionMap = new HashMap<ArmPosition, Double[]>();
 
     public ArmPosition targetPos = ArmPosition.StartingConfig;
-    public ArmPosition lastPose;
+    public ArmPosition lastPose = ArmPosition.StartingConfig;
     public double shoulderTarget;
     public double elbowTarget;
     public double wristTarget;
@@ -112,18 +113,19 @@ public class Arm extends SubsystemBase {
 
         // Shoulder, elbow, wrist
         // Shoulder and elbow are relative to start, wrist is absolute
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI - 1.1, 0.0 });
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI - 0.78, 0.0 });
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 4.7808, 0.0 });
-        positionMap.put(ArmPosition.IntakeCone, new Double[] { 0.0, 4.90, 0.0 });
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 3.9602128, 0.0 });
+        positionMap.put(ArmPosition.IntakeCone, new Double[] { 0.16953125, 4.102869687500, 0.0 });
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
-        positionMap.put(ArmPosition.MidCone, new Double[] { 16.9, 4.278, 0.4725 });
-        positionMap.put(ArmPosition.HighCone, new Double[] { 58.02, 2.5159, 0.0 });
-        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 16.556, 4.211, 0.2025 });
-        positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 5.87, 0.0 });
-        positionMap.put(ArmPosition.HighCube, new Double[] { 11.226, 5.178, 0.0 });
+        positionMap.put(ArmPosition.MidCone, new Double[] { 28.48322, 1.768219, 0.6075 });
+        positionMap.put(ArmPosition.HighCone, new Double[] { 56.7858, 2.747688, 0.0 });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 10.674, 3.872696271218, 0.3825 });
+        positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 4.8, 0.0 });
+        positionMap.put(ArmPosition.HighCube, new Double[] { 6.569, 4.626, 0.0 });
         positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
+        positionMap.put(ArmPosition.MidConeBack, new Double[] {51.17109, 4.0689259, 0.09});
 
         setArm(ArmPosition.StartingConfig);
     }
@@ -166,11 +168,17 @@ public class Arm extends SubsystemBase {
         shoulderSpeed = (positionMap.get(targetPos)[0] - shoulderTarget);
         elbowSpeed = (positionMap.get(targetPos)[1] - elbowTarget);
 
-        setShoulder(positionMap.get(targetPos)[0]);
         setWrist(positionMap.get(targetPos)[2]);
 
-        if (pos != ArmPosition.HighCone && !(pos == ArmPosition.StartingConfig && lastPose == ArmPosition.HighCone)){
+        if (pos != ArmPosition.HighCone &&
+            pos != ArmPosition.MidCone &&
+            pos != ArmPosition.MidConeBack &&
+            !(pos == ArmPosition.StartingConfig && lastPose == ArmPosition.HighCone)) {
             setElbow(positionMap.get(targetPos)[1]);
+        }
+
+        if (!(pos == ArmPosition.StartingConfig && lastPose == ArmPosition.MidCone)) {
+            setShoulder(positionMap.get(targetPos)[0]);
         }
 
     }
@@ -199,14 +207,34 @@ public class Arm extends SubsystemBase {
             moveElbow(elbowPower);
 
             if(targetPos == ArmPosition.HighCone) {
-                if(getShoulderPos() > 9 && elbowTarget == positionMap.get(ArmPosition.StartingConfig)[1]) {
+                if(getShoulderPos() > 9 && lastPose == ArmPosition.StartingConfig) {
                     setElbow(positionMap.get(ArmPosition.HighCone)[1]);
                 }
             }
 
             if(targetPos == ArmPosition.StartingConfig){
-                if(getShoulderPos() < 70 && elbowTarget == positionMap.get(ArmPosition.HighCone)[1]){
+                if(getShoulderPos() < 70 && lastPose == ArmPosition.HighCone){
                     setElbow(positionMap.get(ArmPosition.StartingConfig)[1]);
+                }
+            }
+            
+            if(targetPos == ArmPosition.MidCone) {
+                if(getShoulderPos() > 1.5 && lastPose == ArmPosition.StartingConfig) { //1.5
+                    setElbow(positionMap.get(ArmPosition.MidCone)[1]);
+                }
+            }
+
+            if(targetPos == ArmPosition.MidConeBack) {
+                if(getShoulderPos() > 25 && lastPose == ArmPosition.StartingConfig) {
+                    setElbow(positionMap.get(ArmPosition.MidConeBack)[1]);
+                }
+            }
+
+
+
+            if(targetPos == ArmPosition.StartingConfig) {
+                if(getElbowPos() > 1.85 && lastPose == ArmPosition.MidCone) { //1.85
+                    setShoulder(positionMap.get(ArmPosition.StartingConfig)[0]);
                 }
             }
 

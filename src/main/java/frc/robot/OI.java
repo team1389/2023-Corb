@@ -46,7 +46,7 @@ public class OI {
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
     public final Arm arm = new Arm();
-    public final Lights light = new Lights();
+    // public final Lights light = new Lights();
 
 
     private GenericHID driveController;
@@ -125,8 +125,8 @@ public class OI {
         // Press X button -> set X to not slide
         driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
-        driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(2, 255,179,0),() -> light.setColor(2, 104,0,142), light));
-        driveYButton.onTrue(new InstantCommand(() -> light.rainbow()));
+        // driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(2, 255,179,0),() -> light.setColor(2, 104,0,142), light));
+        // driveYButton.onTrue(new InstantCommand(() -> light.rainbow()));
 
 
         // MANIPULATOR CONTROLLER
@@ -144,6 +144,7 @@ public class OI {
         manipRightTrigger.onFalse(new InstantCommand(() -> intake.stop()));
 
         manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
+        manipLeftTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeBack, true));
        
 
         manipDown.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));

@@ -16,7 +16,7 @@ public class Lights extends SubsystemBase {
         rightLedStrip = new AddressableLED(LightConstants.RIGHT_LED_PORT);
 
         leftBuffer = new AddressableLEDBuffer(LightConstants.leftCount);
-        rightBuffer = new AddressableLEDBuffer(LightConstants.RIGHT_LED_PORT);
+        rightBuffer = new AddressableLEDBuffer(LightConstants.rightCount);
 
         leftLedStrip.setLength(leftBuffer.getLength());
         rightLedStrip.setLength(rightBuffer.getLength());
@@ -71,7 +71,9 @@ public class Lights extends SubsystemBase {
           final var hue = (firstPixelHue + (i * 180 / leftBuffer.getLength())) % 180;
           // Set the value
           leftBuffer.setHSV(i, hue, 255, 128);
+          rightBuffer.setHSV(i, hue, 255, 128);
         }
+        
         // Increase by to make the rainbow "move"
         firstPixelHue += 3;
         // Check bounds
