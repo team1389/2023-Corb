@@ -32,13 +32,13 @@ public class Arm extends SubsystemBase {
     private PIDController pidWrist;
 
     private final TrapezoidProfile.Constraints backShoulderConstraints =
-      new TrapezoidProfile.Constraints(70, 50);
+      new TrapezoidProfile.Constraints(90, 58);
     private final ProfiledPIDController pidShoulder =
       new ProfiledPIDController(RobotMap.ArmConstants.SHOULDER_P, RobotMap.ArmConstants.SHOULDER_I,
       RobotMap.ArmConstants.SHOULDER_D, backShoulderConstraints);
 
     private final TrapezoidProfile.Constraints backElbowConstraints =
-      new TrapezoidProfile.Constraints(15, 9.3);
+      new TrapezoidProfile.Constraints(30, 14.6);
     private final ProfiledPIDController pidElbow =
       new ProfiledPIDController(RobotMap.ArmConstants.ELBOW_P, RobotMap.ArmConstants.ELBOW_I,
       RobotMap.ArmConstants.ELBOW_D, backElbowConstraints);
@@ -117,14 +117,14 @@ public class Arm extends SubsystemBase {
 
         // Shoulder, elbow, wrist
         // Shoulder and elbow are relative to start, wrist is absolute
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI - 1.04, 0.0 });
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI - 1.1, 0.0 });
 
         positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 4.7808, 0.0 });
         positionMap.put(ArmPosition.IntakeCone, new Double[] { 0.0, 4.90, 0.0 });
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
         positionMap.put(ArmPosition.MidCone, new Double[] { 16.9, 4.278, 0.4725 });
-        positionMap.put(ArmPosition.HighCone, new Double[] { 56.626, 2.93, 0.0 });
+        positionMap.put(ArmPosition.HighCone, new Double[] { 58.02, 2.5159, 0.0 });
         positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 16.556, 4.211, 0.2025 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 5.87, 0.0 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 11.226, 5.178, 0.0 });
@@ -176,16 +176,17 @@ public class Arm extends SubsystemBase {
         setShoulder(positionMap.get(targetPos)[0]);
         setWrist(positionMap.get(targetPos)[2]);
 
-        if(pos != ArmPosition.HighCone){
+        if (pos != ArmPosition.HighCone && !(pos == ArmPosition.StartingConfig && lastPose == ArmPosition.HighCone)){
             setElbow(positionMap.get(targetPos)[1]);
         }
+
     }
 
     @Override
     public void periodic() {
         
         double shoulderPower = 0, wristPower = 0, elbowPower = 0;
-        double elbowAngle = (Math.PI/2) - ((Math.PI*2) - getElbowPos() + Math.toRadians(25) - getShoulderAngle());
+        double elbowAngle = (Math.PI / 2) - ((Math.PI * 2) - getElbowPos() + Math.toRadians(25) - getShoulderAngle());
         // double elbowAngle = -((2 * Math.PI - getElbowPos() + Math.toRadians(25)) - getShoulderAngle()) + (Math.PI/2);
 
         SmartDashboard.putNumber("elbow angle", elbowAngle);
@@ -194,20 +195,25 @@ public class Arm extends SubsystemBase {
 
         if (!controllerInterrupt) {             
             shoulderPower = pidShoulder.calculate(getShoulderPos(), shoulderTarget) + getShoulderFF();
-           moveShoulder(shoulderPower);
+            moveShoulder(shoulderPower);
             
             // pidShoulder.setReference(shoulderTarget, com.revrobotics.CANSparkMax.ControlType.kPosition);
 
             wristPower = pidWrist.calculate(getWristPos(), wristTarget);
-           moveWrist(wristPower);
+            moveWrist(wristPower);
 
             elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
 
-
             if(targetPos == ArmPosition.HighCone) {
-                if(getShoulderPos() > 15 && elbowTarget == positionMap.get(ArmPosition.StartingConfig)[1]) {
+                if(getShoulderPos() > 9 && elbowTarget == positionMap.get(ArmPosition.StartingConfig)[1]) {
                     setElbow(positionMap.get(ArmPosition.HighCone)[1]);
+                }
+            }
+
+            if(targetPos == ArmPosition.StartingConfig){
+                if(getShoulderPos() < 70 && elbowTarget == positionMap.get(ArmPosition.HighCone)[1]){
+                    setElbow(positionMap.get(ArmPosition.StartingConfig)[1]);
                 }
             }
 
@@ -389,7 +395,7 @@ public class Arm extends SubsystemBase {
         //     return;
         // }
         if(getElbowPos() > 5.24 && power > 0) {
-            elbow.setVoltage(-0 * 12);
+            elbow.setVoltage(0);
             return;
         }
         elbow.setVoltage(MathUtil.clamp(power, -0.6, 0.6) * 12);

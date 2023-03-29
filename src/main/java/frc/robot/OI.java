@@ -207,6 +207,10 @@ public class OI {
 
         driveAButton = new JoystickButton(driveController, 1);
         driveXButton = new JoystickButton(driveController, 3);
+        driveBButton = new JoystickButton(driveController, 2);
+        driveYButton = new JoystickButton(driveController, 4);
+
+
         driveRightBumper = new JoystickButton(driveController, 6);
 
         manipEllipsisButton = new JoystickButton(manipController, 9);
