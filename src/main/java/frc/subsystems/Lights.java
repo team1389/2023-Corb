@@ -7,38 +7,70 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.LightConstants;
 
 public class Lights extends SubsystemBase {
-    AddressableLED ledStrip;
-    AddressableLEDBuffer ledBuffer;
+    AddressableLED leftLedStrip;
+    AddressableLED rightLedStrip;
+    AddressableLEDBuffer leftBuffer, rightBuffer;
 
     public Lights() {
-        ledStrip = new AddressableLED(LightConstants.LED_PORT);
-        ledBuffer = new AddressableLEDBuffer(LightConstants.ledCount);
+        leftLedStrip = new AddressableLED(LightConstants.LEFT_LED_PORT);
+        rightLedStrip = new AddressableLED(LightConstants.RIGHT_LED_PORT);
 
-        ledStrip.setLength(ledBuffer.getLength());
+        leftBuffer = new AddressableLEDBuffer(LightConstants.leftCount);
+        rightBuffer = new AddressableLEDBuffer(LightConstants.RIGHT_LED_PORT);
 
-        ledStrip.setData(ledBuffer);
-        ledStrip.start();
+        leftLedStrip.setLength(leftBuffer.getLength());
+        rightLedStrip.setLength(rightBuffer.getLength());
+
+        leftLedStrip.setData(leftBuffer);
+        leftLedStrip.start();
+        rightLedStrip.setData(leftBuffer);
+        rightLedStrip.start();
     }
 
-    public void setColor(int red, int green, int blue) {
-        for (var i = 0; i < ledBuffer.getLength(); i++) {
+    //id == 0 for left, 1 for right, 2 for both
+    public void setColor(int id, int red, int green, int blue) {
+        if(id == 0) {
+          for (var i = 0; i < leftBuffer.getLength(); i++) {
+              // Sets the specified LED to the RGB values for red
+              leftBuffer.setRGB(i, red, green, blue);
+          }
+        
+          leftLedStrip.setData(leftBuffer);
+        }
+        else if (id == 1) {
+          for (var i = 0; i < rightBuffer.getLength(); i++) {
             // Sets the specified LED to the RGB values for red
-            ledBuffer.setRGB(i, red, green, blue);
-         }
-         
-         ledStrip.setData(ledBuffer);
+            rightBuffer.setRGB(i, red, green, blue);
+          }
+      
+          rightLedStrip.setData(rightBuffer);
+        }
+        else {
+          for (var i = 0; i < leftBuffer.getLength(); i++) {
+            // Sets the specified LED to the RGB values for red
+            leftBuffer.setRGB(i, red, green, blue);
+          }
+          for (var i = 0; i < rightBuffer.getLength(); i++) {
+            // Sets the specified LED to the RGB values for red
+            rightBuffer.setRGB(i, red, green, blue);
+          }
+
+          leftLedStrip.setData(leftBuffer);
+          rightLedStrip.setData(rightBuffer);
+        }
+        
     }
 
     public void rainbow() {
         var firstPixelHue = 0;
 
         // For every pixel
-        for (var i = 0; i < ledBuffer.getLength(); i++) {
+        for (var i = 0; i < leftBuffer.getLength(); i++) {
           // Calculate the hue - hue is easier for rainbows because the color
           // shape is a circle so only one value needs to precess
-          final var hue = (firstPixelHue + (i * 180 / ledBuffer.getLength())) % 180;
+          final var hue = (firstPixelHue + (i * 180 / leftBuffer.getLength())) % 180;
           // Set the value
-          ledBuffer.setHSV(i, hue, 255, 128);
+          leftBuffer.setHSV(i, hue, 255, 128);
         }
         // Increase by to make the rainbow "move"
         firstPixelHue += 3;
@@ -48,10 +80,9 @@ public class Lights extends SubsystemBase {
 
       @Override
       public void periodic() {
-        // Fill the buffer with a rainbow
-        rainbow();
         // Set the LEDs
-        ledStrip.setData(ledBuffer);
+        leftLedStrip.setData(leftBuffer);
+        rightLedStrip.setData(rightBuffer);
       }
 
     

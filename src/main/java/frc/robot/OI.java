@@ -27,8 +27,7 @@ import frc.autos.QuickBalanceCone;
 import frc.autos.TwoTopCone;
 import frc.autos.TwoTopCube;
 import frc.autos.TwoTopCubeBalance;
-import frc.commands.AdjustElbowTarget;
-import frc.commands.AdjustShoulderTarget;
+
 import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
 import frc.commands.RunIntakeCone;
@@ -83,17 +82,7 @@ public class OI {
     private HashMap<String, Command> autoMap = new HashMap<String, Command>();
 
     public OI() {
-        //Harry's Witchcraft arm tuning idea
-        double shoulderVal = 0.05, elbowVal = 0.05;
-        SmartDashboard.getNumber("Shoulder Change Margin", shoulderVal);
-        SmartDashboard.getNumber("Elbow Change Margin", elbowVal);
-
-        SmartDashboard.putData("Shoulder up Command", new AdjustElbowTarget(arm, true, shoulderVal));
-        SmartDashboard.putData("Shoulder down Command", new AdjustShoulderTarget(arm, false, shoulderVal));
-
-        SmartDashboard.putData("Elbow up Command", new AdjustElbowTarget(arm, true, elbowVal));
-        SmartDashboard.putData("Elbow down Command", new AdjustElbowTarget(arm, false, elbowVal));
-
+    
         //automap
         autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
         autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
@@ -136,7 +125,7 @@ public class OI {
         // Press X button -> set X to not slide
         driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
-        driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
+        driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(2, 255,179,0),() -> light.setColor(2, 104,0,142), light));
         driveYButton.onTrue(new InstantCommand(() -> light.rainbow()));
 
 
@@ -165,7 +154,6 @@ public class OI {
         manipRight.whileTrue(new RunIntakeCube(intake));
 
 
-
         final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
         final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
         final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
@@ -173,15 +161,12 @@ public class OI {
         final Command quickBalanceCone = new QuickBalanceCone(drivetrain, arm, intake, autoMap);
         final Command overAndOut = new OverAndOut(drivetrain, arm, intake);
 
-
         final Command driveBack = new DriveBack(drivetrain, arm, intake);
         final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake, autoMap);
         final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
         final Command twoTopCone = new TwoTopCone(drivetrain, arm, intake, autoMap);
         final Command twoTopCubeBalance = new TwoTopCubeBalance(drivetrain, arm, intake, autoMap);
-
-
 
         // Add options
         chooser.addOption("Quick Balance Cube", quickBalanceCube);
@@ -209,7 +194,6 @@ public class OI {
         driveXButton = new JoystickButton(driveController, 3);
         driveBButton = new JoystickButton(driveController, 2);
         driveYButton = new JoystickButton(driveController, 4);
-
 
         driveRightBumper = new JoystickButton(driveController, 6);
 

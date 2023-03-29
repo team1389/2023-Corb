@@ -89,9 +89,9 @@ public class Arm extends SubsystemBase {
         elbow = new CANSparkMax(ArmConstants.ELBOW_MOTOR, MotorType.kBrushless);
         wrist = new CANSparkMax(DriveConstants.WRIST_MOTOR, MotorType.kBrushless);
 
-        elbow.setIdleMode(IdleMode.kBrake);
         shoulderLeft.setIdleMode(IdleMode.kBrake);
         shoulderRight.setIdleMode(IdleMode.kBrake);
+        elbow.setIdleMode(IdleMode.kBrake);
         wrist.setIdleMode(IdleMode.kBrake);
 
         shoulderLeft.setInverted(false);
@@ -100,20 +100,15 @@ public class Arm extends SubsystemBase {
         pidWrist = new PIDController(RobotMap.ArmConstants.WRIST_P, RobotMap.ArmConstants.WRIST_I,
                 RobotMap.ArmConstants.WRIST_D);
 
-
         shoulderLeftEncoder = shoulderLeft.getEncoder();
         shoulderLeftEncoder.setPositionConversionFactor(1);
+        shoulderLeftEncoder.setPosition(0);
+
         shoulderRightEncoder = shoulderLeft.getEncoder();
         wristEncoder = wrist.getEncoder();
         absElbowEncoder = wrist.getAbsoluteEncoder(Type.kDutyCycle);
 
-        shoulderLeftEncoder.setPosition(0);
-
        // wristLimitSwitch = wrist.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-
-        // pidShoulder.setFeedbackDevice(shoulderLeftEncoder);
-
-        // absElbowEncoder.setInverted(true);
 
         // Shoulder, elbow, wrist
         // Shoulder and elbow are relative to start, wrist is absolute
@@ -146,8 +141,6 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Elbow target", elbowTarget);
         return temp;
     };
-
-    
 
     public double setWrist(double pos) {
         var temp = wristTarget;
@@ -254,11 +247,6 @@ public class Arm extends SubsystemBase {
         // getShoulderPos());
         elbowTarget = SmartDashboard.getNumber("Elbow target", getElbowPos());
         wristTarget = SmartDashboard.getNumber("Wrist target", getWristPos());
-        double shoulderVal = 0, elbowVal = 0;
-
-        shoulderVal = SmartDashboard.getNumber("Shoulder Change Margin", shoulderVal);
-        elbowVal = SmartDashboard.getNumber("Elbow Change Margin", elbowVal);
-
         
     }
 

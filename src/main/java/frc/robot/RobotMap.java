@@ -167,8 +167,11 @@ public class RobotMap {
     }
 
     public static final class LightConstants {
-        public static final int LED_PORT = 9;
-        public static final int ledCount = 30;
+        public static final int LEFT_LED_PORT = 9;
+        public static final int RIGHT_LED_PORT = 10;
+        public static final int leftCount = 30;
+        public static final int rightCount = 30;
+
     }
 
     public static final class FieldConstants {
