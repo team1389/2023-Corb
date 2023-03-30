@@ -151,7 +151,7 @@ public class Arm extends SubsystemBase {
 
     public void setArm(double shoulder, double elbow, double wrist) {
         setShoulder(shoulder);
-        setElbow(elbow);;
+        setElbow(elbow);
         setWrist(wrist);
     };
 
@@ -212,10 +212,16 @@ public class Arm extends SubsystemBase {
             moveElbow(elbowPower);
 
 
-            if(elbowDelay > 0 && getShoulderPos() > elbowDelay) {
+            if(elbowDelay > 0 && getShoulderPos() > elbowDelay && targetPos != ArmPosition.StartingConfig) {
                 setElbow(positionMap.get(targetPos)[1]);
             }
-            else if(elbowDelay < 0 && getElbowPos() > -elbowDelay) {
+            else if(elbowDelay < 0 && getElbowPos() < -elbowDelay && targetPos != ArmPosition.StartingConfig) {
+                setShoulder(positionMap.get(targetPos)[0]);
+            }
+            else if(elbowDelay > 0 && getShoulderPos() < elbowDelay && targetPos == ArmPosition.StartingConfig) {
+                setElbow(positionMap.get(targetPos)[1]);
+            }
+            else if(elbowDelay < 0 && getElbowPos() > -elbowDelay && targetPos == ArmPosition.StartingConfig) {
                 setShoulder(positionMap.get(targetPos)[0]);
             }
         }
