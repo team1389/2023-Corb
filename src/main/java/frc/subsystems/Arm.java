@@ -190,6 +190,8 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         
         double shoulderPower = 0, wristPower = 0, elbowPower = 0;
+
+        // Geometry?? I'd rather have an apple tree :3
         double elbowAngle = (Math.PI / 2) - ((Math.PI * 2) - getElbowPos() + Math.toRadians(25) - getShoulderAngle());
         // double elbowAngle = -((2 * Math.PI - getElbowPos() + Math.toRadians(25)) - getShoulderAngle()) + (Math.PI/2);
 
@@ -209,7 +211,7 @@ public class Arm extends SubsystemBase {
             elbowPower = pidElbow.calculate(getElbowPos(), elbowTarget);
             moveElbow(elbowPower);
 
-            
+
             if(elbowDelay > 0 && getShoulderPos() > elbowDelay) {
                 setElbow(positionMap.get(targetPos)[1]);
             }
