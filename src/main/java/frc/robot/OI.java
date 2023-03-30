@@ -239,11 +239,11 @@ public class OI {
     }
 
     private double getDriveRightX() {
-        return -driveController.getRawAxis(2);
+        return -driveController.getRawAxis(3);
     }
 
     private double getDriveRightY() {
-        return driveController.getRawAxis(3);
+        return driveController.getRawAxis(5);
     }
 
     private boolean getDriveLeftBumper() {
@@ -263,11 +263,11 @@ public class OI {
     }
 
     private double getManipRightX() {
-        return -manipController.getRawAxis(2);
+        return -manipController.getRawAxis(3);
     }
 
     private double getManipRightY() {
-        return -manipController.getRawAxis(3);
+        return -manipController.getRawAxis(5);
     }
 
     private boolean getManipLeftBumper() {
