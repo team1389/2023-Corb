@@ -230,8 +230,6 @@ public class Arm extends SubsystemBase {
                 }
             }
 
-
-
             if(targetPos == ArmPosition.StartingConfig) {
                 if(getElbowPos() > 1.85 && lastPose == ArmPosition.MidCone) { //1.85
                     setShoulder(positionMap.get(ArmPosition.StartingConfig)[0]);

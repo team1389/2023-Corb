@@ -28,9 +28,8 @@ public class OverAndOut extends SequentialCommandGroup{
         Command drivePath = drivetrain.followTrajectoryCommand(trajectory, true);
 
         addCommands(
-            //new SetArmPosition(arm, ArmPosition.StartingConfig, false, 2),
-            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
-            new RunOuttakeCube(intake, 0.3),
+            new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
+            new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             drivePath,
             new AutoBalance(drivetrain)

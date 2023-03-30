@@ -21,23 +21,20 @@ import frc.subsystems.Arm.ArmPosition;
 
 public class TwoCubeBalanceBump extends SequentialCommandGroup{
     public TwoCubeBalanceBump(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
-        List<PathPlannerTrajectory> trajectories = PathPlanner.loadPathGroup("2 Cube Balance (bump)", new PathConstraints(
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("2 Cube Balance (bump)", new PathConstraints(
         AutoConstants.AUTO_MAX_METERS_PER_SEC, 
         AutoConstants.AUTO_MAX_MPSS)
     );
     
-    Command drivePath = drivetrain.followTrajectoryCommand(trajectories.get(0), isFinished());
-    Command drivePath2 = drivetrain.followTrajectoryCommand(trajectories.get(1), isFinished());
-
+    Command drivePath = drivetrain.followTrajectoryCommand(trajectory, true);
 
     addCommands(
-        new SetArmPosition(arm, ArmPosition.HighCube, false, 3.5),
+        new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
         new RunOuttakeCube(intake, 0.5),
-        new SetArmPosition(arm, ArmPosition.StartingConfig, true),
-        new FollowPathWithEvents(drivePath, trajectories.get(0).getMarkers(), hmm),
-        new SetArmPosition(arm, ArmPosition.MidCube, false, 1.5),
+        new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.8),
+        new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
+        new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
         new RunOuttakeCube(intake, 0.5),
-        drivePath2,
         new AutoBalance(drivetrain)
     );
     }

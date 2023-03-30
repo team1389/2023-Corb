@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.7291745853106537,
-        "y": 1.0634975906185762
+        "x": 1.7089081864996483,
+        "y": 0.4279140230878327
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.016266178038776,
-        "y": 0.4345474026183421
+        "x": 3.0211778573023356,
+        "y": 0.47546002565314865
       },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,16 +24,41 @@
     },
     {
       "anchorPoint": {
-        "x": 6.715034257457958,
-        "y": 0.9262720950548883
+        "x": 3.7533862968081824,
+        "y": 0.608588832836028
       },
       "prevControl": {
-        "x": 5.983164947784959,
-        "y": 0.7433047676366398
+        "x": 3.387282077055259,
+        "y": 0.5420244292445884
       },
       "nextControl": {
-        "x": 5.983164947784959,
-        "y": 0.7433047676366398
+        "x": 4.119490516561106,
+        "y": 0.6751532364274677
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.691729255344633,
+        "y": 0.93190165028017
+      },
+      "prevControl": {
+        "x": 6.415962440465808,
+        "y": 0.9604292518193586
+      },
+      "nextControl": {
+        "x": 6.415962440465808,
+        "y": 0.9604292518193586
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -49,22 +74,22 @@
     },
     {
       "anchorPoint": {
-        "x": 1.7406100432742944,
-        "y": 1.040626674691294
+        "x": 6.339888836361304,
+        "y": 0.93190165028017
       },
       "prevControl": {
-        "x": 0.7406100432742944,
-        "y": 1.040626674691294
+        "x": 6.539582047135627,
+        "y": 0.93190165028017
       },
       "nextControl": {
-        "x": 2.7406100432742972,
-        "y": 1.040626674691294
+        "x": 6.016576018917164,
+        "y": 0.93190165028017
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": true,
+      "isStopPoint": false,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -74,12 +99,37 @@
     },
     {
       "anchorPoint": {
-        "x": 3.9362179722932904,
-        "y": 2.09268880734623
+        "x": 4.029153111687007,
+        "y": 0.846318845662603
       },
       "prevControl": {
-        "x": 1.6033845477106066,
-        "y": 2.2756561347644806
+        "x": 5.013355364789023,
+        "y": 0.8368096451495405
+      },
+      "nextControl": {
+        "x": 3.0449508585849916,
+        "y": 0.8558280461756654
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.6803805849604594,
+        "y": 1.0460120564369244
+      },
+      "prevControl": {
+        "x": 2.5932638342145022,
+        "y": 0.8273004446364769
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -115,25 +165,25 @@
       ]
     },
     {
-      "position": 0.5236363636363711,
+      "position": 1.5151515151516457,
       "names": [
         "arm cube intake"
       ]
     },
     {
-      "position": 0.8072727272727122,
+      "position": 1.8484848484848626,
       "names": [
         "start intake"
       ]
     },
     {
-      "position": 1.1345454545455067,
+      "position": 2.6060606060607183,
       "names": [
         "stop intake"
       ]
     },
     {
-      "position": 1.2872727272726663,
+      "position": 2.363636363636448,
       "names": [
         "arm starting"
       ]
