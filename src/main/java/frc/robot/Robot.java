@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("wrsit 2 Current", pdh.getCurrent(2));
         SmartDashboard.putNumber("wrist 3 Current", pdh.getCurrent(3));
         SmartDashboard.putNumber("wrist 4 Current", pdh.getCurrent(4));
+        oi.light.hueee += 3;
         
 
 

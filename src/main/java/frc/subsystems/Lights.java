@@ -9,6 +9,7 @@ import frc.robot.RobotMap.LightConstants;
 public class Lights extends SubsystemBase {
     AddressableLED ledStrip;
     AddressableLEDBuffer buffer;
+    public int hueee = 0;
 
     public Lights() {
         ledStrip = new AddressableLED(LightConstants.LED_PORT);
@@ -35,7 +36,7 @@ public class Lights extends SubsystemBase {
     }
 
     public void rainbow() {
-        var firstPixelHue = 0;
+        var firstPixelHue = hueee%180;
 
         // For every pixel
         for (var i = 0; i < buffer.getLength(); i++) {
@@ -46,11 +47,6 @@ public class Lights extends SubsystemBase {
           buffer.setHSV(i, hue, 255, 128);
           buffer.setHSV(i, hue, 255, 128);
         }
-        
-        // Increase by to make the rainbow "move"
-        firstPixelHue += 3;
-        // Check bounds
-        firstPixelHue %= 180;
       }
 
       @Override

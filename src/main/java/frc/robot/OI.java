@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.autos.DriveBack;
@@ -24,6 +25,8 @@ import frc.autos.OneTopCube;
 import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
 import frc.autos.QuickBalanceCone;
+import frc.autos.ThreeExclamation;
+import frc.autos.TwoCubeBalanceBump;
 import frc.autos.TwoTopCone;
 import frc.autos.TwoTopCube;
 import frc.autos.TwoTopCubeBalance;
@@ -90,6 +93,8 @@ public class OI {
         autoMap.put("arm cube intake", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
         autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
         autoMap.put("arm starting", new SetArmPosition(arm, ArmPosition.StartingConfig, true));
+        autoMap.put("arm high cube", new SetArmPosition(arm, ArmPosition.HighCube, true));
+        autoMap.put("arm cube back", new SetArmPosition(arm, ArmPosition.CubeBack, true));
 
         initControllers();
 
@@ -126,7 +131,7 @@ public class OI {
         driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
         driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
-        driveYButton.onTrue(new InstantCommand(() -> light.rainbow()));
+        driveYButton.toggleOnTrue(new RunCommand(() -> light.rainbow()));
 
 
         // MANIPULATOR CONTROLLER
@@ -168,6 +173,10 @@ public class OI {
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
         final Command twoTopCone = new TwoTopCone(drivetrain, arm, intake, autoMap);
         final Command twoTopCubeBalance = new TwoTopCubeBalance(drivetrain, arm, intake, autoMap);
+        final Command twoCubeBalanceBump = new TwoCubeBalanceBump(drivetrain, arm, intake, autoMap);
+        final Command threeExclamation = new ThreeExclamation(drivetrain, arm, intake, autoMap);
+
+
 
         // Add options
         chooser.addOption("Quick Balance Cube", quickBalanceCube);
@@ -175,11 +184,13 @@ public class OI {
 
         chooser.addOption("Drive Back", driveBack);
         chooser.addOption("Cube, over charge station, balance", overAndOut);
-        chooser.addOption("Cube, pickup, cube", twoTopCube);
+        chooser.addOption("Cone, pickup, cube but bump side", twoCubeBalanceBump);
         chooser.addOption("Cone, pickup, cube", twoTopCone);
         chooser.addOption("Cube, pickup, cube, balance", twoTopCubeBalance);
 
         chooser.addOption("Cube, out, balance", outAndScoreNoBump);
+        chooser.addOption("3!", threeExclamation);
+
 
         SmartDashboard.putData("Auto choices", chooser);
     }

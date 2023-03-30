@@ -1,5 +1,4 @@
 package frc.autos;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,11 +18,10 @@ import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 
-public class TwoTopCubeBalance extends SequentialCommandGroup{
-
-    public TwoTopCubeBalance(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
+public class ThreeExclamation extends SequentialCommandGroup{
+    public ThreeExclamation(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
         
-        List<PathPlannerTrajectory> trajectories = PathPlanner.loadPathGroup("2 Top Cube Balance", new PathConstraints(
+        List<PathPlannerTrajectory> trajectories = PathPlanner.loadPathGroup("3!", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
             AutoConstants.AUTO_MAX_MPSS)
         );
@@ -34,15 +32,16 @@ public class TwoTopCubeBalance extends SequentialCommandGroup{
 
         // do stuff
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
+            new SetArmPosition(arm, ArmPosition.HighCone, false, 2.11),
             new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             new FollowPathWithEvents(drivePath, trajectories.get(0).getMarkers(), hmm),
-            new SetArmPosition(arm, ArmPosition.MidCube, false, 1.0),
+            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.0),
             new RunOuttakeCube(intake, 0.5),
-            drivePath2,
-            new AutoBalance(drivetrain)
+            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
+            new FollowPathWithEvents(drivePath2, trajectories.get(1).getMarkers(), hmm),
+            new RunOuttakeCube(intake, 0.5)
         );
 
-    }
+    } 
 }
