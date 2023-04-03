@@ -213,8 +213,8 @@
           },
           "0,0": {
             "size": [
-              5,
-              7
+              10,
+              10
             ],
             "content": {
               "_type": "Camera Stream",
@@ -225,7 +225,7 @@
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
+              "Controls/Rotation": "HALF",
               "compression": -1.0,
               "fps": -1,
               "imageWidth": 0,
@@ -315,8 +315,8 @@
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           }
         }
@@ -326,7 +326,7 @@
   "windowGeometry": {
     "x": -7.333333492279053,
     "y": -7.333333492279053,
-    "width": 1294.6666259765625,
-    "height": 814.6666870117188
+    "width": 1518.6666259765625,
+    "height": 986.6666870117188
   }
 }
