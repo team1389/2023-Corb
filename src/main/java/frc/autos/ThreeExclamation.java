@@ -22,8 +22,8 @@ public class ThreeExclamation extends SequentialCommandGroup{
     public ThreeExclamation(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
         
         List<PathPlannerTrajectory> trajectories = PathPlanner.loadPathGroup("3!", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC, 
-            AutoConstants.AUTO_MAX_MPSS)
+            AutoConstants.AUTO_MAX_METERS_PER_SEC+4, 
+            AutoConstants.AUTO_MAX_MPSS+1.5)
         );
 
         Command drivePath = drivetrain.followTrajectoryCommand(trajectories.get(0), true);
@@ -32,11 +32,10 @@ public class ThreeExclamation extends SequentialCommandGroup{
 
         // do stuff
         addCommands(
-            new SetArmPosition(arm, ArmPosition.HighCone, false, 2.11),
+            new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
             new RunOuttakeCone(intake, 0.5),
-            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.6),
             new FollowPathWithEvents(drivePath, trajectories.get(0).getMarkers(), hmm),
-            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.0),
             new RunOuttakeCube(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, true),
             new FollowPathWithEvents(drivePath2, trajectories.get(1).getMarkers(), hmm),

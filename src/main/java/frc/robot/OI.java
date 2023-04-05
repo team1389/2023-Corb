@@ -27,12 +27,14 @@ import frc.autos.QuickBalance;
 import frc.autos.QuickBalanceCone;
 import frc.autos.ThreeExclamation;
 import frc.autos.TwoCubeBalanceBump;
-import frc.autos.TwoTopCone;
+import frc.autos.ConeCone;
+import frc.autos.ConeCube;
 import frc.autos.TwoTopCube;
 import frc.autos.TwoTopCubeBalance;
 
 import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
+import frc.commands.PickupCone;
 import frc.commands.RunIntakeCone;
 import frc.commands.RunIntakeCube;
 import frc.commands.SetArmPosition;
@@ -58,12 +60,16 @@ public class OI {
     private Trigger driveXButton;
     private Trigger driveBButton;
     private Trigger driveYButton;
+    private Trigger driveRightTrigger;
+
 
     private XboxController manipController;
     private Trigger manipEllipsisButton;
     private Trigger manipMenuButton;
     private Trigger manipFullscreen;
     private Trigger manipStadia;
+    private Trigger manipGoogle;
+
 
     private Trigger manipRightBumper;
     private Trigger manipLeftBumper;
@@ -91,6 +97,8 @@ public class OI {
         autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
         autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
         autoMap.put("arm cube intake", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
+        autoMap.put("arm cone intake", new SetArmPosition(arm, ArmPosition.IntakeCone, true));
+
         autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
         autoMap.put("arm starting", new SetArmPosition(arm, ArmPosition.StartingConfig, true));
         autoMap.put("arm high cube", new SetArmPosition(arm, ArmPosition.HighCube, true));
@@ -121,7 +129,8 @@ public class OI {
                 () -> getDriveRightY(),
                 () -> getDriveLeftBumper(), // By default be in field oriented
                 () -> !getDriveRightBumper(), // Slow function
-                () -> driveXButton.getAsBoolean()) // Hold x position
+                () -> driveXButton.getAsBoolean(), // Hold x position
+                () -> driveRightTrigger.getAsBoolean()) // boost
         );
 
         // Press A button -> zero gyro heading
@@ -148,13 +157,16 @@ public class OI {
         manipRightTrigger.onTrue(new InstantCommand(() -> intake.shootCube()));
         manipRightTrigger.onFalse(new InstantCommand(() -> intake.stop()));
 
-        manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
-        manipLeftTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeBack, true));
-       
-
         manipDown.onTrue(new SetArmPosition(arm, ArmPosition.IntakeCube, true));
         manipUp.onTrue(new SetArmPosition(arm, ArmPosition.HighCube, true));
         manipLeft.onTrue(new SetArmPosition(arm, ArmPosition.MidCube, true));
+
+        manipLeftTrigger.and(manipAButton).onTrue(new SetArmPosition(arm, ArmPosition.IntakeConeFeeder, true));
+        manipLeftTrigger.and(manipXButton).onTrue(new SetArmPosition(arm, ArmPosition.MidConeBack, true));
+        manipLeftTrigger.and(manipUp).onTrue(new SetArmPosition(arm, ArmPosition.CubeBack, true));
+        manipLeftTrigger.and(manipYButton).onTrue(new SetArmPosition(arm, ArmPosition.AboveHighCone, true));
+
+        manipGoogle.onTrue(new PickupCone(arm, intake, drivetrain));        
 
         manipBButton.whileTrue(new RunIntakeCone(intake));
         manipRight.whileTrue(new RunIntakeCube(intake));
@@ -171,10 +183,12 @@ public class OI {
         final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake, autoMap);
         final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
         final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
-        final Command twoTopCone = new TwoTopCone(drivetrain, arm, intake, autoMap);
+        final Command twoTopCone = new ConeCube(drivetrain, arm, intake, autoMap);
         final Command twoTopCubeBalance = new TwoTopCubeBalance(drivetrain, arm, intake, autoMap);
         final Command twoCubeBalanceBump = new TwoCubeBalanceBump(drivetrain, arm, intake, autoMap);
         final Command threeExclamation = new ThreeExclamation(drivetrain, arm, intake, autoMap);
+        final Command coneCone = new ConeCone(drivetrain, arm, intake, autoMap);
+
 
 
 
@@ -182,14 +196,16 @@ public class OI {
         chooser.addOption("Quick Balance Cube", quickBalanceCube);
         chooser.addOption("Quick Balance Cone", quickBalanceCone);
 
-        chooser.addOption("Drive Back", driveBack);
         chooser.addOption("Cube, over charge station, balance", overAndOut);
         chooser.addOption("Cone, pickup, cube but bump side", twoCubeBalanceBump);
         chooser.addOption("Cone, pickup, cube", twoTopCone);
-        chooser.addOption("Cube, pickup, cube, balance", twoTopCubeBalance);
+        chooser.addOption("Cone, pickup, cone", coneCone);
+
+        // chooser.addOption("Cube, pickup, cube, balance", twoTopCubeBalance);
 
         chooser.addOption("Cube, out, balance", outAndScoreNoBump);
         chooser.addOption("3!", threeExclamation);
+        chooser.addOption("Drive Back", driveBack);
 
 
         SmartDashboard.putData("Auto choices", chooser);
@@ -208,10 +224,13 @@ public class OI {
         driveYButton = new JoystickButton(driveController, 4);
 
         driveRightBumper = new JoystickButton(driveController, 6);
+        driveRightTrigger = new JoystickButton(driveController, 12);
+
 
         manipEllipsisButton = new JoystickButton(manipController, 9);
         manipMenuButton = new JoystickButton(manipController, 10);
         manipFullscreen = new JoystickButton(manipController, 15);
+        manipGoogle = new JoystickButton(manipController, 14);
         manipStadia = new JoystickButton(manipController, 11);
 
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);

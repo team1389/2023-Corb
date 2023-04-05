@@ -89,19 +89,6 @@
               "_showGlyph": false
             }
           },
-          "3,0": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Robot Location",
-              "_title": "SmartDashboard/Robot Location",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "3,3": {
             "size": [
               1,
@@ -168,10 +155,10 @@
         "vgap": 5.0,
         "titleType": 0,
         "tiles": {
-          "10,0": {
+          "10,8": {
             "size": [
-              2,
-              2
+              1,
+              1
             ],
             "content": {
               "_type": "Boolean Box",
@@ -183,10 +170,10 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "12,0": {
+          "11,8": {
             "size": [
-              2,
-              2
+              1,
+              1
             ],
             "content": {
               "_type": "Boolean Box",
@@ -198,7 +185,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "10,3": {
+          "12,8": {
             "size": [
               4,
               1
@@ -211,10 +198,31 @@
               "_showGlyph": false
             }
           },
+          "9,0": {
+            "size": [
+              8,
+              8
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "QUARTER_CW",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
           "0,0": {
             "size": [
-              10,
-              10
+              9,
+              9
             ],
             "content": {
               "_type": "Camera Stream",
@@ -225,7 +233,7 @@
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
-              "Controls/Rotation": "HALF",
+              "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
               "imageWidth": 0,
@@ -298,25 +306,52 @@
               "_showGlyph": false
             }
           },
-          "0,0": {
+          "5,2": {
             "size": [
-              5,
-              4
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Location",
+              "_title": "SmartDashboard/Robot Location",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 4",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "1,0": {
+            "size": [
+              8,
+              5
             ],
             "content": {
               "_type": "Camera Stream",
-              "_source0": "camera_server://photonvision_Port_1184_MJPEG_Server",
-              "_title": "photonvision_Port_1184_MJPEG_Server",
+              "_source0": "camera_server://photonvision_Port_1182_MJPEG_Server",
+              "_title": "photonvision_Port_1182_MJPEG_Server",
               "_glyph": 148,
               "_showGlyph": false,
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
+              "Controls/Rotation": "QUARTER_CW",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }

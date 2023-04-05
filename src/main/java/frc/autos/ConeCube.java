@@ -18,9 +18,9 @@ import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Arm.ArmPosition;
 
-public class TwoTopCone extends SequentialCommandGroup{
+public class ConeCube extends SequentialCommandGroup{
 
-    public TwoTopCone(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
+    public ConeCube(Drivetrain drivetrain, Arm arm, Intake intake, HashMap<String, Command> hmm){
         
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("2 Top Cone", new PathConstraints(
             AutoConstants.AUTO_MAX_METERS_PER_SEC, 
@@ -34,9 +34,8 @@ public class TwoTopCone extends SequentialCommandGroup{
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
             new RunOuttakeCone(intake, 0.5),
-            new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.8),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.5),
             new FollowPathWithEvents(drivePath, trajectory.getMarkers(), hmm),
-            new SetArmPosition(arm, ArmPosition.HighCube, false, 1.5),
             new RunOuttakeCube(intake, 0.5)
         );
 

@@ -13,7 +13,7 @@ public class TeleOpDrive extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
-    private final Supplier<Boolean> fieldOrientedFunction, slowFunction, holdXFunction;
+    private final Supplier<Boolean> fieldOrientedFunction, slowFunction, holdXFunction, BOOST;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private double desiredAngle; // gyro value from getHeading() the robot wants to point at
     private boolean holdingX = false;
@@ -22,7 +22,7 @@ public class TeleOpDrive extends CommandBase {
     public TeleOpDrive(Drivetrain drivetrain,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
             Supplier<Double> rightY,
-            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction, Supplier<Boolean> holdXFunction) {
+            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction, Supplier<Boolean> holdXFunction, Supplier<Boolean> BOOST) {
         this.drivetrain = drivetrain;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
@@ -30,6 +30,7 @@ public class TeleOpDrive extends CommandBase {
         this.fieldOrientedFunction = fieldOrientedFunction;
         this.slowFunction = slowFunction;
         this.holdXFunction = holdXFunction;
+        this.BOOST = BOOST;
 
         // A slew rate limiter caps the rate of change of the inputs, to make the robot
         // drive much smoother
@@ -69,9 +70,14 @@ public class TeleOpDrive extends CommandBase {
 
         // 4. Check right bumper for slow mode
         if (slowFunction.get()) {
-            xSpeed *= 0.375;
-            ySpeed *= 0.375;
-            turningSpeed *= 0.25;
+            xSpeed *= 0.3;
+            ySpeed *= 0.3;
+            turningSpeed *= 0.325;
+        }
+        else if (!BOOST.get()) {
+            xSpeed *= 0.5;
+            ySpeed *= 0.5;
+            turningSpeed *= 0.5;
         }
 
         // 5. Construct desired chassis speeds

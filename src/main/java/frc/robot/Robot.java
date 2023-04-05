@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
         oi.drivetrain.backLeft.resetEncoders();
         oi.drivetrain.frontRight.resetEncoders();
         oi.drivetrain.backRight.resetEncoders();
-        oi.drivetrain.setAngleAdjustment(180);
+        oi.drivetrain.setAngleAdjustment(0);
 
         oi.arm.controllerInterrupt = true;
     }

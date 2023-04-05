@@ -138,11 +138,13 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateFieldPose() {
         m_field.setRobotPose(getPose());
+
     }
 
     @Override
     public void periodic() {
         poseEstimator.updateWithTime(Timer.getFPGATimestamp(), getRotation2d(), getModulePositions());
+        updateFieldPose();
 
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
@@ -179,6 +181,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Return a command to follow given pathplannertrajectory
     public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+        m_field.getObject("traj").setTrajectory(traj);
          // Define PID controllers for tracking trajectory
          PIDController xController = new PIDController(AutoConstants.P_AUTO_X, AutoConstants.I_AUTO_X, 0);
          PIDController yController = new PIDController(AutoConstants.P_AUTO_Y, AutoConstants.I_AUTO_Y, 0);

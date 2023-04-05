@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.7184173870127115,
-        "y": 5.0303670714103
+        "x": 1.6596946937969708,
+        "y": 4.967419318724893
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.6678034921906155,
-        "y": 4.887729063714356
+        "x": 3.6090807989748743,
+        "y": 4.824781311028949
       },
       "holonomicAngle": 0.0,
       "isReversal": false,
@@ -24,47 +24,22 @@
     },
     {
       "anchorPoint": {
-        "x": 6.073631221995542,
-        "y": 4.602453048322467
+        "x": 6.627114012521865,
+        "y": 4.483024700646558
       },
       "prevControl": {
-        "x": 5.094183569150058,
-        "y": 4.54539784524409
+        "x": 6.6042756762469015,
+        "y": 4.49444386878404
       },
       "nextControl": {
-        "x": 6.780421470440608,
-        "y": 4.643625295804703
-      },
-      "holonomicAngle": 0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 6.671573001265661,
-        "y": 4.601924759405074
-      },
-      "prevControl": {
-        "x": 6.648734664990697,
-        "y": 4.613343927542556
-      },
-      "nextControl": {
-        "x": 6.648734664990697,
-        "y": 4.613343927542556
+        "x": 6.6042756762469015,
+        "y": 4.49444386878404
       },
       "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": 0.1,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -74,18 +49,43 @@
     },
     {
       "anchorPoint": {
-        "x": 6.159214026613109,
-        "y": 4.592943847809404
+        "x": 1.6501967601091607,
+        "y": 3.846663143563254
       },
       "prevControl": {
-        "x": 6.510092455615405,
-        "y": 4.592943847809404
+        "x": 1.6501967601091607,
+        "y": 5.509045753569653
       },
       "nextControl": {
-        "x": 5.854919610195094,
-        "y": 4.592943847809404
+        "x": 1.6501967601091607,
+        "y": 3.656704469807044
       },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.2933392881003773,
+        "y": 4.881937915534599
+      },
+      "prevControl": {
+        "x": 1.787802856599858,
+        "y": 4.409045062050461
+      },
+      "nextControl": {
+        "x": 4.775016943398816,
+        "y": 5.3473366662373145
+      },
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -99,15 +99,15 @@
     },
     {
       "anchorPoint": {
-        "x": 1.6027070916701078,
-        "y": 4.369049496392832
+        "x": 6.494142940892518,
+        "y": 3.7326879393095282
       },
       "prevControl": {
-        "x": 3.999025620961966,
-        "y": 4.9015647251243575
+        "x": 6.057237991253236,
+        "y": 3.9701362815047907
       },
       "nextControl": null,
-      "holonomicAngle": 180.0,
+      "holonomicAngle": -35.90972307917758,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -122,33 +122,21 @@
   ],
   "markers": [
     {
-      "position": 0.5575757575757629,
+      "position": 0.3636363636363676,
+      "names": [
+        "arm cone intake"
+      ]
+    },
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 3.6848484848485463,
       "names": [
         "arm cube intake"
-      ]
-    },
-    {
-      "position": 1.1127272727272524,
-      "names": [
-        "start intake"
-      ]
-    },
-    {
-      "position": 1.3818181818181985,
-      "names": [
-        "stop intake"
-      ]
-    },
-    {
-      "position": 1.5515151515152619,
-      "names": [
-        "arm starting"
-      ]
-    },
-    {
-      "position": 3.8303030303031536,
-      "names": [
-        "arm high cube"
       ]
     }
   ]
