@@ -95,15 +95,15 @@ public class RobotMap {
         public static final double MAX_METERS_PER_SEC = 10; // m/s
         public static final double MAX_RADIANS_PER_SEC = 12; // rad/s
 
-        public static final double MAX_LINEAR_ACCEL = 7.5; // m/s/s
+        public static final double MAX_LINEAR_ACCEL = 20; // m/s/s
         public static final double MAX_ANGULAR_ACCEL = 23; // rad/s/s
 
     }
 
     public static final class AutoConstants {
         // For now keep auto speeds 1/3 of teleop
-        public static final double AUTO_MAX_METERS_PER_SEC = DriveConstants.MAX_METERS_PER_SEC / 2;
-        public static final double AUTO_MAX_RADIANS_PER_SEC = DriveConstants.MAX_RADIANS_PER_SEC / 2;
+        public static final double AUTO_MAX_METERS_PER_SEC = 5.0;
+        public static final double AUTO_MAX_RADIANS_PER_SEC = 6.0;
         public static final double AUTO_MAX_MPSS = 2;
         public static final double AUTO_MAX_ANGULAR_ACCEL = 5;
         public static final double P_AUTO_X = 5;// 4
@@ -168,7 +168,7 @@ public class RobotMap {
 
     public static final class LightConstants {
         public static final int LED_PORT = 7;
-        public static final int COUNT = 30;
+        public static final int COUNT = 60;
 
     }
 

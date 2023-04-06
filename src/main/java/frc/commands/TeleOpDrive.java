@@ -2,6 +2,7 @@ package frc.commands;
 
 import java.util.function.Supplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +13,7 @@ import frc.subsystems.Drivetrain;
 public class TeleOpDrive extends CommandBase {
 
     private final Drivetrain drivetrain;
-    private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
+    private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction, flip;
     private final Supplier<Boolean> fieldOrientedFunction, slowFunction, holdXFunction, BOOST;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private double desiredAngle; // gyro value from getHeading() the robot wants to point at
@@ -22,7 +23,7 @@ public class TeleOpDrive extends CommandBase {
     public TeleOpDrive(Drivetrain drivetrain,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
             Supplier<Double> rightY,
-            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction, Supplier<Boolean> holdXFunction, Supplier<Boolean> BOOST) {
+            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> slowFunction, Supplier<Boolean> holdXFunction, Supplier<Boolean> BOOST,  Supplier<Double> flip) {
         this.drivetrain = drivetrain;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
@@ -31,6 +32,7 @@ public class TeleOpDrive extends CommandBase {
         this.slowFunction = slowFunction;
         this.holdXFunction = holdXFunction;
         this.BOOST = BOOST;
+        this.flip = flip;
 
         // A slew rate limiter caps the rate of change of the inputs, to make the robot
         // drive much smoother
@@ -69,7 +71,12 @@ public class TeleOpDrive extends CommandBase {
         turningSpeed = turningLimiter.calculate(turningSpeed * DriveConstants.MAX_RADIANS_PER_SEC);
 
         // 4. Check right bumper for slow mode
-        if (slowFunction.get()) {
+        if(flip.get() > 0.05) {
+            xSpeed *= 0.23;
+            ySpeed *= 0.23;
+            turningSpeed *= 0.325;
+        }
+        else if (slowFunction.get()) {
             xSpeed *= 0.3;
             ySpeed *= 0.3;
             turningSpeed *= 0.325;
@@ -84,8 +91,13 @@ public class TeleOpDrive extends CommandBase {
         ChassisSpeeds chassisSpeeds;
         if (fieldOrientedFunction.get()) {
             // Relative to field
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            if (flip.get() < 0.05) {
+                chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                     xSpeed, ySpeed, turningSpeed, drivetrain.getRotation2d());
+            } else {
+                chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                    xSpeed, ySpeed, turningSpeed, new Rotation2d(drivetrain.getRotation2d().getRadians() + Math.PI));
+            }
         } else {
             // Relative to robot
             chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);

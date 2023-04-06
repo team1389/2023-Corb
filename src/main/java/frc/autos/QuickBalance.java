@@ -22,8 +22,8 @@ public class QuickBalance extends SequentialCommandGroup{
         addRequirements(drivetrain, arm, intake);
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("Quick Balance", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC-0.75, 
-            AutoConstants.AUTO_MAX_MPSS-0.5));
+            AutoConstants.AUTO_MAX_METERS_PER_SEC-3.0, 
+            AutoConstants.AUTO_MAX_MPSS-1.25));
 
         PathPlannerTrajectory driveUpTraj = PathPlanner.loadPath("Drive Up", new PathConstraints(
                 AutoConstants.AUTO_MAX_METERS_PER_SEC, 
@@ -35,7 +35,7 @@ public class QuickBalance extends SequentialCommandGroup{
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCube, false, 1.9),
             new RunOuttakeCube(intake, 0.5),
-            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.5),
             drivePath,
             new AutoBalance(drivetrain)
         );

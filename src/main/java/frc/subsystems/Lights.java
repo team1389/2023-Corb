@@ -10,6 +10,7 @@ public class Lights extends SubsystemBase {
     AddressableLED ledStrip;
     AddressableLEDBuffer buffer;
     public int hueee = 0;
+    public boolean isRainbowing = false;
 
     public Lights() {
         ledStrip = new AddressableLED(LightConstants.LED_PORT);
@@ -24,7 +25,7 @@ public class Lights extends SubsystemBase {
 
     //id == 0 for left, 1 for right, 2 for both
     public void setColor(int red, int green, int blue) {
-        
+        isRainbowing = false;
           for (var i = 0; i < buffer.getLength(); i++) {
               // Sets the specified LED to the RGB values for red
               buffer.setRGB(i, red, green, blue);
@@ -35,6 +36,7 @@ public class Lights extends SubsystemBase {
         
     }
 
+    
     public void rainbow() {
         var firstPixelHue = hueee%180;
 
@@ -51,6 +53,9 @@ public class Lights extends SubsystemBase {
 
       @Override
       public void periodic() {
+        if(isRainbowing) {
+          rainbow();
+        }
         // Set the LEDs
         ledStrip.setData(buffer);
       }

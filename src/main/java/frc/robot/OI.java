@@ -61,6 +61,8 @@ public class OI {
     private Trigger driveBButton;
     private Trigger driveYButton;
     private Trigger driveRightTrigger;
+    private Trigger driveLeftTrigger;
+
 
 
     private XboxController manipController;
@@ -130,7 +132,8 @@ public class OI {
                 () -> getDriveLeftBumper(), // By default be in field oriented
                 () -> !getDriveRightBumper(), // Slow function
                 () -> driveXButton.getAsBoolean(), // Hold x position
-                () -> driveRightTrigger.getAsBoolean()) // boost
+                () -> driveRightTrigger.getAsBoolean(),
+                () -> driveController.getRawAxis(5)) // flip
         );
 
         // Press A button -> zero gyro heading
@@ -140,7 +143,7 @@ public class OI {
         driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
 
         driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
-        driveYButton.toggleOnTrue(new RunCommand(() -> light.rainbow()));
+        driveYButton.onTrue(new InstantCommand(() -> {light.isRainbowing = true;}));
 
 
         // MANIPULATOR CONTROLLER

@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         
         oi = new OI();
+        oi.light.rainbow();
 
         frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
         backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
@@ -94,9 +95,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        // SwerveTelemetry frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
-        // SwerveTelemetry backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
-        // SwerveTelemetry frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
+        SwerveTelemetry frontLeftTelemetry = new SwerveTelemetry(oi.drivetrain.frontLeft);
+        SwerveTelemetry backLeftTelemetry = new SwerveTelemetry(oi.drivetrain.backLeft);
+        SwerveTelemetry frontRightTelemetry = new SwerveTelemetry(oi.drivetrain.frontRight);
         SwerveTelemetry backRightTelemetry = new SwerveTelemetry(oi.drivetrain.backRight);
         //SendableRegistry.add(frontLeftTelemetry, "Swerve");
 
@@ -121,17 +122,17 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        // SmartDashboard.putNumber("FL angle", Math.toDegrees(frontLeftTelemetry.getAngle()));
+        SmartDashboard.putNumber("FL angle", Math.toDegrees(frontLeftTelemetry.getTargetAngle()));
         SmartDashboard.putNumber("FL speed", frontLeftTelemetry.getSpeed());
 
 
-        // SmartDashboard.putNumber("BL angle", Math.toDegrees(backLeftTelemetry.getAngle()));
+        SmartDashboard.putNumber("BL angle", Math.toDegrees(backLeftTelemetry.getTargetAngle()));
         SmartDashboard.putNumber("BL speed", backLeftTelemetry.getSpeed());
 
-        // SmartDashboard.putNumber("FR angle", Math.toDegrees(frontRightTelemetry.getAngle()));
+        SmartDashboard.putNumber("FR angle", Math.toDegrees(frontRightTelemetry.getTargetAngle()));
         SmartDashboard.putNumber("FR speed", frontRightTelemetry.getSpeed());
 
-        // SmartDashboard.putNumber("BR angle", Math.toDegrees(backRightTelemetry.getAngle()));
+        SmartDashboard.putNumber("BR angle", Math.toDegrees(backRightTelemetry.getTargetAngle()));
         SmartDashboard.putNumber("BR speed", backRightTelemetry.getSpeed());
 
     }

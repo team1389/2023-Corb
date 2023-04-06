@@ -24,15 +24,15 @@
     },
     {
       "anchorPoint": {
-        "x": 6.627114012521865,
+        "x": 6.73159128308778,
         "y": 4.483024700646558
       },
       "prevControl": {
-        "x": 6.6042756762469015,
+        "x": 6.708752946812816,
         "y": 4.49444386878404
       },
       "nextControl": {
-        "x": 6.6042756762469015,
+        "x": 6.708752946812816,
         "y": 4.49444386878404
       },
       "holonomicAngle": 0,
@@ -49,18 +49,43 @@
     },
     {
       "anchorPoint": {
-        "x": 1.5742132906066761,
-        "y": 3.7231900056217175
+        "x": 2.0301141076215807,
+        "y": 3.9701362815047907
       },
       "prevControl": {
-        "x": 2.5050107920121056,
-        "y": 5.546793273681335
+        "x": 2.134591378187496,
+        "y": 5.888718886442511
       },
       "nextControl": {
-        "x": 1.4878541694306218,
-        "y": 3.5539966253584274
+        "x": 2.025352682739964,
+        "y": 3.8826992064060035
       },
       "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.507727754792003,
+        "y": 3.8561610772510644
+      },
+      "prevControl": {
+        "x": 1.654506867960185,
+        "y": 3.766815420275514
+      },
+      "nextControl": {
+        "x": 1.3609486416238203,
+        "y": 3.9455067342266155
+      },
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -122,7 +147,7 @@
   ],
   "markers": [
     {
-      "position": 0.3636363636363676,
+      "position": 0.39393939393939736,
       "names": [
         "arm cone intake"
       ]
@@ -134,7 +159,7 @@
       ]
     },
     {
-      "position": 3.6848484848485463,
+      "position": 4.696969696969747,
       "names": [
         "arm cube intake"
       ]
