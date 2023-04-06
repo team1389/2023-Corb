@@ -22,7 +22,7 @@ public class OverAndOut extends SequentialCommandGroup{
         addRequirements(drivetrain, arm, intake);
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("Over And Out", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC-2.121213, 
+            AutoConstants.AUTO_MAX_METERS_PER_SEC-2.421213, 
             AutoConstants.AUTO_MAX_MPSS-0.5));
 
         Command drivePath = drivetrain.followTrajectoryCommand(trajectory, true);
@@ -30,7 +30,7 @@ public class OverAndOut extends SequentialCommandGroup{
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
             new RunOuttakeCone(intake, 0.5),
-            new SetArmPosition(arm, ArmPosition.StartingConfig, true),
+            new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.5),
             drivePath,
             new AutoBalance(drivetrain)
         );

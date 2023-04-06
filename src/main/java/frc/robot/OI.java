@@ -196,7 +196,7 @@ public class OI {
         chooser.addOption("Quick Balance Cube", quickBalanceCube);
         chooser.addOption("Quick Balance Cone", quickBalanceCone);
 
-        chooser.addOption("Cube, over charge station, balance", overAndOut);
+        chooser.addOption("Cone, over charge station, balance", overAndOut);
         chooser.addOption("Cone, pickup, cube but bump side", twoCubeBalanceBump);
         chooser.addOption("Cone, pickup, cube", twoTopCone);
         chooser.addOption("Cone, pickup, cone", coneCone);
@@ -258,11 +258,11 @@ public class OI {
     }
 
     private double getDriveRightX() {
-        return -driveController.getRawAxis(3);
+        return -driveController.getRawAxis(2);
     }
 
     private double getDriveRightY() {
-        return driveController.getRawAxis(5);
+        return driveController.getRawAxis(3);
     }
 
     private boolean getDriveLeftBumper() {
@@ -282,11 +282,11 @@ public class OI {
     }
 
     private double getManipRightX() {
-        return -manipController.getRawAxis(3);
+        return -manipController.getRawAxis(2);
     }
 
     private double getManipRightY() {
-        return -manipController.getRawAxis(5);
+        return -manipController.getRawAxis(3);
     }
 
     private boolean getManipLeftBumper() {
