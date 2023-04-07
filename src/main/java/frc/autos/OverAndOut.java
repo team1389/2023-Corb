@@ -24,20 +24,18 @@ public class OverAndOut extends SequentialCommandGroup{
     public OverAndOut(Drivetrain drivetrain, Arm arm, Intake intake){
         addRequirements(drivetrain, arm, intake);
 
-        List<PathPlannerTrajectory> trajectories = PathPlanner.loadPathGroup("Over And Out 2", new PathConstraints(
-            AutoConstants.AUTO_MAX_METERS_PER_SEC-2.5, 
+        List<PathPlannerTrajectory> trajectories = PathPlanner.loadPathGroup("Over And Out 3", new PathConstraints(
+            AutoConstants.AUTO_MAX_METERS_PER_SEC-2.7, 
             AutoConstants.AUTO_MAX_MPSS-0.9)
         );
 
         Command drivePath = drivetrain.followTrajectoryCommand(trajectories.get(0), true);
-        Command drivePath2 = drivetrain.followTrajectoryCommand(trajectories.get(1), false);
 
         addCommands(
             new SetArmPosition(arm, ArmPosition.HighCone, false, 2.1),
             new RunOuttakeCone(intake, 0.5),
             new SetArmPosition(arm, ArmPosition.StartingConfig, false, 0.5),
             drivePath,
-            drivePath2,
             new AutoBalance(drivetrain)
         );
         

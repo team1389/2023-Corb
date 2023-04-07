@@ -10,7 +10,7 @@ public class Lights extends SubsystemBase {
     AddressableLED ledStrip;
     AddressableLEDBuffer buffer;
     public int hueee = 0;
-    public boolean isRainbowing = false;
+    public boolean isRainbowing = true;
 
     public Lights() {
         ledStrip = new AddressableLED(LightConstants.LED_PORT);

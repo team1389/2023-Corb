@@ -121,7 +121,7 @@ public class Arm extends SubsystemBase {
         positionMap.put(ArmPosition.MidCone, new Double[] { 28.48322, 1.768219, 0.6075, 1.5, -1.85 });
         positionMap.put(ArmPosition.HighCone, new Double[] { 56.7858, 2.843456789, 0.0009, 9.0, 70.0 });
         positionMap.put(ArmPosition.AboveHighCone, new Double[] { 56.7858, 2.37, 0.0009, 9.0, 70.0 });
-        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 4.3077, 4.196, 0.2774 });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 4.3077, 4.15904303019, 0.2774 });
         positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 4.8, 0.4 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 6.569, 4.626, 0.4 });
         positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
@@ -198,8 +198,8 @@ public class Arm extends SubsystemBase {
         double elbowAngle = (Math.PI / 2) - ((Math.PI * 2) - getElbowPos() + Math.toRadians(25) - getShoulderAngle());
         // double elbowAngle = -((2 * Math.PI - getElbowPos() + Math.toRadians(25)) - getShoulderAngle()) + (Math.PI/2);
 
-        SmartDashboard.putNumber("elbow angle", elbowAngle);
-        SmartDashboard.putNumber("shoulder angle", getShoulderAngle());
+        // SmartDashboard.putNumber("elbow angle", elbowAngle);
+        // SmartDashboard.putNumber("shoulder angle", getShoulderAngle());
 
 
         if (!controllerInterrupt) {             
@@ -232,11 +232,11 @@ public class Arm extends SubsystemBase {
         
     
 
-        SmartDashboard.putNumber("Wrist power", wristPower);
-        SmartDashboard.putNumber("Elbow power", elbowPower);
-        SmartDashboard.putNumber("ElbowF FF", getElbowFF(elbowAngle));
+        // SmartDashboard.putNumber("Wrist power", wristPower);
+        // SmartDashboard.putNumber("Elbow power", elbowPower);
+        // SmartDashboard.putNumber("ElbowF FF", getElbowFF(elbowAngle));
 
-        SmartDashboard.putNumber("Shoulder power", shoulderPower);
+        // SmartDashboard.putNumber("Shoulder power", shoulderPower);
 
         SmartDashboard.putNumber("Shoulder position", getShoulderPos());
         SmartDashboard.putNumber("Elbow position", getElbowPos());
