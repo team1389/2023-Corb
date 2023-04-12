@@ -21,6 +21,7 @@ import frc.autos.OneBottomCone;
 import frc.autos.OneBottomCube;
 import frc.autos.OutAndScoreNoBump;
 import frc.autos.OverAndOut;
+import frc.autos.PickupBalance;
 import frc.autos.OneTopCube;
 import frc.autos.OutAndScoreBump;
 import frc.autos.QuickBalance;
@@ -191,6 +192,8 @@ public class OI {
         final Command twoCubeBalanceBump = new TwoCubeBalanceBump(drivetrain, arm, intake, autoMap);
         final Command threeExclamation = new ThreeExclamation(drivetrain, arm, intake, autoMap);
         final Command coneCone = new ConeCone(drivetrain, arm, intake, autoMap);
+        final Command pickup = new PickupBalance(drivetrain, arm, intake, autoMap);
+
 
 
 
@@ -203,6 +206,8 @@ public class OI {
         chooser.addOption("Cone, pickup, cube but bump side", twoCubeBalanceBump);
         chooser.addOption("Cone, pickup, cube", twoTopCone);
         chooser.addOption("Cone, pickup, cone", coneCone);
+        chooser.addOption("Over pickup score again balance", pickup);
+
 
         // chooser.addOption("Cube, pickup, cube, balance", twoTopCubeBalance);
 

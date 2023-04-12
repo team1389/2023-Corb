@@ -146,6 +146,27 @@
               "_showGlyph": false
             }
           },
+          "1,0": {
+            "size": [
+              8,
+              9
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://photonvision_Port_1184_MJPEG_Server",
+              "_title": "photonvision_Port_1184_MJPEG_Server",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": 19.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
           "9,0": {
             "size": [
               8,
@@ -161,8 +182,8 @@
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
               "Controls/Rotation": "QUARTER_CW",
-              "compression": -1.0,
-              "fps": -1,
+              "compression": 32.0,
+              "fps": 15,
               "imageWidth": -1,
               "imageHeight": -1
             }
@@ -172,9 +193,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.333333492279053,
-    "y": -7.333333492279053,
-    "width": 1518.6666259765625,
-    "height": 986.6666870117188
+    "x": -6.666666507720947,
+    "y": 1.3333333730697632,
+    "width": 1516.0,
+    "height": 977.3333129882812
   }
 }
