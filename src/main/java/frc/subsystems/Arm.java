@@ -4,20 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import com.revrobotics.SparkMaxLimitSwitch;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -78,7 +76,7 @@ public class Arm extends SubsystemBase {
     // DigitalInput shoulderLimitSwitch = new DigitalInput(1);
     SparkMaxLimitSwitch wristLimitSwitch;
 
-
+    private double zeroOffset = 1.08;
 
     // Number of steps to take to get there. Higher is smoother but slower
 
@@ -112,21 +110,21 @@ public class Arm extends SubsystemBase {
 
         // [Shoulder, elbow, wrist, delay for elbow going up, delay for elbow going down]
         // If elbow delay > 0, shoulder then elbow; if it's less, elbow then shoulder
-        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI - 1.08, 0.0 });
+        positionMap.put(ArmPosition.StartingConfig, new Double[] { 0.0, 2*Math.PI - 1.08+zeroOffset, 0.0 });
 
-        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 3.96, 0.00322 });
-        positionMap.put(ArmPosition.IntakeCone, new Double[] { 1.5148, 3.9920072509, 0.3375 });
+        positionMap.put(ArmPosition.IntakeCube, new Double[] { 0.0, 3.96+zeroOffset, 0.00322 });
+        positionMap.put(ArmPosition.IntakeCone, new Double[] { 1.5148, 3.9920072509+zeroOffset, 0.3375 });
 
         positionMap.put(ArmPosition.Low, new Double[] { 0.0, 0.0, 0.0 }); // TODO
-        positionMap.put(ArmPosition.MidCone, new Double[] { 28.48322, 1.768219, 0.6075, 1.5, -1.85 });
-        positionMap.put(ArmPosition.HighCone, new Double[] { 56.7858, 2.843456789, 0.0009, 9.0, 70.0 });
-        positionMap.put(ArmPosition.AboveHighCone, new Double[] { 56.7858, 2.37, 0.0009, 9.0, 70.0 });
-        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 4.3077, 4.15904303019, 0.2774 });
-        positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 4.8, 0.4 });
+        positionMap.put(ArmPosition.MidCone, new Double[] { 28.48322, 1.768219+zeroOffset, 0.6075, 1.5, -1.85 });
+        positionMap.put(ArmPosition.HighCone, new Double[] { 56.7858, 2.843456789+zeroOffset, 0.0009, 9.0, 70.0 });
+        positionMap.put(ArmPosition.AboveHighCone, new Double[] { 56.7858, 2.37+zeroOffset, 0.0009, 9.0, 70.0 });
+        positionMap.put(ArmPosition.IntakeConeFeeder, new Double[] { 4.3077, 4.15904303019+zeroOffset, 0.2774 });
+        positionMap.put(ArmPosition.MidCube, new Double[] { 0.0, 4.8+zeroOffset, 0.4 });
         positionMap.put(ArmPosition.HighCube, new Double[] { 6.569, 4.626, 0.4 });
-        positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0, 0.2490 + absWristOffset });
-        positionMap.put(ArmPosition.MidConeBack, new Double[] {50.15725, 4.0689259, 0.3375, 25.0});
-        positionMap.put(ArmPosition.CubeBack, new Double[] {34.6810621, 4.769, 0.4});
+        positionMap.put(ArmPosition.AboveMidConeTop, new Double[] { 1.547, -3.0+zeroOffset, 0.2490 + absWristOffset });
+        positionMap.put(ArmPosition.MidConeBack, new Double[] {50.15725, 4.0689259+zeroOffset, 0.3375, 25.0});
+        positionMap.put(ArmPosition.CubeBack, new Double[] {34.6810621, 4.769+zeroOffset, 0.4});
 
         setArm(ArmPosition.StartingConfig);
     }

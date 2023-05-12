@@ -226,29 +226,29 @@ public class OI {
         driveController = new XboxController(0);
         manipController = new XboxController(1);
 
-        driveAButton = new JoystickButton(driveController, 1);
-        driveXButton = new JoystickButton(driveController, 3);
-        driveBButton = new JoystickButton(driveController, 2);
+        driveAButton = new JoystickButton(driveController, 1);//X
+        driveXButton = new JoystickButton(driveController, 3);//B
+        driveBButton = new JoystickButton(driveController, 2);//A
         driveYButton = new JoystickButton(driveController, 4);
 
         driveRightBumper = new JoystickButton(driveController, 6);
-        driveRightTrigger = new JoystickButton(driveController, 12);
+        driveRightTrigger = new JoystickButton(driveController, 12);//right joystick btn
 
 
-        manipEllipsisButton = new JoystickButton(manipController, 9);
-        manipMenuButton = new JoystickButton(manipController, 10);
-        manipFullscreen = new JoystickButton(manipController, 15);
-        manipGoogle = new JoystickButton(manipController, 14);
-        manipStadia = new JoystickButton(manipController, 11);
+        manipEllipsisButton = new JoystickButton(manipController, 9); //back btn
+        manipMenuButton = new JoystickButton(manipController, 10); //start btn
+        manipFullscreen = new JoystickButton(manipController, 5);//left Bumper - (15 (Stadia))
+        manipGoogle = new JoystickButton(manipController, 6);//right Bumper - (14 (Stadia))
+        manipStadia = new JoystickButton(manipController, 11);//left joystick btn
 
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
-        manipRightTrigger = new JoystickButton(manipController, 12);
-        manipLeftTrigger = new JoystickButton(manipController, 13);
+        manipRightTrigger = new JoystickButton(manipController, 12);//right joystick btn
+        manipLeftTrigger = new JoystickButton(manipController, 7);//left Trigger - (13 (Stadia))
 
-        manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);
-        manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);
-        manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);
+        manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);//X
+        manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);//A
+        manipXButton = new JoystickButton(manipController, XboxController.Button.kX.value);//B
         manipYButton = new JoystickButton(manipController, XboxController.Button.kY.value);
 
         manipUp = new DPadButton(manipController, Direction.UP).getTrigger();
