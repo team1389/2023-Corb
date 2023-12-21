@@ -237,14 +237,14 @@ public class OI {
 
         manipEllipsisButton = new JoystickButton(manipController, 9); //back btn
         manipMenuButton = new JoystickButton(manipController, 10); //start btn
-        manipFullscreen = new JoystickButton(manipController, 5);//left Bumper - (15 (Stadia))
-        manipGoogle = new JoystickButton(manipController, 6);//right Bumper - (14 (Stadia))
+        manipFullscreen = new JoystickButton(manipController, 15);//left Bumper - (15 (Stadia)) (5 - logitech)
+        manipGoogle = new JoystickButton(manipController, 14);//right Bumper - (14 (Stadia)) (6 - logitech)
         manipStadia = new JoystickButton(manipController, 11);//left joystick btn
 
         manipRightBumper = new JoystickButton(manipController, XboxController.Button.kRightBumper.value);
         manipLeftBumper = new JoystickButton(manipController, XboxController.Button.kLeftBumper.value);
         manipRightTrigger = new JoystickButton(manipController, 12);//right joystick btn
-        manipLeftTrigger = new JoystickButton(manipController, 7);//left Trigger - (13 (Stadia))
+        manipLeftTrigger = new JoystickButton(manipController, 13);//left Trigger - (13 (Stadia)) (7 - logitech)
 
         manipAButton = new JoystickButton(manipController, XboxController.Button.kA.value);//X
         manipBButton = new JoystickButton(manipController, XboxController.Button.kB.value);//A
@@ -266,11 +266,11 @@ public class OI {
     }
 
     private double getDriveRightX() {
-        return -driveController.getRawAxis(2);
+        return -driveController.getRawAxis(3); // logitech: 2
     }
 
     private double getDriveRightY() {
-        return driveController.getRawAxis(3);
+        return driveController.getRawAxis(4); // logitech: 3
     }
 
     private boolean getDriveLeftBumper() {
