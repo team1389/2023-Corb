@@ -16,22 +16,22 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.autos.DriveBack;
-import frc.autos.OneBottomCone;
-import frc.autos.OneBottomCube;
-import frc.autos.OutAndScoreNoBump;
-import frc.autos.OverAndOut;
-import frc.autos.PickupBalance;
-import frc.autos.OneTopCube;
-import frc.autos.OutAndScoreBump;
-import frc.autos.QuickBalance;
-import frc.autos.QuickBalanceCone;
-import frc.autos.ThreeExclamation;
-import frc.autos.TwoCubeBalanceBump;
-import frc.autos.ConeCone;
-import frc.autos.ConeCube;
-import frc.autos.TwoTopCube;
-import frc.autos.TwoTopCubeBalance;
+// import frc.autos.DriveBack;
+// import frc.autos.OneBottomCone;
+// import frc.autos.OneBottomCube;
+// import frc.autos.OutAndScoreNoBump;
+// import frc.autos.OverAndOut;
+// import frc.autos.PickupBalance;
+// import frc.autos.OneTopCube;
+// import frc.autos.OutAndScoreBump;
+// import frc.autos.QuickBalance;
+// import frc.autos.QuickBalanceCone;
+// import frc.autos.ThreeExclamation;
+// import frc.autos.TwoCubeBalanceBump;
+// import frc.autos.ConeCone;
+// import frc.autos.ConeCube;
+// import frc.autos.TwoTopCube;
+// import frc.autos.TwoTopCubeBalance;
 
 import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
@@ -89,23 +89,23 @@ public class OI {
     private Trigger manipDown;
     private Trigger manipRight;
 
-    SendableChooser<Command> chooser = new SendableChooser<>();
+    // SendableChooser<Command> chooser = new SendableChooser<>();
 
-    private HashMap<String, Command> autoMap = new HashMap<String, Command>();
+    // private HashMap<String, Command> autoMap = new HashMap<String, Command>();
 
     public OI() {
     
-        //automap
-        autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
-        autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
-        autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
-        autoMap.put("arm cube intake", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
-        autoMap.put("arm cone intake", new SetArmPosition(arm, ArmPosition.IntakeCone, true));
+        // //automap
+        // autoMap.put("start intake", new InstantCommand(() -> intake.runIntakeCube()));
+        // autoMap.put("stop intake", new InstantCommand(() -> intake.stop()));
+        // autoMap.put("arm high cone", new SetArmPosition(arm, ArmPosition.HighCone, true));
+        // autoMap.put("arm cube intake", new SetArmPosition(arm, ArmPosition.IntakeCube, true));
+        // autoMap.put("arm cone intake", new SetArmPosition(arm, ArmPosition.IntakeCone, true));
 
-        autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
-        autoMap.put("arm starting", new SetArmPosition(arm, ArmPosition.StartingConfig, true));
-        autoMap.put("arm high cube", new SetArmPosition(arm, ArmPosition.HighCube, true));
-        autoMap.put("arm cube back", new SetArmPosition(arm, ArmPosition.CubeBack, true));
+        // autoMap.put("arm mid cone", new SetArmPosition(arm, ArmPosition.MidCone, true));
+        // autoMap.put("arm starting", new SetArmPosition(arm, ArmPosition.StartingConfig, true));
+        // autoMap.put("arm high cube", new SetArmPosition(arm, ArmPosition.HighCube, true));
+        // autoMap.put("arm cube back", new SetArmPosition(arm, ArmPosition.CubeBack, true));
 
         initControllers();
 
@@ -176,47 +176,47 @@ public class OI {
         manipRight.whileTrue(new RunIntakeCube(intake));
 
 
-        final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
-        final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
-        final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
-        final Command quickBalanceCube = new QuickBalance(drivetrain, arm, intake);
-        final Command quickBalanceCone = new QuickBalanceCone(drivetrain, arm, intake, autoMap);
-        final Command overAndOut = new OverAndOut(drivetrain, arm, intake);
+        // final Command oneBottomCone = new OneBottomCone(drivetrain, arm, intake, autoMap);
+        // final Command oneBottomCube = new OneBottomCube(drivetrain, arm, intake, autoMap);
+        // final Command oneTopCube = new OneTopCube(drivetrain, arm, intake, autoMap);
+        // final Command quickBalanceCube = new QuickBalance(drivetrain, arm, intake);
+        // final Command quickBalanceCone = new QuickBalanceCone(drivetrain, arm, intake, autoMap);
+        // final Command overAndOut = new OverAndOut(drivetrain, arm, intake);
 
-        final Command driveBack = new DriveBack(drivetrain, arm, intake);
-        final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake, autoMap);
-        final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
-        final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
-        final Command twoTopCone = new ConeCube(drivetrain, arm, intake, autoMap);
-        final Command twoTopCubeBalance = new TwoTopCubeBalance(drivetrain, arm, intake, autoMap);
-        final Command twoCubeBalanceBump = new TwoCubeBalanceBump(drivetrain, arm, intake, autoMap);
-        final Command threeExclamation = new ThreeExclamation(drivetrain, arm, intake, autoMap);
-        final Command coneCone = new ConeCone(drivetrain, arm, intake, autoMap);
-        final Command pickup = new PickupBalance(drivetrain, arm, intake, autoMap);
+        // final Command driveBack = new DriveBack(drivetrain, arm, intake);
+        // final Command outAndScoreNoBump = new OutAndScoreNoBump(drivetrain, arm, intake, autoMap);
+        // final Command outAndScoreBump = new OutAndScoreBump(drivetrain, arm, intake);
+        // final Command twoTopCube = new TwoTopCube(drivetrain, arm, intake, autoMap);
+        // final Command twoTopCone = new ConeCube(drivetrain, arm, intake, autoMap);
+        // final Command twoTopCubeBalance = new TwoTopCubeBalance(drivetrain, arm, intake, autoMap);
+        // final Command twoCubeBalanceBump = new TwoCubeBalanceBump(drivetrain, arm, intake, autoMap);
+        // final Command threeExclamation = new ThreeExclamation(drivetrain, arm, intake, autoMap);
+        // final Command coneCone = new ConeCone(drivetrain, arm, intake, autoMap);
+        // final Command pickup = new PickupBalance(drivetrain, arm, intake, autoMap);
 
 
 
 
 
         // Add options
-        chooser.addOption("Quick Balance Cube", quickBalanceCube);
-        chooser.addOption("Quick Balance Cone", quickBalanceCone);
+        // chooser.addOption("Quick Balance Cube", quickBalanceCube);
+        // chooser.addOption("Quick Balance Cone", quickBalanceCone);
 
-        chooser.addOption("Cone, over charge station, balance", overAndOut);
-        chooser.addOption("Cone, pickup, cube but bump side", twoCubeBalanceBump);
-        chooser.addOption("Cone, pickup, cube", twoTopCone);
-        chooser.addOption("Cone, pickup, cone", coneCone);
-        chooser.addOption("Over pickup score again balance", pickup);
-
-
-        // chooser.addOption("Cube, pickup, cube, balance", twoTopCubeBalance);
-
-        chooser.addOption("Cube, out, balance", outAndScoreNoBump);
-        chooser.addOption("3!", threeExclamation);
-        chooser.addOption("Drive Back", driveBack);
+        // chooser.addOption("Cone, over charge station, balance", overAndOut);
+        // chooser.addOption("Cone, pickup, cube but bump side", twoCubeBalanceBump);
+        // chooser.addOption("Cone, pickup, cube", twoTopCone);
+        // chooser.addOption("Cone, pickup, cone", coneCone);
+        // chooser.addOption("Over pickup score again balance", pickup);
 
 
-        SmartDashboard.putData("Auto choices", chooser);
+        // // chooser.addOption("Cube, pickup, cube, balance", twoTopCubeBalance);
+
+        // chooser.addOption("Cube, out, balance", outAndScoreNoBump);
+        // chooser.addOption("3!", threeExclamation);
+        // chooser.addOption("Drive Back", driveBack);
+
+
+        // SmartDashboard.putData("Auto choices", chooser);
     }
 
     /**
@@ -306,8 +306,8 @@ public class OI {
     }
 
     // Return auto command
-    public Command getAutoCommand() {
-        return chooser.getSelected();
-    }
+    // public Command getAutoCommand() {
+    //     return chooser.getSelected();
+    // }
 
 }

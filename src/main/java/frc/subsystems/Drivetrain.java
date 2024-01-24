@@ -1,8 +1,6 @@
 package frc.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -176,46 +174,6 @@ public class Drivetrain extends SubsystemBase {
         backRight.setDesiredState(desiredStates[2], true);
         backLeft.setDesiredState(desiredStates[3], true);
         
-    }
-
-
-    // Return a command to follow given pathplannertrajectory
-    public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-        // m_field.getObject("traj").setTrajectory(traj);
-         // Define PID controllers for tracking trajectory
-         PIDController xController = new PIDController(AutoConstants.P_AUTO_X, AutoConstants.I_AUTO_X, 0);
-         PIDController yController = new PIDController(AutoConstants.P_AUTO_Y, AutoConstants.I_AUTO_Y, 0);
-         PIDController thetaController = new PIDController(AutoConstants.P_AUTO_THETA, 0, 0);
-         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-        return new SequentialCommandGroup(
-            new InstantCommand(() -> {
-            // Reset odometry for the first path you run during auto
-            if(isFirstPath){
-                Pose2d currentPose = traj.getInitialHolonomicPose();
-
-                // Mirror over y axis and reverse rotation if red (path mirroring done below)
-                if(DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-                    currentPose = new Pose2d(new Translation2d(
-                        currentPose.getX(),
-                        8-currentPose.getY()), // fieldwidth - y
-                        new Rotation2d().minus(currentPose.getRotation())); // Flip rotation
-                }
-                this.resetOdometry(currentPose);
-            }
-            }),
-            new PPSwerveControllerCommand(
-                traj, 
-                this::getPose, // Pose supplier
-                DriveConstants.driveKinematics, 
-                xController, // X controller
-                yController, // Y controller
-                thetaController, // Rotation controller
-                this::setModuleStates, // Module states consumer
-                true,
-                this
-            )
-        );
     }
 
 }
