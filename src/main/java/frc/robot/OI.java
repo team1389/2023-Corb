@@ -32,7 +32,7 @@ import frc.autos.ConeCone;
 import frc.autos.ConeCube;
 import frc.autos.TwoTopCube;
 import frc.autos.TwoTopCubeBalance;
-
+import frc.commands.AutoAlign;
 import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
 import frc.commands.PickupCone;
@@ -146,6 +146,8 @@ public class OI {
         driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
         driveYButton.onTrue(new InstantCommand(() -> {light.isRainbowing = true;}));
 
+        // Auto Align with AprilTag
+        driveLeftTrigger.onTrue(new AutoAlign(drivetrain));
 
         // MANIPULATOR CONTROLLER
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));
@@ -234,6 +236,8 @@ public class OI {
         driveRightBumper = new JoystickButton(driveController, 6);
         driveRightTrigger = new JoystickButton(driveController, 12);//right joystick btn
 
+        driveLeftTrigger = new JoystickButton(driveController, 0); //put button number
+
 
         manipEllipsisButton = new JoystickButton(manipController, 9); //back btn
         manipMenuButton = new JoystickButton(manipController, 10); //start btn
@@ -258,15 +262,15 @@ public class OI {
     }
 
     private double getDriveLeftX() {
-        return -driveController.getRawAxis(0);
+        return driveController.getRawAxis(0);
     }
 
     private double getDriveLeftY() {
-        return -driveController.getRawAxis(1);
+        return driveController.getRawAxis(1);
     }
 
     private double getDriveRightX() {
-        return -driveController.getRawAxis(3); // logitech: 2
+        return driveController.getRawAxis(3); // logitech: 2, negative
     }
 
     private double getDriveRightY() {
