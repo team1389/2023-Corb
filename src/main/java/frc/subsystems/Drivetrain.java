@@ -124,6 +124,22 @@ public class Drivetrain extends SubsystemBase {
         backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), false);
     }
 
+
+// use with limelight
+
+    //Use with vision
+    public void updateOdometryLatency1(Pose2d measuredPose, double timestamp) {
+        Pose2d currentPose = getPose();
+        double xDiff = Math.abs(currentPose.getX() - measuredPose.getX());
+        double yiff = Math.abs(currentPose.getY() - measuredPose.getY());
+
+        //Check that measured pose isn't more than 1m away
+        if(Math.hypot(xDiff, yiff) <= 1) {
+            poseEstimator.addVisionMeasurement( measuredPose, timestamp);
+        } 
+    }
+
+
     //Use with vision
     public void updateOdometryLatency(Pose2d measuredPose, double timestamp) {
         Pose2d currentPose = getPose();
