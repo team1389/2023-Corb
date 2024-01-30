@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import frc.autos.ConeCube;
 // import frc.autos.TwoTopCube;
 // import frc.autos.TwoTopCubeBalance;
-
+import frc.commands.AutoAlign;
 import frc.commands.HoldPosition;
 import frc.commands.ManualArm;
 import frc.commands.PickupCone;
@@ -140,8 +140,9 @@ public class OI {
         // Press A button -> zero gyro heading
         driveAButton.onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
-        // Press X button -> set X to not slide
-        driveXButton.onTrue(new InstantCommand(() -> drivetrain.setX()));
+        // I have no idea what to put for april tag pipeline
+        driveXButton.onTrue(new AutoAlign(2,drivetrain));
+
 
         driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
         driveYButton.onTrue(new InstantCommand(() -> {light.isRainbowing = true;}));
