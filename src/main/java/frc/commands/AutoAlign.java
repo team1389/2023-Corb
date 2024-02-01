@@ -5,29 +5,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap.DriveConstants;
 import frc.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.subsystems.Limelight;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.LimelightHelpers;
+import frc.subsystems.Drivetrain;
 
 public class AutoAlign extends CommandBase{
 
-    public Limelight april;
     private final Drivetrain drivetrain;
+    double tx = LimelightHelpers.getTX("");
 
-     public AutoAlign(int aprilTagPipeline, Drivetrain drivetrain) {
-        april = new Limelight(aprilTagPipeline);
+     public AutoAlign(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
 
         addRequirements(drivetrain);
     }
 
+
     @Override
     public void execute() {
+
+        SmartDashboard.putNumber("LimelightX", LimelightHelpers.getTX(""));
+        SmartDashboard.putString("InsideAutoAlign", "success");
+        SmartDashboard.putNumber("LimelightY", LimelightHelpers.getTY(""));
+        SmartDashboard.putNumber("LimelightArea", LimelightHelpers.getTA(""));
+
         double speed = 0.4;
 
         // Use formula to find angle robot should drive at
         double targetAngle = 0;
-        double rotAngle = april.X();
+        double rotAngle = tx;
 
-        rotAngle = april.X();
+        rotAngle = tx;
 
         SmartDashboard.putNumber("Rotation Angle", Math.toDegrees(rotAngle));
         SmartDashboard.putNumber("Target Angle", Math.toDegrees(targetAngle));
@@ -48,28 +57,4 @@ public class AutoAlign extends CommandBase{
     }
 
     
-}
-package frc.commands;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.LimelightHelpers;
-import frc.subsystems.Drivetrain;
-
-public class AutoAlign extends CommandBase{
-    private final Drivetrain drivetrain;
-
-    public AutoAlign(Drivetrain drivetrain){
-        this.drivetrain = drivetrain;
-        addRequirements(drivetrain);
-    }
-
-    @Override
-    public void execute(){
-
-        SmartDashboard.putNumber("LimelightX", LimelightHelpers.getTX(""));
-        SmartDashboard.putString("InsideAutoAlign", "success");
-        SmartDashboard.putNumber("LimelightY", LimelightHelpers.getTY(""));
-        SmartDashboard.putNumber("LimelightArea", LimelightHelpers.getTA(""));
-    }
 }

@@ -141,7 +141,6 @@ public class OI {
         driveAButton.onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
         // I have no idea what to put for april tag pipeline
-        driveXButton.onTrue(new AutoAlign(2,drivetrain));
 
 
         driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
