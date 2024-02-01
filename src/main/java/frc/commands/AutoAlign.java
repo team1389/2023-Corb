@@ -32,7 +32,7 @@ public class AutoAlign extends CommandBase{
 
         double speed = 0.4;
 
-        // Use formula to find angle robot should drive at
+        //math
         double targetAngle = 0;
         double rotAngle = tx;
 
@@ -41,7 +41,7 @@ public class AutoAlign extends CommandBase{
         SmartDashboard.putNumber("Rotation Angle", Math.toDegrees(rotAngle));
         SmartDashboard.putNumber("Target Angle", Math.toDegrees(targetAngle));
 
-        if (Math.abs(Math.toDegrees(rotAngle)) < 12) {
+        if (Math.abs(rotAngle) < 0.5) {
             drivetrain.stopModules();
         } else {
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0,
