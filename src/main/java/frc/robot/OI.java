@@ -143,11 +143,11 @@ public class OI {
         // I have no idea what to put for april tag pipeline
 
 
-        driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
+        // driveBButton.toggleOnTrue(Commands.startEnd(() -> light.setColor(255,179,0),() -> light.setColor(104,0,142), light));
         driveYButton.onTrue(new InstantCommand(() -> {light.isRainbowing = true;}));
 
         // Auto Align with AprilTag
-        driveLeftTrigger.onTrue(new AutoAlign(drivetrain));
+        driveBButton.whileTrue(new AutoAlign(drivetrain));
 
         // MANIPULATOR CONTROLLER
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));

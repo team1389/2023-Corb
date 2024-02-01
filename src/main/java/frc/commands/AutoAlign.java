@@ -13,7 +13,7 @@ import frc.subsystems.Drivetrain;
 public class AutoAlign extends CommandBase{
 
     private final Drivetrain drivetrain;
-    double tx = LimelightHelpers.getTX("");
+    double tx;
 
      public AutoAlign(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -25,12 +25,11 @@ public class AutoAlign extends CommandBase{
     @Override
     public void execute() {
 
-        SmartDashboard.putNumber("LimelightX", LimelightHelpers.getTX(""));
-        SmartDashboard.putString("InsideAutoAlign", "success");
-        SmartDashboard.putNumber("LimelightY", LimelightHelpers.getTY(""));
-        SmartDashboard.putNumber("LimelightArea", LimelightHelpers.getTA(""));
+        
 
-        double speed = 0.4;
+        tx = LimelightHelpers.getTX("");
+
+        double speed = 0.1;
 
         //math
         double targetAngle = 0;
@@ -43,9 +42,10 @@ public class AutoAlign extends CommandBase{
 
         if (Math.abs(rotAngle) < 0.5) {
             drivetrain.stopModules();
+            //rotAngle*speed
         } else {
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0,
-                    0, rotAngle*speed);
+                    0, speed * rotAngle);
             SwerveModuleState[] moduleStates = DriveConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
             drivetrain.setModuleStates(moduleStates);
         }
