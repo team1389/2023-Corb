@@ -44,11 +44,13 @@ import frc.subsystems.Arm;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 import frc.subsystems.Lights;
+import frc.subsystems.LimeLightVision;
 import frc.subsystems.Arm.ArmPosition;
 
 public class OI {
 
     public final Drivetrain drivetrain = new Drivetrain();
+    public final LimeLightVision limeLightVision = new LimeLightVision();
     // public final Vision vision = new Vision();
     public final Intake intake = new Intake();
     public final Arm arm = new Arm();
@@ -147,7 +149,7 @@ public class OI {
         driveYButton.onTrue(new InstantCommand(() -> {light.isRainbowing = true;}));
 
         // Auto Align with AprilTag
-        driveBButton.whileTrue(new AutoAlign(drivetrain));
+        driveBButton.whileTrue(new AutoAlign(drivetrain, limeLightVision));
 
         // MANIPULATOR CONTROLLER
         manipEllipsisButton.onTrue(new InstantCommand(() -> arm.resetEncoders()));

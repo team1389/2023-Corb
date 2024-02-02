@@ -13,6 +13,7 @@ public class LimeLightVision extends SubsystemBase{
     NetworkTableEntry tx1 = table.getEntry("tx");
     NetworkTableEntry ty1 = table.getEntry("ty");
     NetworkTableEntry ta1 = table.getEntry("ta");
+    
     double tx = LimelightHelpers.getTX("");
     double ty = LimelightHelpers.getTY("");
     double ta = LimelightHelpers.getTA(""); //area

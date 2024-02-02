@@ -4,6 +4,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap.DriveConstants;
 import frc.subsystems.Drivetrain;
+import frc.subsystems.LimeLightVision;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,19 +14,19 @@ import frc.subsystems.Drivetrain;
 public class AutoAlign extends CommandBase{
 
     private final Drivetrain drivetrain;
+    private final LimeLightVision limeLightVision;
     double tx;
 
-     public AutoAlign(Drivetrain drivetrain) {
+     public AutoAlign(Drivetrain drivetrain, LimeLightVision limeLightVision) {
         this.drivetrain = drivetrain;
+        this.limeLightVision = limeLightVision;
 
-        addRequirements(drivetrain);
+        addRequirements(drivetrain, limeLightVision);
     }
 
 
     @Override
-    public void execute() {
-
-        
+    public void execute() {        
 
         tx = LimelightHelpers.getTX("");
 
@@ -35,7 +36,7 @@ public class AutoAlign extends CommandBase{
         double targetAngle = 0;
         double rotAngle = tx;
 
-        rotAngle = tx;
+       // rotAngle = tx;
 
         SmartDashboard.putNumber("Rotation Angle", Math.toDegrees(rotAngle));
         SmartDashboard.putNumber("Target Angle", Math.toDegrees(targetAngle));
