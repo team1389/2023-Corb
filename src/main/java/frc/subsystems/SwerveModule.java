@@ -157,9 +157,9 @@ public class SwerveModule extends SubsystemBase{
     @Override
     public void periodic() {
         //Uncomment to tune pid from SmartDashboard
-        // turnPidController.setP(SmartDashboard.getNumber("Turning P", 0.01));
-        // turnPidController.setI(SmartDashboard.getNumber("Turning I", 0.00001));
-        // turnPidController.setD(SmartDashboard.getNumber("Turning D", 0.0005));
+        turnPidController.setP(SmartDashboard.getNumber("Turning P", 0.01));
+        turnPidController.setI(SmartDashboard.getNumber("Turning I", 0.00001));
+        turnPidController.setD(SmartDashboard.getNumber("Turning D", 0.0005));
 
     }
 }
